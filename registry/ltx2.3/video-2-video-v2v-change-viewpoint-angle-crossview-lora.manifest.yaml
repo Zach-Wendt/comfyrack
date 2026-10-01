@@ -1,0 +1,77 @@
+description: 'Video-to-video viewpoint/camera-angle change (LTX-2.3 CrossView IC-LoRA):
+  re-renders the input clip from a new described camera angle while preserving subject/action,
+  keeping the original audio track. Two near-identical VHS_VideoCombine save nodes
+  exist (#5249 preview, save_output=False, filename ''test''; #5325 final, save_output=True,
+  fed by an ImageConcatenate of original+result) -- picked #5325 as the true finished
+  deliverable.'
+workflow: video-2-video-v2v-change-viewpoint-angle-crossview-lora.json
+mode: [v2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162 #5325"
+flags:
+  positive_prompt:
+    node_title: CLIP Text Encode (Positive Prompt)
+    param: text
+    type: str
+    default: ' crossview. new camera angle: : far to the right, same height, further.
+
+
+      Batman standing on top of a high rice building with dawn sun reflecting in the
+      armour '
+    help: Camera-angle change instruction + scene description.
+    node: '2483'
+  negative_prompt:
+    node_title: CLIP Text Encode (Negative Prompt)
+    param: text
+    type: str
+    default: text, subtitles, logo, watermark, signature
+    node: '2612'
+  seed:
+    node_title: 'RandomNoise #5475'
+    param: noise_seed
+    type: int
+    default: 42
+    help: Sampler seed for the default (single-pass=False) path.
+    node: '5475'
+  seed_single_pass:
+    node_title: 'RandomNoise #5482'
+    param: noise_seed
+    type: int
+    default: 42
+    help: Sampler seed used instead when the 'Single pass' toggle (not exposed here,
+      JSON default False) is set True.
+    node: '5482'
+  source_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: video
+    type: str
+    default: Wan22_SA_Ode_00016.mp4
+    help: Filename of source video; must already exist in ComfyUI's input directory
+      (no upload path for video yet in this CLI).
+    node: '5451'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '5428'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    default: 5
+    help: Target output length in seconds.
+    node: '5434'
+  max_size:
+    node_title: MAX SIZE (Longest edge)
+    param: value
+    type: int
+    default: 960
+    help: Resize cap on the longest edge before sampling.
+    node: '5499'
+  crossview_lora_strength:
+    node_title: "\U0001F15B\U0001F163\U0001F167 IC-LoRA Loader Model Only"
+    param: strength_model
+    type: float
+    default: 1.5
+    help: Strength of the CrossView IC-LoRA driving the viewpoint change.
+    node: '5553'

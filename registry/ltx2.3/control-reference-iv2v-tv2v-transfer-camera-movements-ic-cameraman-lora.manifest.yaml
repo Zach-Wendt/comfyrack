@@ -1,0 +1,93 @@
+description: 'LTX-2.3 control/reference i2v: transfers camera movement (pan/spin/dolly
+  etc.) from a driving "Load Video FFmpeg" control clip onto a single reference image,
+  via the named "IC-LoRA-Cameraman" IC-LoRA (loaded through a Power Lora Loader rgthree
+  slot -- its lora_1 dict isn''t flat-patchable so the LoRA path/strength stay fixed
+  literals in the JSON, same limitation as registry/wan/txt2vid.manifest.yaml notes),
+  2-pass sample+upscale, then muxes to an MP4 with generated audio.
+
+  '
+workflow: control-reference-iv2v-tv2v-transfer-camera-movements-ic-cameraman-lora.json
+mode: [v2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  positive_prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    default: "Make this image come alive with fluid motion. \n\nA woman is walking\
+      \ in the street. She is talking to the viewer.\n\n\nShe talks with a soft british\
+      \ accent and she says: \"so camera man, what about panning? Can you do that?\"\
+      \ \n\nIn the background ambient sound from city and trafic. \n\nAfter a little\
+      \ while the woman talks again and says : \"oh, all this spinning is making me\
+      \ dizzy\" "
+    help: Raw user prompt; may be rewritten by the in-graph LLM prompt enhancer before
+      reaching CLIP (see 'ENABLE PROMPT ENHANCER' node 1929, default on -- not exposed,
+      no bool flag type).
+    node: '1624'
+  negative_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #1626'
+    param: text
+    type: str
+    default: text, subtitles, logo, still image, still video, no motion, static, frozen,
+      blurry, low quality, distorted, bad anatomy, oversaturated, pixelated, low resolution,
+      grainy, compression artifacts, jpeg artifacts, glitches, watermark, signature,
+      copyright,  distortedsound, saturated sound, loud sound , deformed facial features,
+      asymmetrical face, missing facial features, extra limbs, disfigured hands, blurry
+      teeth, disfigured teeth
+    node: '1626'
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: Reference subject/scene image that the control video's camera movement is
+      transferred onto.
+    node: '444'
+  control_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: video
+    type: str
+    default: camera-360-02.mp4
+    help: Driving video whose camera movement is extracted and transferred. Must already
+      exist in ComfyUI's input directory -- no upload path exists for video yet in
+      this CLI.
+    node: '1940'
+  seed_pass1:
+    node_title: 'RandomNoise #1842'
+    param: noise_seed
+    type: int
+    default: 43
+    help: Seed for the base pass.
+    node: '1842'
+  seed_pass2:
+    node_title: 'RandomNoise #1832'
+    param: noise_seed
+    type: int
+    default: 420
+    help: Seed for the upscale/refine pass (also where the IC-LoRA camera-motion guide
+      is applied).
+    node: '1832'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    default: 1280
+    node: '1606'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    default: 736
+    node: '1591'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    default: 10
+    node: '1583'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '1586'

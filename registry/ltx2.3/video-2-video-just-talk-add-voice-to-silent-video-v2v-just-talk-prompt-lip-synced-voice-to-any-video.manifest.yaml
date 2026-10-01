@@ -1,0 +1,111 @@
+description: 'Adds voice/speech to a silent (or any) source video purely from a text
+  prompt (LTX generates both the dialogue audio and matching lip-sync, no external
+  audio file needed), two-pass: base lip-sync pass + spatial-upsample refine pass.'
+workflow: video-2-video-just-talk-add-voice-to-silent-video-v2v-just-talk-prompt-lip-synced-voice-to-any-video.json
+mode: [v2v]
+output_node_title: VIDEO (BLEND - FOR 2-PASS WF)
+flags:
+  source_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: video
+    type: str
+    required: false
+    default: 450x_auto__ (2).mp4
+    help: Source video whose subject will be given lip-synced speech. Must already
+      exist in ComfyUI's input directory -- no upload path exists for video in this
+      CLI yet.
+    node: '774'
+  prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    required: false
+    default: "Cinematic video woman wearing colorful make-up, with colorful  light\
+      \ creating a creative scene. \n\nShe talks with perfect lip-sync movements to\
+      \ the attached audio. Her mouth and lips moves as she talks.  \n\nShe says with\
+      \ a soft British voice:  \"Oh I can finally talk. I have been sitting here mute\
+      \ for ages. Now I gotta figure out what to say\" \n \nThe camera slowly moves\
+      \ away from the woman, showing her full body. She is standing at a  colorful\
+      \ theatre scene doing a victorian era play. "
+    help: Positive prompt describing what the subject says and how (LTX generates
+      the dialogue audio and lip-sync from this text; may be auto-enhanced via LLM
+      before use, see enable_prompt_enhancer).
+    node: '487'
+  negative_prompt:
+    node_title: CLIP Text Encode (Prompt)
+    param: text
+    type: str
+    required: false
+    default: text, subtitles, logo, low quality, distorted, bad anatomy, oversaturated,
+      pixelated, low resolution, grainy, compression artifacts, jpeg artifacts, glitches,
+      watermark, signature, copyright,  distortedsound, saturated sound, loud sound
+      , deformed facial features, asymmetrical face, missing facial features, extra
+      limbs, disfigured hands, blurry teeth, disfigured teeth
+    help: Negative prompt for the video/visual branch.
+    node: '110'
+  negative_audio_prompt:
+    node_title: Negative Audio Prompt
+    param: text
+    type: str
+    required: false
+    default: ' distorted sound, saturated sound, loud sound'
+    help: Negative prompt for the generated audio branch.
+    node: '626'
+  extend_seconds:
+    node_title: EXTEND (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 3
+    help: Seconds of video generated/extended to accommodate the generated speech.
+    node: '211'
+  end_frame_strength:
+    node_title: END FRAME (strength)
+    param: value
+    type: float
+    required: false
+    default: 1
+    help: How strongly the source video's end frame constrains/guides the generated
+      result.
+    node: '814'
+  seed:
+    node_title: 'RandomNoise #115'
+    param: noise_seed
+    type: int
+    required: false
+    default: 28847942520501
+    help: Seed for the first (base lip-sync) sampling pass.
+    node: '115'
+  seed_upsample:
+    node_title: 'RandomNoise #243'
+    param: noise_seed
+    type: int
+    required: false
+    default: 43
+    help: Seed for the second (spatial-upsample refine) sampling pass.
+    node: '243'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    help: Frame rate used for loading the source video and for the output video combine.
+    node: '214'
+  max_pixel_size:
+    node_title: MAX PIXEL SIZE (longest)
+    param: value
+    type: int
+    required: false
+    default: 650
+    help: Longest-edge pixel size the source video is resized to before generation.
+    node: '497'
+  enable_prompt_enhancer:
+    node_title: ENABLE PROMPT ENHANCER
+    param: value
+    type: str
+    required: false
+    default: 'False'
+    help: If true, the prompt is rewritten/expanded by an LLM (Gemma via TextGenerateLTX2Prompt)
+      before use; if false, the raw prompt text is used as-is.
+    node: '594'

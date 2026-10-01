@@ -1,0 +1,42 @@
+[project]
+name = "comfyrack"
+version = "0.1.0"
+description = "A catalog and command-line tool for ComfyUI workflows. Find, check and run a workflow by name, and read the result as JSON."
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Zach Wendt"}]
+requires-python = ">=3.11"   # tomllib is stdlib from 3.11
+dependencies = [
+    "requests>=2.31",
+    "PyYAML>=6.0",
+    "websocket-client>=1.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+comfyrack = "comfyrack.cli.main:main"
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/comfyrack"]
+
+# The builtin corpus lives at the repo root (registry/<family>/), not under
+# src/comfyrack/, so `packages` alone ships a wheel with zero workflows. Map it
+# into the package so an installed comfyrack finds it package-adjacent; see
+# registry.BUILTIN_DIR, which prefers that location and falls back to the repo
+# root for a src checkout.
+[tool.hatch.build.targets.wheel.force-include]
+"registry" = "comfyrack/registry"
+
+[tool.pytest.ini_options]
+markers = ["integration: talks to a live ComfyUI instance (excluded by default)"]
+addopts = "-m 'not integration'"
+testpaths = ["tests"]
+# Import this checkout's src, not whatever `pip install -e` last pointed at:
+# without it a git worktree silently tests the main checkout's code.
+pythonpath = ["src"]

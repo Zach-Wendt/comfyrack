@@ -1,0 +1,147 @@
+description: "Camera-rotation view generator: one reference image in, a camera-rotated view out. Uses Qwen-Image-Edit-2511 bf16 and the qwen-image-edit-2511-multiple-angles LoRA."
+workflow: multi-angle.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    FluxKontextImageScale: core
+    FluxKontextMultiReferenceLatentMethod: core
+    KSampler: core
+    LoadImage: core
+    LoraLoaderModelOnly: core
+    ModelSamplingAuraFlow: core
+    SaveImage: core
+    Text Load Line From File: was-node-suite-comfyui
+    TextEncodeQwenImageEditPlus: core
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  custom_node_packs:
+  - name: was-node-suite-comfyui
+    git: https://github.com/ltdrdata/was-node-suite-comfyui
+    registry_id: was-ns
+  models:
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: loras
+    name: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+    url: https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+  - directory: diffusion_models
+    name: qwen_image_edit_2511_bf16.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2511_bf16.safetensors
+  - directory: loras
+    name: qwen-image-edit-2511-multiple-angles-lora.safetensors
+    url: https://huggingface.co/fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA/resolve/main/qwen-image-edit-2511-multiple-angles-lora.safetensors
+flags:
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: Reference image to rotate (e.g. a character's cel_anchor.png).
+    node: '41'
+  prompt:
+    node_title: TextEncodeQwenImageEditPlus (Positive)
+    param: prompt
+    type: str
+    required: true
+    help: Camera-rotation instruction, e.g. 'Rotate the camera to show a three-quarter
+      left view ...'.
+    node: '112'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    required: true
+    node: '106'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    required: true
+    node: '9'
+  steps:
+    node_title: KSampler
+    param: steps
+    type: int
+    default: 4
+    node: '106'
+  cfg:
+    node_title: KSampler
+    param: cfg
+    type: float
+    default: 1
+    node: '106'
+  sampler_name:
+    node_title: KSampler
+    param: sampler_name
+    type: str
+    default: euler
+    node: '106'
+  scheduler:
+    node_title: KSampler
+    param: scheduler
+    type: str
+    default: simple
+    node: '106'
+  denoise:
+    node_title: KSampler
+    param: denoise
+    type: float
+    default: 1
+    node: '106'
+  unet_name:
+    node_title: Load Diffusion Model
+    param: unet_name
+    type: str
+    default: qwen_image_edit_2511_bf16.safetensors
+    node: '108'
+  clip_name:
+    node_title: Load CLIP
+    param: clip_name
+    type: str
+    default: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    node: '93'
+  vae_name:
+    node_title: Load VAE
+    param: vae_name
+    type: str
+    default: qwen_image_vae.safetensors
+    node: '95'
+  angle_lora_name:
+    node_title: Load LoRA (Multi-Angle)
+    param: lora_name
+    type: str
+    default: qwen-image-edit-2511-multiple-angles-lora.safetensors
+    node: '109'
+  angle_lora_strength:
+    node_title: Load LoRA (Multi-Angle)
+    param: strength_model
+    type: float
+    default: 1
+    node: '109'
+  lightning_lora_name:
+    node_title: Load LoRA (Lightning Steps)
+    param: lora_name
+    type: str
+    default: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+    node: '102'
+  lightning_lora_strength:
+    node_title: Load LoRA (Lightning Steps)
+    param: strength_model
+    type: float
+    default: 1
+    node: '102'
+  shift:
+    node_title: ModelSamplingAuraFlow
+    param: shift
+    type: float
+    default: 3.1
+    node: '94'

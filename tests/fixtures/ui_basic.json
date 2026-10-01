@@ -1,0 +1,12 @@
+{
+  "id": "abc", "revision": 0, "last_node_id": 2, "last_link_id": 1,
+  "nodes": [
+    {"id": 1, "type": "CheckpointLoaderSimple", "title": "Load Checkpoint",
+     "widgets_values": ["anima_baseV10.safetensors"], "inputs": [],
+     "outputs": [{"name": "MODEL", "links": [1]}]},
+    {"id": 2, "type": "KSampler",
+     "widgets_values": [123, "randomize", 20, 4.0, "er_sde", "simple", 1.0],
+     "inputs": [{"name": "model", "link": 1}], "outputs": []}
+  ],
+  "links": [[1, 1, 0, 2, 0, "MODEL"]]
+}

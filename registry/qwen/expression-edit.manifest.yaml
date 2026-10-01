@@ -1,0 +1,122 @@
+description: "Facial-expression variation off a locked reference image with a Qwen-Image-Edit img2img pass. Use declarative phrasing, not instruction-style phrasing; denoise defaults to 0.8."
+workflow: expression-edit.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    FluxKontextImageScale: core
+    KSampler: core
+    LoadImage: core
+    ModelSamplingAuraFlow: core
+    SaveImage: core
+    TextEncodeQwenImageEditPlus: core
+    UnetLoaderGGUF: ComfyUI-GGUF
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  custom_node_packs:
+  - name: ComfyUI-GGUF
+    git: https://github.com/city96/ComfyUI-GGUF
+    registry_id: ComfyUI-GGUF
+  models:
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: diffusion_models
+    name: qwen-image-edit-2511-Q5_1.gguf
+    url: https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF/resolve/main/qwen-image-edit-2511-Q5_1.gguf
+flags:
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: Reference image to re-express (e.g. a character's cel_anchor.png).
+    node: '101'
+  prompt:
+    node_title: TextEncodeQwenImageEditPlus (Positive)
+    param: prompt
+    type: str
+    required: true
+    help: Declarative expression instruction, e.g. 'The person is smiling happily,
+      ... everything else about the image stays the same.'
+    node: '13'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    required: true
+    node: '15'
+  denoise:
+    node_title: KSampler
+    param: denoise
+    type: float
+    default: 0.8
+    help: 0.70 or lower can be needed for a child character to avoid drifting toward
+      adult proportions -- see mason_expressions.py note in build_id_dataset.py.
+    node: '15'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    required: true
+    node: '110'
+  negative_text:
+    node_title: TextEncodeQwenImageEditPlus (Negative)
+    param: prompt
+    type: str
+    default: different person, different outfit, different pose, adult, aged up
+    node: 9r
+  steps:
+    node_title: KSampler
+    param: steps
+    type: int
+    default: 20
+    node: '15'
+  cfg:
+    node_title: KSampler
+    param: cfg
+    type: float
+    default: 4.0
+    node: '15'
+  sampler_name:
+    node_title: KSampler
+    param: sampler_name
+    type: str
+    default: euler
+    node: '15'
+  scheduler:
+    node_title: KSampler
+    param: scheduler
+    type: str
+    default: simple
+    node: '15'
+  unet_name:
+    node_title: Load Diffusion Model
+    param: unet_name
+    type: str
+    default: qwen-image-edit-2511-Q5_1.gguf
+    node: '4'
+  clip_name:
+    node_title: Load CLIP
+    param: clip_name
+    type: str
+    default: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    node: '1'
+  vae_name:
+    node_title: Load VAE
+    param: vae_name
+    type: str
+    default: qwen_image_vae.safetensors
+    node: '3'
+  shift:
+    node_title: ModelSamplingAuraFlow
+    param: shift
+    type: float
+    default: 3.0
+    node: '2'

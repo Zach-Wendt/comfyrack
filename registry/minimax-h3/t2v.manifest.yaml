@@ -1,0 +1,187 @@
+mode: [t2v]
+description: >-
+  MiniMax H3 (fl2va) text-to-video: single-stage sampling with an optional
+  Lightning-distill LoRA switch (toggles between 20 normal and 8 lightning
+  steps) and audio-plus-video dual-VAE decode to a saved video file. Needs
+  five model files: the fl2va UNet, a Qwen3VL text encoder, video and audio
+  VAEs, and the turbo LoRA (LoRA applies only when the lightning switch is
+  on).
+workflow: t2v.json
+output_node_title: Save Video
+output: video
+requires:
+  nodes:
+    ApplyMiniMaxH3FirstBlockCache: unknown
+    BasicGuider: core
+    BasicScheduler: core
+    CLIPLoader: core
+    ComfyMathExpression: core
+    ComfySwitchNode: core
+    CreateVideo: core
+    KSamplerSelect: core
+    LoraLoaderModelOnly: core
+    MiniMaxH3ImageToVideo: core
+    PrimitiveBoolean: core
+    PrimitiveFloat: core
+    PrimitiveInt: core
+    RandomNoise: core
+    ResolutionSelector: core
+    SamplerCustomAdvanced: core
+    SaveVideo: core
+    UNETLoader: core
+    VAEDecode: core
+    VAEDecodeAudio: core
+    VAELoader: core
+  models:
+  - directory: vae
+    name: minimax_h3_video_vae_fp16.safetensors
+    url: https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_fp16.safetensors
+  - directory: vae
+    name: minimax_h3_audio_vae_fp32.safetensors
+    url: https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors
+  - directory: diffusion_models
+    name: minimax_h3_fl2va_pruned_int8_convrot.safetensors
+    url: https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors
+  - directory: text_encoders
+    name: qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
+    url: https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
+  - directory: loras
+    name: minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors
+    url: https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors
+flags:
+  fbc_mode:
+    node_title: MiniMax H3 FirstBlockCache
+    param: mode
+    type: str
+    default: 'H3 Fast — 0.10 / max 2'
+    help: >-
+      Speed-cache patch inserted directly after the UNET loader, on by
+      default (measured 2026-09-14:
+       2.5x speedup at H3 Fast preset, no visible quality loss on a
+      contact-sheet compare; same wiring as i2v.manifest.yaml's fbc_mode,
+      see that file for the full preset list and caveats).
+    node: '140:140'
+  positive_prompt:
+    node_title: MiniMax H3 Image to Video
+    param: prompt
+    type: str
+    required: true
+    help: Natural-language cinematic/storyboard-style prompt, not booru tags.
+    node: '140:131'
+  aspect_ratio:
+    node_title: Resolution Selector
+    param: aspect_ratio
+    type: str
+    default: 16:9 (Widescreen)
+    help: Feeds width/height into the MiniMax H3 node via ResolutionSelector's
+      computed output.
+    node: '115'
+  megapixels:
+    node_title: Resolution Selector
+    param: megapixels
+    type: float
+    default: 0.4
+    node: '115'
+  duration_seconds:
+    node_title: Float (duration)
+    param: value
+    type: float
+    default: 5
+    help: Fed through a Math Expression node that snaps frame count to the
+      model's 17k+5 grid at 24fps (e.g. 5s -> 124 frames).
+    node: '140:133'
+  seed:
+    node_title: RandomNoise
+    param: noise_seed
+    type: int
+    required: true
+    node: '140:129'
+  enable_lightning_lora:
+    node_title: Boolean (Enable Lightning LoRA)
+    param: value
+    type: str
+    default: 'false'
+    help: Boolean switch (comfyrack flags are str/int/float/image only --
+      pass 'true'/'false'). When true, routes through the 8-step turbo LoRA
+      branch and the 8-step count node instead of the 20-step default branch.
+    node: '140:139'
+  steps_normal:
+    node_title: Int
+    param: value
+    type: int
+    default: 20
+    help: Step count used when enable_lightning_lora is false. Two sibling
+      nodes in this graph share the title "Int" (steps_normal id 140:137,
+      steps_lightning id 140:138) -- disambiguated here by explicit node id,
+      not title.
+    node: '140:137'
+  steps_lightning:
+    node_title: Int
+    param: value
+    type: int
+    default: 8
+    help: Step count used when enable_lightning_lora is true.
+    node: '140:138'
+  lora_name:
+    node_title: Load LoRA
+    param: lora_name
+    type: str
+    default: minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors
+    help: >-
+      On disk 2026-08-28 in models/loras/. Only applied when
+      enable_lightning_lora is true. Alternative validated 2026-09-14 (on
+      i2v, same lora/graph shape -- see i2v.manifest.yaml's lora_name entry
+      for the full A/B numbers):
+      minimax_h3_taomate_3step_lora_avg_rank_19_bf16.safetensors (Kijai, HF
+      MiniMax-H3_comfy/loras) + steps_lightning=3, 1.75x faster than the
+      8-step default.
+    node: '140:134'
+  lora_strength:
+    node_title: Load LoRA
+    param: strength_model
+    type: float
+    default: 1
+    node: '140:134'
+  unet_name:
+    node_title: Load Diffusion Model
+    param: unet_name
+    type: str
+    default: minimax_h3_fl2va_pruned_int8_convrot.safetensors
+    help: On disk 2026-08-28 in models/diffusion_models/.
+    node: '140:127'
+  clip_name:
+    node_title: Load CLIP
+    param: clip_name
+    type: str
+    default: qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
+    help: On disk 2026-08-28 in models/text_encoders/. CLIPLoader `type` is
+      'minimax'.
+    node: '140:128'
+  video_vae_name:
+    node_title: Load VAE
+    param: vae_name
+    type: str
+    default: minimax_h3_video_vae_fp16.safetensors
+    help: On disk 2026-08-28 in models/vae/. This graph has two nodes titled
+      "Load VAE" (video vae id 140:119, audio vae id 140:120) --
+      disambiguated here by explicit node id.
+    node: '140:119'
+  audio_vae_name:
+    node_title: Load VAE
+    param: vae_name
+    type: str
+    default: minimax_h3_audio_vae_fp32.safetensors
+    help: On disk 2026-08-28 in models/vae/.
+    node: '140:120'
+  fps:
+    node_title: Create Video
+    param: fps
+    type: int
+    default: 24
+    node: '140:130'
+  filename_prefix:
+    node_title: Save Video
+    param: filename_prefix
+    type: str
+    default: video/MiniMax_H3
+    node: '92'

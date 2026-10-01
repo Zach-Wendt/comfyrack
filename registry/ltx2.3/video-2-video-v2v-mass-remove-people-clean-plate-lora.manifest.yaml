@@ -1,0 +1,82 @@
+description: 'Video-to-video mass people removal (LTX-2.3 Clean Plate IC-LoRA): erases
+  all people/figures (and related shadows/objects called out in the prompt) from the
+  input clip, producing an empty ''clean plate'' background video. Single unambiguous
+  VHS_VideoCombine output (save_output=True).'
+workflow: video-2-video-v2v-mass-remove-people-clean-plate-lora.json
+mode: [v2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  positive_prompt:
+    node_title: CLIP Text Encode (Positive Prompt)
+    param: text
+    type: str
+    default: 'An empty clean plate of the exact same location: an elevated train station
+      platform with identical concrete floor, blue tactile edge strip, metal-and-glass
+      canopy roof, train tracks, trackside buildings, storefronts, advertising tower
+      and sunset sky as the source video. No people, no humans, no figures, and no
+      body parts such as arms, hands or legs anywhere in the frame. No backpack, no
+      tripod, no hat anywhere in the frame. No train, no subway car, no cars, no vans,
+      no vehicles anywhere in the frame. No cast shadows from people, trains or vehicles.
+      Static photorealistic footage, natural daylight, high detail.
+
+      '
+    node: '5771'
+  negative_prompt:
+    node_title: CLIP Text Encode (Negative Prompt)
+    param: text
+    type: str
+    default: 'person, people, human, figure, limb, arm, hand, leg, body part, backpack,
+      shadow of a person, leftover people, leftover figures, ghosting, semi-transparent
+      remnants, blurry, soft, distorted, inconsistent motion, jitter, worst quality,
+      cartoon, video game, ugly
+
+
+      '
+    node: '5741'
+  seed:
+    node_title: 'RandomNoise #5783'
+    param: noise_seed
+    type: int
+    default: 42
+    node: '5783'
+  seed_two_pass:
+    node_title: 'RandomNoise #5794'
+    param: noise_seed
+    type: int
+    default: 43
+    help: Seed used on the alternate sampling branch selected when the 'Single pass'
+      toggle (not exposed here, JSON default True) differs.
+    node: '5794'
+  source_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: video
+    type: str
+    default: Video Project 161.mp4
+    help: Filename of source video; must already exist in ComfyUI's input directory
+      (no upload path for video yet in this CLI).
+    node: '5815'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '5707'
+  max_size:
+    node_title: MAX SIZE (Longest edge)
+    param: value
+    type: int
+    default: 960
+    node: '5708'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    default: 10
+    node: '5810'
+  clean_plate_lora_strength:
+    node_title: "\U0001F15B\U0001F163\U0001F167 IC-LoRA Loader Model Only"
+    param: strength_model
+    type: float
+    default: 1
+    help: Strength of the Clean Plate IC-LoRA driving people/object removal.
+    node: '5770'

@@ -1,0 +1,270 @@
+description: LTX-2.3 chained 5-scene music video generator -- takes 5 first-frame
+  images + per-scene prompts/seeds/lengths + one shared audio track, generates each
+  scene's clip in sequence (each scene's latent continues from the previous one for
+  continuity), and combines all 5 into one final synced music video. Per-scene ownership
+  of each prompt/seed/image/length primitive was confirmed by tracing its direct wire
+  to the scene's own RandomNoise/length-calc/resize node (not just reachability, since
+  scenes chain latents forward) -- high confidence but not GPU-verified. The graph
+  also emits 4 unsaved intermediate 'Video Part N' clips (save_output=False, not the
+  deliverable) and a second, untitled-suffix 'Video Combine' node whose image stream
+  appears to duplicate FINAL VIDEO's; FINAL VIDEO was chosen as the output because
+  it is the only save node with save_metadata=True and a purpose-named filename_prefix
+  ('LTX-MusicVideo-Final').
+workflow: music-video-creator-i2v-t2v-music-video-multi-scene-full-render.json
+mode: [i2v, t2v]
+output_node_title: FINAL VIDEO
+flags:
+  negative_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #1626'
+    param: text
+    type: str
+    required: false
+    default: text, subtitles, logo, still image, still video, no motion, static, frozen,
+      blurry, low quality, distorted, bad anatomy, oversaturated, pixelated, low resolution,
+      grainy, compression artifacts, jpeg artifacts, glitches, watermark, signature,
+      copyright,  distortedsound, saturated sound, loud sound , deformed facial features,
+      asymmetrical face, missing facial features, extra limbs, disfigured hands, blurry
+      teeth, disfigured teeth
+    help: Single negative prompt shared by all 5 scenes.
+    node: '1626'
+  audio_file:
+    node_title: Load Audio
+    param: audio
+    type: str
+    required: false
+    default: ComfyUI_00185_.mp3
+    help: Backing track filename -- must already exist in ComfyUI's input dir.
+    node: '1594'
+  audio_start_seconds:
+    node_title: START AUDIO FROM
+    param: start_index
+    type: int
+    required: false
+    default: 35
+    help: Offset (seconds) into the audio file where playback/sync starts.
+    node: '1598'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    required: false
+    default: 960
+    node: '1606'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    required: false
+    default: 544
+    node: '1591'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 25
+    node: '1586'
+  lora_strength:
+    node_title: Load LoRA
+    param: strength_model
+    type: float
+    required: false
+    default: 0.6
+    help: Strength of the LTX-2.3 22B distilled-dynamic LoRA that this whole workflow
+      is built around.
+    node: '1560'
+  scene1_image:
+    node_title: 'Load Image #444'
+    param: image
+    type: image
+    required: true
+    help: Scene 1 first frame.
+    node: '444'
+  scene1_prompt:
+    node_title: 'PROMPT #1624'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a woman with messy long dark hair, white make-up covering her face\
+      \ with a black star make-up around one eye. She is wearing a tight gray tank\
+      \ top, and a necless with a cross around her neck. \n\nShe sings with expressive\
+      \ face emotion and body gesticulation as she sings the words of the song.\n\
+      She sings with perfect lip-sync to the attached audio. \n\nThe music a rock\
+      \ song. The woman has attitude and expressive body language.\n\nShe is walking\
+      \ through a dystopian abandoned hallway, tracking camera as she walks towards\
+      \ the viewer. The camera pulls away slowly keeping same distance to the woman.\
+      \ \n\nCinematic, volumetric lights, shadow play. \n\nIMPORTANT: The woman is\
+      \ singing, and her lips are moving with lip-sync to the lyrics of the song."
+    help: Scene 1 motion/action prompt.
+    node: '1624'
+  scene1_seed:
+    node_title: Start Seed
+    param: value
+    type: int
+    required: false
+    default: 1000
+    node: '1527'
+  scene1_length_seconds:
+    node_title: 'LENGTH (in seconds) #2012'
+    param: value
+    type: float
+    required: false
+    default: 10
+    node: '2012'
+  scene2_image:
+    node_title: 'Load Image #4750'
+    param: image
+    type: image
+    required: true
+    help: Scene 2 first frame.
+    node: '4750'
+  scene2_prompt:
+    node_title: 'PROMPT #1805'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a woman with messy long dark hair, white make-up covering her face\
+      \ with a black star make-up around one eye. She is wearing a tight gray tank\
+      \ top, and a necless with a cross around her neck. \n\nShe sings with expressive\
+      \ face emotion and body gesticulation as she sings the words of the song.\n\
+      She sings with perfect lip-sync to the attached audio. \n\nThe music a rock\
+      \ song. The woman has attitude and expressive body language.\n\nShe is doing\
+      \ expressive dance moviement inside a dystopian abandoned train wagon, hand\
+      \ held camera, dynamic motion.\n\n\nCinematic, volumetric lights, shadow play.\
+      \ \n\nIMPORTANT: The woman is singing, and her lips are moving with lip-sync\
+      \ to the lyrics of the song."
+    help: Scene 2 motion/action prompt.
+    node: '1805'
+  scene2_seed:
+    node_title: 'SEED #2284'
+    param: value
+    type: int
+    required: false
+    default: 1020
+    node: '2284'
+  scene2_length_seconds:
+    node_title: 'LENGTH (in seconds) #1997'
+    param: value
+    type: float
+    required: false
+    default: 10
+    node: '1997'
+  scene3_image:
+    node_title: 'Load Image #6510'
+    param: image
+    type: image
+    required: true
+    help: Scene 3 first frame.
+    node: '6510'
+  scene3_prompt:
+    node_title: 'PROMPT #6513'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a woman with messy long dark hair, white make-up covering her face\
+      \ with a black star make-up around one eye. She is wearing a tight gray tank\
+      \ top, and a necless with a cross around her neck. \n\nShe sings with expressive\
+      \ face emotion and body gesticulation as she sings the words of the song.\n\
+      She sings with perfect lip-sync to the attached audio. \n\nThe music a rock\
+      \ song. The woman has attitude and expressive body language.\n\nShe is walking\
+      \ through a dystopian abandoned theatre, tracking camera as she walks towards\
+      \ the viewer. The camera pulls away slowly keeping same distance to the woman.\
+      \ \n\nCinematic, volumetric lights, shadow play. \n\nIMPORTANT: The woman is\
+      \ singing, and her lips are moving with lip-sync to the lyrics of the song."
+    help: Scene 3 motion/action prompt.
+    node: '6513'
+  scene3_seed:
+    node_title: 'SEED #6511'
+    param: value
+    type: int
+    required: false
+    default: 1030
+    node: '6511'
+  scene3_length_seconds:
+    node_title: 'LENGTH (in seconds) #6509'
+    param: value
+    type: float
+    required: false
+    default: 10
+    node: '6509'
+  scene4_image:
+    node_title: 'Load Image #6598'
+    param: image
+    type: image
+    required: true
+    help: Scene 4 first frame.
+    node: '6598'
+  scene4_prompt:
+    node_title: 'PROMPT #6601'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a woman with messy long dark hair, white make-up covering her face\
+      \ with a black star make-up around one eye. She is wearing a tight gray tank\
+      \ top, and a necless with a cross around her neck. \n\nShe sings with expressive\
+      \ face emotion and body gesticulation as she sings the words of the song.\n\
+      She sings with perfect lip-sync to the attached audio. \n\nThe music a rock\
+      \ song. The woman has attitude and expressive body language.\n\nShe is walking\
+      \ through a dystopian abandoned american diner, camera pans around the woman.\
+      \ The camera is keeping same distance to the woman. \n\nCinematic, volumetric\
+      \ lights, shadow play. \n\nIMPORTANT: The woman is singing, and her lips are\
+      \ moving with lip-sync to the lyrics of the song."
+    help: Scene 4 motion/action prompt.
+    node: '6601'
+  scene4_seed:
+    node_title: 'SEED #6599'
+    param: value
+    type: int
+    required: false
+    default: 1040
+    node: '6599'
+  scene4_length_seconds:
+    node_title: 'LENGTH (in seconds) #6597'
+    param: value
+    type: float
+    required: false
+    default: 10
+    node: '6597'
+  scene5_image:
+    node_title: 'Load Image #6686'
+    param: image
+    type: image
+    required: true
+    help: Scene 5 first frame.
+    node: '6686'
+  scene5_prompt:
+    node_title: 'PROMPT #6689'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a woman with messy long dark hair, white make-up covering her face\
+      \ with a black star make-up around one eye. She is wearing a tight gray tank\
+      \ top, and a necless with a cross around her neck. \n\nShe sings with expressive\
+      \ face emotion and body gesticulation as she sings the words of the song.\n\
+      She sings with perfect lip-sync to the attached audio. \n\nThe music a rock\
+      \ song. The woman has attitude and expressive body language.\n\nShe is playing\
+      \ guitar and singing at a small rock club. The scene lights are flashing in\
+      \ sync to the music. \n\nCinematic, volumetric lights, shadow play. \n\nIMPORTANT:\
+      \ The woman is singing, and her lips are moving with lip-sync to the lyrics\
+      \ of the song."
+    help: Scene 5 motion/action prompt.
+    node: '6689'
+  scene5_seed:
+    node_title: 'SEED #6687'
+    param: value
+    type: int
+    required: false
+    default: 1050
+    node: '6687'
+  scene5_length_seconds:
+    node_title: 'LENGTH (in seconds) #6685'
+    param: value
+    type: float
+    required: false
+    default: 10
+    node: '6685'

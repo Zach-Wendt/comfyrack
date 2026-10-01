@@ -1,0 +1,84 @@
+description: "Segments an image with SAM3 from a text prompt, then crops, edits with Qwen-Image-Edit-2511, and stitches back. Single-phrase, no-reference-image shape only: multi-phrase prompts or a reference image are not expressible as flag patching."
+workflow: segment-inpaint.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    DifferentialDiffusion: core
+    InpaintCropImproved: ComfyUI-Inpaint-CropAndStitch
+    InpaintModelConditioning: core
+    InpaintStitchImproved: ComfyUI-Inpaint-CropAndStitch
+    KSampler: core
+    LoadImage: core
+    LoadSAM3Model: ComfyUI-SAM3
+    LoraLoaderModelOnly: core
+    ModelSamplingAuraFlow: core
+    SAM3Grounding: ComfyUI-SAM3
+    SaveImage: core
+    TextEncodeQwenImageEditPlus: core
+    UNETLoader: core
+    VAEDecode: core
+    VAELoader: core
+  custom_node_packs:
+  - name: ComfyUI-Inpaint-CropAndStitch
+    git: https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch
+    registry_id: comfyui-inpaint-cropandstitch
+  - name: ComfyUI-SAM3
+    git: https://github.com/PozzettiAndrea/ComfyUI-SAM3
+    registry_id: comfyui-sam3
+  models:
+  - directory: diffusion_models
+    name: qwen_image_edit_2511_bf16.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2511_bf16.safetensors
+  - directory: loras
+    name: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+    url: https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+flags:
+  image:
+    node_title: Source Image
+    param: image
+    type: image
+    required: true
+    node: '1'
+  segment_prompt:
+    node_title: SAM3 Segment
+    param: text_prompt
+    type: str
+    required: true
+    help: Single phrase only, e.g. 'the lamp on the nightstand'. Pipe-separated multi-phrase
+      needs segment_inpaint.py's Python surgery, not this manifest.
+    node: '3'
+  edit_prompt:
+    node_title: Positive Prompt
+    param: prompt
+    type: str
+    required: true
+    node: '12'
+  negative:
+    node_title: Negative Prompt
+    param: prompt
+    type: str
+    default: different person, distorted face, deformed, extra limbs, blurry, lowres,
+      photorealistic, 3d render, worst quality, low quality, artifacts, jpeg artifacts,
+      visible seam, visible crop edge, mismatched lighting
+    node: '13'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 42
+    node: '15'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: segment_inpaint/wfcli_run
+    node: '18'

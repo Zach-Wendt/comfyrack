@@ -1,0 +1,2 @@
+bin/comfyrack text eol=lf
+scripts/release-grep text eol=lf

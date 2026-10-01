@@ -1,0 +1,27 @@
+{
+  "KSampler": {
+    "input": {"required": {"seed": ["INT", {}], "steps": ["INT", {}]}},
+    "output": ["LATENT"],
+    "python_module": "nodes"
+  },
+  "TextGenerate": {
+    "input": {"required": {"text": ["STRING", {}]}},
+    "output": ["STRING"],
+    "python_module": "comfy_extras.nodes_textgen"
+  },
+  "InpaintCropImproved": {
+    "input": {"required": {"image": ["IMAGE", {}]}},
+    "output": ["IMAGE"],
+    "python_module": "custom_nodes.comfyui-workflow-encrypt"
+  },
+  "LoadSAM3Model": {
+    "input": {"required": {"sam_model_name": [["sam3.safetensors"], {}]}},
+    "output": ["MODEL"],
+    "python_module": "custom_nodes.ComfyUI-SAM3"
+  },
+  "UNETLoader": {
+    "input": {"required": {"unet_name": [["a.safetensors"], {}]}},
+    "output": ["MODEL"],
+    "python_module": "comfy_extras.nodes_model_loading"
+  }
+}

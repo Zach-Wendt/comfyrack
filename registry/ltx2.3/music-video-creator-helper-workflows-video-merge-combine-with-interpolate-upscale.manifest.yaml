@@ -1,0 +1,55 @@
+description: 'Concatenates 5 already-rendered video clips (frame-batches them in order,
+  then re-encodes as one H264 MP4 at the first clip''s frame rate) into a single merged
+  music-video file. NOTE: despite the workflow''s filename, this specific exported
+  graph contains no interpolation (RIFE/etc) or upscale nodes -- it is a straight
+  batch-and-combine of the 5 loaded clips; treat the ''interpolate/upscale'' claim
+  in the name as aspirational/not present in this API export.'
+workflow: music-video-creator-helper-workflows-video-merge-combine-with-interpolate-upscale.json
+mode: [v2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  video_1:
+    node_title: "Load Video (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162 #10"
+    param: video
+    type: str
+    required: false
+    default: MusicVideo_00006_.mp4
+    help: Filename of clip 1 to merge (in order) -- must already exist in ComfyUI's
+      input dir.
+    node: '10'
+  video_2:
+    node_title: "Load Video (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162 #13"
+    param: video
+    type: str
+    required: false
+    default: MusicVideo_00002_.mp4
+    help: Filename of clip 2 to merge (in order) -- must already exist in ComfyUI's
+      input dir.
+    node: '13'
+  video_3:
+    node_title: "Load Video (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162 #39"
+    param: video
+    type: str
+    required: false
+    default: MusicVideo_00003_.mp4
+    help: Filename of clip 3 to merge (in order) -- must already exist in ComfyUI's
+      input dir.
+    node: '39'
+  video_4:
+    node_title: "Load Video (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162 #41"
+    param: video
+    type: str
+    required: false
+    default: MusicVideo_00004_.mp4
+    help: Filename of clip 4 to merge (in order) -- must already exist in ComfyUI's
+      input dir.
+    node: '41'
+  video_5:
+    node_title: "Load Video (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162 #42"
+    param: video
+    type: str
+    required: false
+    default: MusicVideo_00007_.mp4
+    help: Filename of clip 5 to merge (in order) -- must already exist in ComfyUI's
+      input dir.
+    node: '42'

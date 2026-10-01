@@ -1,0 +1,4149 @@
+{
+  "164": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "positive": [
+        "6692",
+        1
+      ],
+      "negative": [
+        "6693",
+        0
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning #164"
+    }
+  },
+  "245": {
+    "inputs": {
+      "av_latent": [
+        "2182",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #245"
+    }
+  },
+  "344": {
+    "inputs": {
+      "width": [
+        "1631",
+        0
+      ],
+      "height": [
+        "1631",
+        1
+      ],
+      "length": [
+        "6696",
+        0
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo #344"
+    }
+  },
+  "350": {
+    "inputs": {
+      "video_latent": [
+        "6968",
+        0
+      ],
+      "audio_latent": [
+        "1603",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #350"
+    }
+  },
+  "444": {
+    "inputs": {
+      "image": "nextscene_00062_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image #444"
+    }
+  },
+  "445": {
+    "inputs": {
+      "width": [
+        "1606",
+        0
+      ],
+      "height": [
+        "1591",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "keep_proportion": "crop",
+      "pad_color": "0, 0, 0",
+      "crop_position": "center",
+      "divisible_by": 2,
+      "device": "cpu",
+      "image": [
+        "444",
+        0
+      ]
+    },
+    "class_type": "ImageResizeKJv2",
+    "_meta": {
+      "title": "Resize Image v2"
+    }
+  },
+  "446": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "2189",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess #446"
+    }
+  },
+  "1527": {
+    "inputs": {
+      "value": 1012
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Start Seed"
+    }
+  },
+  "1559": {
+    "inputs": {
+      "vae_name": "LTX23_video_vae_bf16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #1559"
+    }
+  },
+  "1561": {
+    "inputs": {
+      "model_name": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+    },
+    "class_type": "LatentUpscaleModelLoader",
+    "_meta": {
+      "title": "Load Latent Upscale Model"
+    }
+  },
+  "1562": {
+    "inputs": {
+      "clip_name1": "gemma_3_12B_it_fp8_scaled.safetensors",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "1567": {
+    "inputs": {
+      "vae_name": "LTX23_audio_vae_bf16.safetensors",
+      "device": "main_device",
+      "weight_dtype": "bf16"
+    },
+    "class_type": "VAELoaderKJ",
+    "_meta": {
+      "title": "VAELoader KJ"
+    }
+  },
+  "1569": {
+    "inputs": {
+      "vae_name": "taeltx2_3.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #1569"
+    }
+  },
+  "1570": {
+    "inputs": {
+      "unet_name": "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "1586": {
+    "inputs": {
+      "value": 24
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "FPS"
+    }
+  },
+  "1591": {
+    "inputs": {
+      "value": 480
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "HEIGHT"
+    }
+  },
+  "1594": {
+    "inputs": {
+      "audio": "ComfyUI_00185_.mp3",
+      "audioUI": "/api/view?filename=ComfyUI_00185_.mp3&type=input&subfolder=&rand=0.42179244693659024"
+    },
+    "class_type": "LoadAudio",
+    "_meta": {
+      "title": "Load Audio"
+    }
+  },
+  "1598": {
+    "inputs": {
+      "start_index": 35,
+      "duration": 120,
+      "audio": [
+        "1594",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "START AUDIO FROM"
+    }
+  },
+  "1599": {
+    "inputs": {
+      "model": [
+        "1600",
+        0
+      ],
+      "audio": [
+        "1598",
+        0
+      ]
+    },
+    "class_type": "MelBandRoFormerSampler",
+    "_meta": {
+      "title": "Mel-Band RoFormer Sampler"
+    }
+  },
+  "1600": {
+    "inputs": {
+      "model_name": "MelBandRoformer_fp16.safetensors"
+    },
+    "class_type": "MelBandRoFormerModelLoader",
+    "_meta": {
+      "title": "Mel-Band RoFormer Model Loader"
+    }
+  },
+  "1603": {
+    "inputs": {
+      "samples": [
+        "1605",
+        0
+      ],
+      "mask": [
+        "1604",
+        0
+      ]
+    },
+    "class_type": "SetLatentNoiseMask",
+    "_meta": {
+      "title": "Set Latent Noise Mask #1603"
+    }
+  },
+  "1604": {
+    "inputs": {
+      "value": 0,
+      "width": [
+        "1631",
+        0
+      ],
+      "height": [
+        "1631",
+        1
+      ]
+    },
+    "class_type": "SolidMask",
+    "_meta": {
+      "title": "Create Solid Mask #1604"
+    }
+  },
+  "1605": {
+    "inputs": {
+      "audio": [
+        "1653",
+        0
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEEncode",
+    "_meta": {
+      "title": "LTXV Audio VAE Encode #1605"
+    }
+  },
+  "1606": {
+    "inputs": {
+      "value": 832
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "WIDTH"
+    }
+  },
+  "1616": {
+    "inputs": {
+      "switch": false,
+      "on_false": [
+        "1598",
+        0
+      ],
+      "on_true": [
+        "1599",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "USE VOCALS ONLY"
+    }
+  },
+  "1630": {
+    "inputs": {
+      "resize_type": "scale by multiplier",
+      "resize_type.multiplier": 0.5,
+      "scale_method": "area",
+      "input": [
+        "445",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask"
+    }
+  },
+  "1631": {
+    "inputs": {
+      "image": [
+        "1630",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Get Image Size"
+    }
+  },
+  "1653": {
+    "inputs": {
+      "start_index": 0,
+      "duration": [
+        "6711",
+        0
+      ],
+      "audio": [
+        "1616",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio"
+    }
+  },
+  "1722": {
+    "inputs": {
+      "value": 0.7
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "Ref Image Strength"
+    }
+  },
+  "2153": {
+    "inputs": {
+      "video_latent": [
+        "6972",
+        0
+      ],
+      "audio_latent": [
+        "2159",
+        1
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #2153"
+    }
+  },
+  "2158": {
+    "inputs": {
+      "samples": [
+        "2159",
+        0
+      ],
+      "upscale_model": [
+        "1561",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "LTXVLatentUpsampler",
+    "_meta": {
+      "title": "spatial #2158"
+    }
+  },
+  "2159": {
+    "inputs": {
+      "av_latent": [
+        "2181",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #2159"
+    }
+  },
+  "2169": {
+    "inputs": {
+      "noise_seed": 421
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #2169"
+    }
+  },
+  "2170": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "2188",
+        0
+      ],
+      "positive": [
+        "164",
+        0
+      ],
+      "negative": [
+        "164",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #2170"
+    }
+  },
+  "2173": {
+    "inputs": {
+      "scheduler": "linear_quadratic",
+      "steps": 6,
+      "denoise": 1,
+      "model": [
+        "2175",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler #2173"
+    }
+  },
+  "2174": {
+    "inputs": {
+      "sampler_name": "euler_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect #2174"
+    }
+  },
+  "2175": {
+    "inputs": {
+      "shift": 13,
+      "model": [
+        "2188",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "ModelSamplingSD3 #2175"
+    }
+  },
+  "2176": {
+    "inputs": {
+      "sigmas": "0.85, 0.7250, 0.4219, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas #2176"
+    }
+  },
+  "2177": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "2188",
+        0
+      ],
+      "positive": [
+        "164",
+        0
+      ],
+      "negative": [
+        "164",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #2177"
+    }
+  },
+  "2179": {
+    "inputs": {
+      "noise_seed": [
+        "1527",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #2179"
+    }
+  },
+  "2180": {
+    "inputs": {
+      "sampler_name": "euler_ancestral_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect #2180"
+    }
+  },
+  "2181": {
+    "inputs": {
+      "noise": [
+        "2179",
+        0
+      ],
+      "guider": [
+        "2170",
+        0
+      ],
+      "sampler": [
+        "2180",
+        0
+      ],
+      "sigmas": [
+        "2187",
+        0
+      ],
+      "latent_image": [
+        "350",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 1- Pass 1"
+    }
+  },
+  "2182": {
+    "inputs": {
+      "noise": [
+        "2169",
+        0
+      ],
+      "guider": [
+        "2177",
+        0
+      ],
+      "sampler": [
+        "2174",
+        0
+      ],
+      "sigmas": [
+        "2176",
+        0
+      ],
+      "latent_image": [
+        "2153",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 1- Pass 2"
+    }
+  },
+  "2185": {
+    "inputs": {
+      "shift": 13,
+      "model": [
+        "2188",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "ModelSamplingSD3 #2185"
+    }
+  },
+  "2186": {
+    "inputs": {
+      "scheduler": "linear_quadratic",
+      "steps": 12,
+      "denoise": 1,
+      "model": [
+        "2185",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler #2186"
+    }
+  },
+  "2187": {
+    "inputs": {
+      "sigmas": "1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas #2187"
+    }
+  },
+  "2188": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "6692",
+        0
+      ],
+      "vae": [
+        "1569",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override #2188"
+    }
+  },
+  "2189": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "445",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED) #2189"
+    }
+  },
+  "2284": {
+    "inputs": {
+      "value": 1023
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "SEED #2284"
+    }
+  },
+  "4119": {
+    "inputs": {
+      "value": "mynewvideo"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "TEMP SAVE FOLDER NAME"
+    }
+  },
+  "4164": {
+    "inputs": {
+      "string_a": "MusicVideo",
+      "string_b": [
+        "4119",
+        0
+      ],
+      "delimiter": "/"
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #4164"
+    }
+  },
+  "4708": {
+    "inputs": {
+      "video": [
+        "4743",
+        0
+      ],
+      "force_rate": 0,
+      "custom_width": 0,
+      "custom_height": 0,
+      "frame_load_cap": [
+        "5228",
+        1
+      ],
+      "skip_first_frames": 0,
+      "select_every_nth": 1,
+      "output_type": "batch",
+      "grid_max_columns": 4,
+      "add_label": false
+    },
+    "class_type": "LoadVideosFromFolder",
+    "_meta": {
+      "title": "Load All Videos"
+    }
+  },
+  "4709": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-2",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": false,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": false,
+      "images": [
+        "5370:5346",
+        0
+      ],
+      "audio": [
+        "5370:5360",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video From This Group #4709"
+    }
+  },
+  "4725": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-MusicVideo-Final",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "6175",
+        1
+      ],
+      "audio": [
+        "1598",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "FINAL VIDEO"
+    }
+  },
+  "4735": {
+    "inputs": {
+      "string_a": [
+        "4164",
+        0
+      ],
+      "string_b": "MusicVideo",
+      "delimiter": "/"
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #4735"
+    }
+  },
+  "4743": {
+    "inputs": {
+      "string_a": "output\\MusicVideo",
+      "string_b": [
+        "4119",
+        0
+      ],
+      "delimiter": "\\"
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #4743"
+    }
+  },
+  "4750": {
+    "inputs": {
+      "image": "nextscene_00060_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image #4750"
+    }
+  },
+  "5228": {
+    "inputs": {
+      "expression": "a + 100",
+      "variables.a": [
+        "6962:6909",
+        1
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "Just a little buffer"
+    }
+  },
+  "5271": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "5909",
+        0
+      ],
+      "audio": [
+        "1598",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "5880": {
+    "inputs": {
+      "PowerLoraLoaderHeaderWidget": {
+        "type": "PowerLoraLoaderHeaderWidget"
+      },
+      "\u2795 Add Lora": "",
+      "model": [
+        "1570",
+        0
+      ]
+    },
+    "class_type": "Power Lora Loader (rgthree)",
+    "_meta": {
+      "title": "Power Lora Loader (rgthree)"
+    }
+  },
+  "5885": {
+    "inputs": {
+      "samples": [
+        "245",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode #5885"
+    }
+  },
+  "5890": {
+    "inputs": {
+      "samples": [
+        "245",
+        1
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode",
+    "_meta": {
+      "title": "LTXV Audio VAE Decode #5890"
+    }
+  },
+  "5909": {
+    "inputs": {
+      "image": [
+        "7023:7008",
+        0
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #5909"
+    }
+  },
+  "6175": {
+    "inputs": {
+      "empty_cache": true,
+      "gc_collect": true,
+      "unload_all_models": false,
+      "image_pass": [
+        "4708",
+        0
+      ]
+    },
+    "class_type": "VRAM_Debug",
+    "_meta": {
+      "title": "VRAM Debug #6175"
+    }
+  },
+  "6406": {
+    "inputs": {
+      "scheduler": "linear_quadratic",
+      "steps": 6,
+      "denoise": 1,
+      "model": [
+        "2188",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler #6406"
+    }
+  },
+  "6692": {
+    "inputs": {
+      "global_prompt": "Make this image come alive with fluid motion. Cinematic music video shot of a woman with messy long dark hair, white make-up covering her face with a black star make-up at one eye. She is wearing a tight gray tank top, and a necless with a cross around her neck. \n\n",
+      "max_frames": 433,
+      "timeline_data": "{\"segments\":[{\"prompt\":\"She is walking through a dystopian abandoned hall, tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \\n\\n\",\"length\":217,\"color\":\"#5cb85c\"},{\"prompt\":\"Scene cut / scene change.\\n\\nShe is standing on top of a stone block inside the hallway. Camera rapidly pulls in towards the woman, dolly zoom. \\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \",\"length\":216,\"color\":\"#4f8edc\"}]}",
+      "local_prompts": "She is walking through a dystopian abandoned hall, tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \n\n | Scene cut / scene change.\n\nShe is standing on top of a stone block inside the hallway. Camera rapidly pulls in towards the woman, dolly zoom. \n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. ",
+      "segment_lengths": "217, 216",
+      "epsilon": 0.001,
+      "fps": [
+        "1586",
+        0
+      ],
+      "time_units": "frames",
+      "model": [
+        "5880",
+        0
+      ],
+      "clip": [
+        "1562",
+        0
+      ],
+      "latent": [
+        "344",
+        0
+      ]
+    },
+    "class_type": "PromptRelayEncodeTimeline",
+    "_meta": {
+      "title": "Prompt Relay Encode (Timeline) #6692"
+    }
+  },
+  "6693": {
+    "inputs": {
+      "conditioning": [
+        "6692",
+        1
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "6696": {
+    "inputs": {
+      "value": 433
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INT Constant #6696"
+    }
+  },
+  "6701": {
+    "inputs": {
+      "global_prompt": "Make this image come alive with fluid motion. Cinematic music video shot of a woman with messy long dark hair, white make-up covering her face with a black star make-up at one eye. She is wearing a tight gray tank top, and a necless with a cross around her neck. \n\n",
+      "max_frames": 289,
+      "timeline_data": "{\"segments\":[{\"prompt\":\"She is walking through a dystopian abandoned train wagon, tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \",\"length\":181,\"color\":\"#5cb85c\"},{\"prompt\":\"She walks over to the train wagon wall, and leans up against the wall. And sings with expressive face.\\nShe pulls her hands through her hair as she sings with emotions.\\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \",\"length\":108,\"color\":\"#4f8edc\"}]}",
+      "local_prompts": "She is walking through a dystopian abandoned train wagon, tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play.  | She walks over to the train wagon wall, and leans up against the wall. And sings with expressive face.\nShe pulls her hands through her hair as she sings with emotions.\n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. ",
+      "segment_lengths": "181, 108",
+      "epsilon": 0.001,
+      "fps": [
+        "1586",
+        0
+      ],
+      "time_units": "seconds",
+      "model": [
+        "5880",
+        0
+      ],
+      "clip": [
+        "1562",
+        0
+      ],
+      "latent": [
+        "5370:5352",
+        0
+      ]
+    },
+    "class_type": "PromptRelayEncodeTimeline",
+    "_meta": {
+      "title": "Prompt Relay Encode (Timeline) #6701"
+    }
+  },
+  "6703": {
+    "inputs": {
+      "value": 289
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INT Constant #6703"
+    }
+  },
+  "6711": {
+    "inputs": {
+      "expression": "a/b",
+      "variables.a": [
+        "6696",
+        0
+      ],
+      "variables.b": [
+        "1586",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #6711"
+    }
+  },
+  "6788": {
+    "inputs": {
+      "value": 457
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INT Constant #6788"
+    }
+  },
+  "6791": {
+    "inputs": {
+      "image": "nextscene_00071_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image #6791"
+    }
+  },
+  "6794": {
+    "inputs": {
+      "value": 1030
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "SEED #6794"
+    }
+  },
+  "6796": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-2",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": false,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": false,
+      "images": [
+        "6798:6744",
+        0
+      ],
+      "audio": [
+        "6798:6771",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video From This Group #6796"
+    }
+  },
+  "6797": {
+    "inputs": {
+      "global_prompt": "Make this image come alive with fluid motion. Cinematic music video shot of a woman with messy long dark hair, white make-up covering her face with a black star make-up at one eye. She is wearing a tight gray tank top, and a necless with a cross around her neck. \n\n",
+      "max_frames": 457,
+      "timeline_data": "{\"segments\":[{\"prompt\":\"She is walking through a dystopian abandoned theater,  tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \",\"length\":181,\"color\":\"#5cb85c\"},{\"prompt\":\"She sits down at one of the chairs and sings with expressive face. She points towards the viewer as she sings.\\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \",\"length\":180,\"color\":\"#4f8edc\"}]}",
+      "local_prompts": "She is walking through a dystopian abandoned theater,  tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play.  | She sits down at one of the chairs and sings with expressive face. She points towards the viewer as she sings.\n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. ",
+      "segment_lengths": "181, 180",
+      "epsilon": 0.001,
+      "fps": [
+        "1586",
+        0
+      ],
+      "time_units": "seconds",
+      "model": [
+        "5880",
+        0
+      ],
+      "clip": [
+        "1562",
+        0
+      ],
+      "latent": [
+        "6798:6777",
+        0
+      ]
+    },
+    "class_type": "PromptRelayEncodeTimeline",
+    "_meta": {
+      "title": "Prompt Relay Encode (Timeline) #6797"
+    }
+  },
+  "6870": {
+    "inputs": {
+      "value": 217
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INT Constant #6870"
+    }
+  },
+  "6873": {
+    "inputs": {
+      "image": "nextscene_00059_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image #6873"
+    }
+  },
+  "6876": {
+    "inputs": {
+      "value": 1040
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "SEED #6876"
+    }
+  },
+  "6878": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-2",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": false,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": false,
+      "images": [
+        "6880:6826",
+        0
+      ],
+      "audio": [
+        "6880:6853",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video From This Group #6878"
+    }
+  },
+  "6879": {
+    "inputs": {
+      "global_prompt": "Make this image come alive with fluid motion. Cinematic music video shot of a woman with messy long dark hair, white make-up covering her face with a black star make-up at one eye. She is wearing a tight gray tank top, and a necless with a cross around her neck. \n\n",
+      "max_frames": 217,
+      "timeline_data": "{\"segments\":[{\"prompt\":\"She is walking through a dystopian abandoned american diner, tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \",\"length\":181,\"color\":\"#5cb85c\"},{\"prompt\":\"Camera starts orbiting around her as sings. \\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \",\"length\":36,\"color\":\"#4f8edc\"}]}",
+      "local_prompts": "She is walking through a dystopian abandoned american diner, tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play.  | Camera starts orbiting around her as sings. \n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. ",
+      "segment_lengths": "181, 36",
+      "epsilon": 0.001,
+      "fps": [
+        "1586",
+        0
+      ],
+      "time_units": "seconds",
+      "model": [
+        "5880",
+        0
+      ],
+      "clip": [
+        "1562",
+        0
+      ],
+      "latent": [
+        "6880:6859",
+        0
+      ]
+    },
+    "class_type": "PromptRelayEncodeTimeline",
+    "_meta": {
+      "title": "Prompt Relay Encode (Timeline) #6879"
+    }
+  },
+  "6952": {
+    "inputs": {
+      "value": 481
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INT Constant #6952"
+    }
+  },
+  "6955": {
+    "inputs": {
+      "image": "nextscene_00061_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image #6955"
+    }
+  },
+  "6958": {
+    "inputs": {
+      "value": 1050
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "SEED #6958"
+    }
+  },
+  "6960": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-2",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": false,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": false,
+      "images": [
+        "6962:6908",
+        0
+      ],
+      "audio": [
+        "6962:6935",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video From This Group #6960"
+    }
+  },
+  "6961": {
+    "inputs": {
+      "global_prompt": "Make this image come alive with fluid motion. Cinematic music video shot of a woman with messy long dark hair, white make-up covering her face with a black star make-up at one eye. She is wearing a tight gray tank top, and a necless with a cross around her neck. \n\n",
+      "max_frames": 481,
+      "timeline_data": "{\"segments\":[{\"prompt\":\"She is walking through a dystopian abandoned street at night, tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \",\"length\":181,\"color\":\"#5cb85c\"},{\"prompt\":\"She stops in the street and stands with a demonstrative pose. The camera pulls in slowly towards her face as she sings. \\n\\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \\n\\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. \",\"length\":180,\"color\":\"#4f8edc\"}]}",
+      "local_prompts": "She is walking through a dystopian abandoned street at night, tracking camera as she walks towards the viewer. The camera pulls away slowly keeping same distance to the woman. \n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play.  | She stops in the street and stands with a demonstrative pose. The camera pulls in slowly towards her face as she sings. \n\nShe sings with expressive face emotion and body gesticulation as she sings the words of the song. She sings with perfect lip-sync to the attached audio. \n\nRock music video. The woman has attitude and expressive body language. Cinematic, volumetric lights, shadow play. ",
+      "segment_lengths": "181, 180",
+      "epsilon": 0.001,
+      "fps": [
+        "1586",
+        0
+      ],
+      "time_units": "seconds",
+      "model": [
+        "5880",
+        0
+      ],
+      "clip": [
+        "1562",
+        0
+      ],
+      "latent": [
+        "6962:6941",
+        0
+      ]
+    },
+    "class_type": "PromptRelayEncodeTimeline",
+    "_meta": {
+      "title": "Prompt Relay Encode (Timeline) #6961"
+    }
+  },
+  "6963": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "T2V mode"
+    }
+  },
+  "6965": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6965"
+    }
+  },
+  "6968": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "446",
+        0
+      ],
+      "latent": [
+        "344",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6968"
+    }
+  },
+  "6969": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6969"
+    }
+  },
+  "6972": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "2189",
+        0
+      ],
+      "latent": [
+        "2158",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6972"
+    }
+  },
+  "7023:7005": {
+    "inputs": {
+      "filename_prefix": [
+        "4735",
+        0
+      ],
+      "format": "mp4",
+      "codec": "h264",
+      "video": [
+        "7023:7009",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save Video #7023:7005"
+    }
+  },
+  "7023:7006": {
+    "inputs": {
+      "video": [
+        "7023:7009",
+        0
+      ]
+    },
+    "class_type": "GetVideoComponents",
+    "_meta": {
+      "title": "Get Video Components #7023:7006"
+    }
+  },
+  "7023:7008": {
+    "inputs": {
+      "image": [
+        "7023:7006",
+        0
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #7023:7008"
+    }
+  },
+  "7023:7009": {
+    "inputs": {
+      "fps": [
+        "1586",
+        0
+      ],
+      "bit_depth": 8,
+      "images": [
+        "5885",
+        0
+      ],
+      "audio": [
+        "1653",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create Video #7023:7009"
+    }
+  },
+  "5370:5337": {
+    "inputs": {
+      "video_latent": [
+        "5370:6976",
+        0
+      ],
+      "audio_latent": [
+        "5370:5336",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #5370:5337"
+    }
+  },
+  "5370:5361": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "5370:5362",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess #5370:5361"
+    }
+  },
+  "5370:5365": {
+    "inputs": {
+      "video_latent": [
+        "5370:6980",
+        0
+      ],
+      "audio_latent": [
+        "5370:5322",
+        1
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #5370:5365"
+    }
+  },
+  "5370:5367": {
+    "inputs": {
+      "noise": [
+        "5370:5338",
+        0
+      ],
+      "guider": [
+        "5370:5335",
+        0
+      ],
+      "sampler": [
+        "2180",
+        0
+      ],
+      "sigmas": [
+        "2187",
+        0
+      ],
+      "latent_image": [
+        "5370:5337",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 2 - Pass 1"
+    }
+  },
+  "5370:5906": {
+    "inputs": {
+      "samples": [
+        "5370:5368",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode #5370:5906"
+    }
+  },
+  "5370:5339": {
+    "inputs": {
+      "noise_seed": 405
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #5370:5339"
+    }
+  },
+  "5370:5345": {
+    "inputs": {
+      "expression": "a + b",
+      "variables.a": [
+        "5909",
+        3
+      ],
+      "variables.b": [
+        "5370:5346",
+        3
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "ADD TO FRAME COUNT #5370:5345"
+    }
+  },
+  "5370:5340": {
+    "inputs": {
+      "noise": [
+        "5370:5339",
+        0
+      ],
+      "guider": [
+        "5370:5366",
+        0
+      ],
+      "sampler": [
+        "2174",
+        0
+      ],
+      "sigmas": [
+        "2176",
+        0
+      ],
+      "latent_image": [
+        "5370:5365",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 2 - Pass 2"
+    }
+  },
+  "5370:5368": {
+    "inputs": {
+      "av_latent": [
+        "5370:5340",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #5370:5368"
+    }
+  },
+  "5370:6413": {
+    "inputs": {
+      "samples": [
+        "5370:5368",
+        1
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode",
+    "_meta": {
+      "title": "LTXV Audio VAE Decode #5370:6413"
+    }
+  },
+  "5370:5322": {
+    "inputs": {
+      "av_latent": [
+        "5370:5367",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #5370:5322"
+    }
+  },
+  "5370:5362": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "4750",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED) #5370:5362"
+    }
+  },
+  "5370:5315": {
+    "inputs": {
+      "value": 0,
+      "width": [
+        "1606",
+        0
+      ],
+      "height": [
+        "1591",
+        0
+      ]
+    },
+    "class_type": "SolidMask",
+    "_meta": {
+      "title": "Create Solid Mask #5370:5315"
+    }
+  },
+  "5370:5336": {
+    "inputs": {
+      "samples": [
+        "5370:5331",
+        0
+      ],
+      "mask": [
+        "5370:5315",
+        0
+      ]
+    },
+    "class_type": "SetLatentNoiseMask",
+    "_meta": {
+      "title": "Set Latent Noise Mask #5370:5336"
+    }
+  },
+  "5370:5348": {
+    "inputs": {
+      "expression": "a /  b ",
+      "values.a": [
+        "5909",
+        3
+      ],
+      "values.b": [
+        "1586",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "CURRENT POSITION #5370:5348"
+    }
+  },
+  "5370:5341": {
+    "inputs": {
+      "text": "18.041666666666668",
+      "anything": [
+        "5370:5348",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "START FROM #5370:5341"
+    }
+  },
+  "5370:5338": {
+    "inputs": {
+      "noise_seed": [
+        "2284",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #5370:5338"
+    }
+  },
+  "5370:5331": {
+    "inputs": {
+      "audio": [
+        "5370:5354",
+        0
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEEncode",
+    "_meta": {
+      "title": "LTXV Audio VAE Encode #5370:5331"
+    }
+  },
+  "5370:5354": {
+    "inputs": {
+      "start_index": [
+        "5370:5348",
+        0
+      ],
+      "duration": [
+        "5370:6170",
+        0
+      ],
+      "audio": [
+        "1616",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio Duration #5370:5354"
+    }
+  },
+  "5370:6169": {
+    "inputs": {
+      "text": "289",
+      "anything": [
+        "5370:5351",
+        1
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "WINDOW FRAMES #5370:6169"
+    }
+  },
+  "5370:6171": {
+    "inputs": {
+      "text": "12.041666666666666",
+      "anything": [
+        "5370:6170",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "WINDOW DURATION #5370:6171"
+    }
+  },
+  "5370:5360": {
+    "inputs": {
+      "start_index": [
+        "5370:5348",
+        0
+      ],
+      "duration": [
+        "5370:6170",
+        0
+      ],
+      "audio": [
+        "1598",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio Duration #5370:5360"
+    }
+  },
+  "5370:5335": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "5370:6714",
+        0
+      ],
+      "positive": [
+        "5370:6421",
+        0
+      ],
+      "negative": [
+        "5370:6421",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #5370:5335"
+    }
+  },
+  "5370:5351": {
+    "inputs": {
+      "expression": "((round((a -1) / 8))*8)+1 ",
+      "variables.a": [
+        "6703",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #5370:5351"
+    }
+  },
+  "5370:6170": {
+    "inputs": {
+      "expression": "a/b",
+      "variables.a": [
+        "5370:5351",
+        1
+      ],
+      "variables.b": [
+        "1586",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "Frames 2 seconds #5370:6170"
+    }
+  },
+  "5370:5366": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "5370:6714",
+        0
+      ],
+      "positive": [
+        "5370:6421",
+        0
+      ],
+      "negative": [
+        "5370:6421",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #5370:5366"
+    }
+  },
+  "5370:5352": {
+    "inputs": {
+      "width": [
+        "1631",
+        0
+      ],
+      "height": [
+        "1631",
+        1
+      ],
+      "length": [
+        "5370:5351",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo #5370:5352"
+    }
+  },
+  "5370:6714": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "6701",
+        0
+      ],
+      "vae": [
+        "1569",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override #5370:6714"
+    }
+  },
+  "5370:6421": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "positive": [
+        "6701",
+        1
+      ],
+      "negative": [
+        "6693",
+        0
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning #5370:6421"
+    }
+  },
+  "5370:6973": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #5370:6973"
+    }
+  },
+  "5370:6976": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "5370:5361",
+        0
+      ],
+      "latent": [
+        "5370:5352",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #5370:6976"
+    }
+  },
+  "5370:6977": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #5370:6977"
+    }
+  },
+  "5370:5323": {
+    "inputs": {
+      "samples": [
+        "5370:5322",
+        0
+      ],
+      "upscale_model": [
+        "1561",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "LTXVLatentUpsampler",
+    "_meta": {
+      "title": "spatial #5370:5323"
+    }
+  },
+  "5370:6980": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "5370:5362",
+        0
+      ],
+      "latent": [
+        "5370:5323",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #5370:6980"
+    }
+  },
+  "5370:7032:7024": {
+    "inputs": {
+      "filename_prefix": [
+        "4735",
+        0
+      ],
+      "format": "mp4",
+      "codec": "h264",
+      "video": [
+        "5370:7032:7028",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save Video #5370:7032:7024"
+    }
+  },
+  "5370:7032:7025": {
+    "inputs": {
+      "video": [
+        "5370:7032:7028",
+        0
+      ]
+    },
+    "class_type": "GetVideoComponents",
+    "_meta": {
+      "title": "Get Video Components #5370:7032:7025"
+    }
+  },
+  "5370:7032:7027": {
+    "inputs": {
+      "image": [
+        "5370:7032:7025",
+        0
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #5370:7032:7027"
+    }
+  },
+  "5370:7032:7028": {
+    "inputs": {
+      "fps": [
+        "1586",
+        0
+      ],
+      "bit_depth": 8,
+      "images": [
+        "5370:5906",
+        0
+      ],
+      "audio": [
+        "5370:5360",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create Video #5370:7032:7028"
+    }
+  },
+  "5370:5347": {
+    "inputs": {
+      "empty_cache": true,
+      "gc_collect": true,
+      "unload_all_models": false,
+      "image_pass": [
+        "5370:7032:7027",
+        0
+      ]
+    },
+    "class_type": "VRAM_Debug",
+    "_meta": {
+      "title": "VRAM Debug #5370:5347"
+    }
+  },
+  "5370:5346": {
+    "inputs": {
+      "image": [
+        "5370:5347",
+        1
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #5370:5346"
+    }
+  },
+  "6798:6724": {
+    "inputs": {
+      "samples": [
+        "6798:6751",
+        0
+      ],
+      "upscale_model": [
+        "1561",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "LTXVLatentUpsampler",
+    "_meta": {
+      "title": "spatial #6798:6724"
+    }
+  },
+  "6798:6728": {
+    "inputs": {
+      "video_latent": [
+        "6798:6984",
+        0
+      ],
+      "audio_latent": [
+        "6798:6758",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #6798:6728"
+    }
+  },
+  "6798:6730": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "6798:6752",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess #6798:6730"
+    }
+  },
+  "6798:6731": {
+    "inputs": {
+      "video_latent": [
+        "6798:6988",
+        0
+      ],
+      "audio_latent": [
+        "6798:6751",
+        1
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #6798:6731"
+    }
+  },
+  "6798:6736": {
+    "inputs": {
+      "samples": [
+        "6798:6748",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode #6798:6736"
+    }
+  },
+  "6798:6741": {
+    "inputs": {
+      "noise_seed": 405
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #6798:6741"
+    }
+  },
+  "6798:6745": {
+    "inputs": {
+      "expression": "a + b",
+      "variables.a": [
+        "5370:5345",
+        1
+      ],
+      "variables.b": [
+        "6798:6744",
+        3
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "ADD TO FRAME COUNT #6798:6745"
+    }
+  },
+  "6798:6748": {
+    "inputs": {
+      "av_latent": [
+        "6798:6746",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #6798:6748"
+    }
+  },
+  "6798:6750": {
+    "inputs": {
+      "samples": [
+        "6798:6748",
+        1
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode",
+    "_meta": {
+      "title": "LTXV Audio VAE Decode #6798:6750"
+    }
+  },
+  "6798:6751": {
+    "inputs": {
+      "av_latent": [
+        "6798:6732",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #6798:6751"
+    }
+  },
+  "6798:6752": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "6791",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED) #6798:6752"
+    }
+  },
+  "6798:6757": {
+    "inputs": {
+      "value": 0,
+      "width": [
+        "1606",
+        0
+      ],
+      "height": [
+        "1591",
+        0
+      ]
+    },
+    "class_type": "SolidMask",
+    "_meta": {
+      "title": "Create Solid Mask #6798:6757"
+    }
+  },
+  "6798:6758": {
+    "inputs": {
+      "samples": [
+        "6798:6763",
+        0
+      ],
+      "mask": [
+        "6798:6757",
+        0
+      ]
+    },
+    "class_type": "SetLatentNoiseMask",
+    "_meta": {
+      "title": "Set Latent Noise Mask #6798:6758"
+    }
+  },
+  "6798:6759": {
+    "inputs": {
+      "expression": "a /  b ",
+      "values.a": [
+        "5370:5345",
+        1
+      ],
+      "values.b": [
+        "1586",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "CURRENT POSITION #6798:6759"
+    }
+  },
+  "6798:6761": {
+    "inputs": {
+      "text": "30.083333333333332",
+      "anything": [
+        "6798:6759",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "START FROM #6798:6761"
+    }
+  },
+  "6798:6762": {
+    "inputs": {
+      "noise_seed": [
+        "6794",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #6798:6762"
+    }
+  },
+  "6798:6763": {
+    "inputs": {
+      "audio": [
+        "6798:6764",
+        0
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEEncode",
+    "_meta": {
+      "title": "LTXV Audio VAE Encode #6798:6763"
+    }
+  },
+  "6798:6764": {
+    "inputs": {
+      "start_index": [
+        "6798:6759",
+        0
+      ],
+      "duration": [
+        "6798:6774",
+        0
+      ],
+      "audio": [
+        "1616",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio Duration #6798:6764"
+    }
+  },
+  "6798:6767": {
+    "inputs": {
+      "text": "457",
+      "anything": [
+        "6798:6773",
+        1
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "WINDOW FRAMES #6798:6767"
+    }
+  },
+  "6798:6768": {
+    "inputs": {
+      "text": "19.041666666666668",
+      "anything": [
+        "6798:6774",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "WINDOW DURATION #6798:6768"
+    }
+  },
+  "6798:6771": {
+    "inputs": {
+      "start_index": [
+        "6798:6759",
+        0
+      ],
+      "duration": [
+        "6798:6774",
+        0
+      ],
+      "audio": [
+        "1598",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio Duration #6798:6771"
+    }
+  },
+  "6798:6772": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "6798:6779",
+        0
+      ],
+      "positive": [
+        "6798:6781",
+        0
+      ],
+      "negative": [
+        "6798:6781",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #6798:6772"
+    }
+  },
+  "6798:6773": {
+    "inputs": {
+      "expression": "((round((a -1) / 8))*8)+1 ",
+      "variables.a": [
+        "6788",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #6798:6773"
+    }
+  },
+  "6798:6774": {
+    "inputs": {
+      "expression": "a/b",
+      "variables.a": [
+        "6798:6773",
+        1
+      ],
+      "variables.b": [
+        "1586",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "Frames 2 seconds #6798:6774"
+    }
+  },
+  "6798:6776": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "6798:6779",
+        0
+      ],
+      "positive": [
+        "6798:6781",
+        0
+      ],
+      "negative": [
+        "6798:6781",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #6798:6776"
+    }
+  },
+  "6798:6777": {
+    "inputs": {
+      "width": [
+        "1631",
+        0
+      ],
+      "height": [
+        "1631",
+        1
+      ],
+      "length": [
+        "6798:6773",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo #6798:6777"
+    }
+  },
+  "6798:6779": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "6797",
+        0
+      ],
+      "vae": [
+        "1569",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override #6798:6779"
+    }
+  },
+  "6798:6781": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "positive": [
+        "6797",
+        1
+      ],
+      "negative": [
+        "6693",
+        0
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning #6798:6781"
+    }
+  },
+  "6798:6732": {
+    "inputs": {
+      "noise": [
+        "6798:6762",
+        0
+      ],
+      "guider": [
+        "6798:6772",
+        0
+      ],
+      "sampler": [
+        "2180",
+        0
+      ],
+      "sigmas": [
+        "2187",
+        0
+      ],
+      "latent_image": [
+        "6798:6728",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 3 - Pass 1"
+    }
+  },
+  "6798:6746": {
+    "inputs": {
+      "noise": [
+        "6798:6741",
+        0
+      ],
+      "guider": [
+        "6798:6776",
+        0
+      ],
+      "sampler": [
+        "2174",
+        0
+      ],
+      "sigmas": [
+        "2176",
+        0
+      ],
+      "latent_image": [
+        "6798:6731",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 3 - Pass 2"
+    }
+  },
+  "6798:6981": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6798:6981"
+    }
+  },
+  "6798:6984": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "6798:6730",
+        0
+      ],
+      "latent": [
+        "6798:6777",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6798:6984"
+    }
+  },
+  "6798:6985": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6798:6985"
+    }
+  },
+  "6798:6988": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "6798:6752",
+        0
+      ],
+      "latent": [
+        "6798:6724",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6798:6988"
+    }
+  },
+  "6798:7041:7033": {
+    "inputs": {
+      "filename_prefix": [
+        "4735",
+        0
+      ],
+      "format": "mp4",
+      "codec": "h264",
+      "video": [
+        "6798:7041:7037",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save Video #6798:7041:7033"
+    }
+  },
+  "6798:7041:7034": {
+    "inputs": {
+      "video": [
+        "6798:7041:7037",
+        0
+      ]
+    },
+    "class_type": "GetVideoComponents",
+    "_meta": {
+      "title": "Get Video Components #6798:7041:7034"
+    }
+  },
+  "6798:7041:7036": {
+    "inputs": {
+      "image": [
+        "6798:7041:7034",
+        0
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #6798:7041:7036"
+    }
+  },
+  "6798:7041:7037": {
+    "inputs": {
+      "fps": [
+        "1586",
+        0
+      ],
+      "bit_depth": 8,
+      "images": [
+        "6798:6736",
+        0
+      ],
+      "audio": [
+        "6798:6771",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create Video #6798:7041:7037"
+    }
+  },
+  "6798:6742": {
+    "inputs": {
+      "empty_cache": true,
+      "gc_collect": true,
+      "unload_all_models": false,
+      "image_pass": [
+        "6798:7041:7036",
+        0
+      ]
+    },
+    "class_type": "VRAM_Debug",
+    "_meta": {
+      "title": "VRAM Debug #6798:6742"
+    }
+  },
+  "6798:6744": {
+    "inputs": {
+      "image": [
+        "6798:6742",
+        1
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #6798:6744"
+    }
+  },
+  "6880:6806": {
+    "inputs": {
+      "samples": [
+        "6880:6833",
+        0
+      ],
+      "upscale_model": [
+        "1561",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "LTXVLatentUpsampler",
+    "_meta": {
+      "title": "spatial #6880:6806"
+    }
+  },
+  "6880:6810": {
+    "inputs": {
+      "video_latent": [
+        "6880:6992",
+        0
+      ],
+      "audio_latent": [
+        "6880:6840",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #6880:6810"
+    }
+  },
+  "6880:6812": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "6880:6834",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess #6880:6812"
+    }
+  },
+  "6880:6813": {
+    "inputs": {
+      "video_latent": [
+        "6880:6996",
+        0
+      ],
+      "audio_latent": [
+        "6880:6833",
+        1
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #6880:6813"
+    }
+  },
+  "6880:6818": {
+    "inputs": {
+      "samples": [
+        "6880:6830",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode #6880:6818"
+    }
+  },
+  "6880:6823": {
+    "inputs": {
+      "noise_seed": 405
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #6880:6823"
+    }
+  },
+  "6880:6827": {
+    "inputs": {
+      "expression": "a + b",
+      "variables.a": [
+        "6798:6745",
+        1
+      ],
+      "variables.b": [
+        "6880:6826",
+        3
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "ADD TO FRAME COUNT #6880:6827"
+    }
+  },
+  "6880:6830": {
+    "inputs": {
+      "av_latent": [
+        "6880:6828",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #6880:6830"
+    }
+  },
+  "6880:6833": {
+    "inputs": {
+      "av_latent": [
+        "6880:6814",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #6880:6833"
+    }
+  },
+  "6880:6834": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "6873",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED) #6880:6834"
+    }
+  },
+  "6880:6839": {
+    "inputs": {
+      "value": 0,
+      "width": [
+        "1606",
+        0
+      ],
+      "height": [
+        "1591",
+        0
+      ]
+    },
+    "class_type": "SolidMask",
+    "_meta": {
+      "title": "Create Solid Mask #6880:6839"
+    }
+  },
+  "6880:6840": {
+    "inputs": {
+      "samples": [
+        "6880:6845",
+        0
+      ],
+      "mask": [
+        "6880:6839",
+        0
+      ]
+    },
+    "class_type": "SetLatentNoiseMask",
+    "_meta": {
+      "title": "Set Latent Noise Mask #6880:6840"
+    }
+  },
+  "6880:6841": {
+    "inputs": {
+      "expression": "a /  b ",
+      "values.a": [
+        "6798:6745",
+        1
+      ],
+      "values.b": [
+        "1586",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "CURRENT POSITION #6880:6841"
+    }
+  },
+  "6880:6843": {
+    "inputs": {
+      "text": "49.125",
+      "anything": [
+        "6880:6841",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "START FROM #6880:6843"
+    }
+  },
+  "6880:6844": {
+    "inputs": {
+      "noise_seed": [
+        "6876",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #6880:6844"
+    }
+  },
+  "6880:6845": {
+    "inputs": {
+      "audio": [
+        "6880:6846",
+        0
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEEncode",
+    "_meta": {
+      "title": "LTXV Audio VAE Encode #6880:6845"
+    }
+  },
+  "6880:6846": {
+    "inputs": {
+      "start_index": [
+        "6880:6841",
+        0
+      ],
+      "duration": [
+        "6880:6856",
+        0
+      ],
+      "audio": [
+        "1616",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio Duration #6880:6846"
+    }
+  },
+  "6880:6849": {
+    "inputs": {
+      "text": "217",
+      "anything": [
+        "6880:6855",
+        1
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "WINDOW FRAMES #6880:6849"
+    }
+  },
+  "6880:6850": {
+    "inputs": {
+      "text": "9.041666666666666",
+      "anything": [
+        "6880:6856",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "WINDOW DURATION #6880:6850"
+    }
+  },
+  "6880:6853": {
+    "inputs": {
+      "start_index": [
+        "6880:6841",
+        0
+      ],
+      "duration": [
+        "6880:6856",
+        0
+      ],
+      "audio": [
+        "1598",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio Duration #6880:6853"
+    }
+  },
+  "6880:6854": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "6880:6861",
+        0
+      ],
+      "positive": [
+        "6880:6863",
+        0
+      ],
+      "negative": [
+        "6880:6863",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #6880:6854"
+    }
+  },
+  "6880:6855": {
+    "inputs": {
+      "expression": "((round((a -1) / 8))*8)+1 ",
+      "variables.a": [
+        "6870",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #6880:6855"
+    }
+  },
+  "6880:6856": {
+    "inputs": {
+      "expression": "a/b",
+      "variables.a": [
+        "6880:6855",
+        1
+      ],
+      "variables.b": [
+        "1586",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "Frames 2 seconds #6880:6856"
+    }
+  },
+  "6880:6858": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "6880:6861",
+        0
+      ],
+      "positive": [
+        "6880:6863",
+        0
+      ],
+      "negative": [
+        "6880:6863",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #6880:6858"
+    }
+  },
+  "6880:6859": {
+    "inputs": {
+      "width": [
+        "1631",
+        0
+      ],
+      "height": [
+        "1631",
+        1
+      ],
+      "length": [
+        "6880:6855",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo #6880:6859"
+    }
+  },
+  "6880:6861": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "6879",
+        0
+      ],
+      "vae": [
+        "1569",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override #6880:6861"
+    }
+  },
+  "6880:6863": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "positive": [
+        "6879",
+        1
+      ],
+      "negative": [
+        "6693",
+        0
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning #6880:6863"
+    }
+  },
+  "6880:6814": {
+    "inputs": {
+      "noise": [
+        "6880:6844",
+        0
+      ],
+      "guider": [
+        "6880:6854",
+        0
+      ],
+      "sampler": [
+        "2180",
+        0
+      ],
+      "sigmas": [
+        "2187",
+        0
+      ],
+      "latent_image": [
+        "6880:6810",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 4 - Pass 1"
+    }
+  },
+  "6880:6828": {
+    "inputs": {
+      "noise": [
+        "6880:6823",
+        0
+      ],
+      "guider": [
+        "6880:6858",
+        0
+      ],
+      "sampler": [
+        "2174",
+        0
+      ],
+      "sigmas": [
+        "2176",
+        0
+      ],
+      "latent_image": [
+        "6880:6813",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 4 - Pass 2"
+    }
+  },
+  "6880:6832": {
+    "inputs": {
+      "samples": [
+        "6880:6830",
+        1
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode",
+    "_meta": {
+      "title": "LTXV Audio VAE Decode #6880:6832"
+    }
+  },
+  "6880:6989": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6880:6989"
+    }
+  },
+  "6880:6992": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "6880:6812",
+        0
+      ],
+      "latent": [
+        "6880:6859",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6880:6992"
+    }
+  },
+  "6880:6993": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6880:6993"
+    }
+  },
+  "6880:6996": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "6880:6834",
+        0
+      ],
+      "latent": [
+        "6880:6806",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6880:6996"
+    }
+  },
+  "6880:7050:7042": {
+    "inputs": {
+      "filename_prefix": [
+        "4735",
+        0
+      ],
+      "format": "mp4",
+      "codec": "h264",
+      "video": [
+        "6880:7050:7046",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save Video #6880:7050:7042"
+    }
+  },
+  "6880:7050:7043": {
+    "inputs": {
+      "video": [
+        "6880:7050:7046",
+        0
+      ]
+    },
+    "class_type": "GetVideoComponents",
+    "_meta": {
+      "title": "Get Video Components #6880:7050:7043"
+    }
+  },
+  "6880:7050:7045": {
+    "inputs": {
+      "image": [
+        "6880:7050:7043",
+        0
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #6880:7050:7045"
+    }
+  },
+  "6880:7050:7046": {
+    "inputs": {
+      "fps": [
+        "1586",
+        0
+      ],
+      "bit_depth": 8,
+      "images": [
+        "6880:6818",
+        0
+      ],
+      "audio": [
+        "6880:6853",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create Video #6880:7050:7046"
+    }
+  },
+  "6880:6824": {
+    "inputs": {
+      "empty_cache": true,
+      "gc_collect": true,
+      "unload_all_models": false,
+      "image_pass": [
+        "6880:7050:7045",
+        0
+      ]
+    },
+    "class_type": "VRAM_Debug",
+    "_meta": {
+      "title": "VRAM Debug #6880:6824"
+    }
+  },
+  "6880:6826": {
+    "inputs": {
+      "image": [
+        "6880:6824",
+        1
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #6880:6826"
+    }
+  },
+  "6962:6888": {
+    "inputs": {
+      "samples": [
+        "6962:6915",
+        0
+      ],
+      "upscale_model": [
+        "1561",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "LTXVLatentUpsampler",
+    "_meta": {
+      "title": "spatial #6962:6888"
+    }
+  },
+  "6962:6892": {
+    "inputs": {
+      "video_latent": [
+        "6962:7000",
+        0
+      ],
+      "audio_latent": [
+        "6962:6922",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #6962:6892"
+    }
+  },
+  "6962:6894": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "6962:6916",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess #6962:6894"
+    }
+  },
+  "6962:6895": {
+    "inputs": {
+      "video_latent": [
+        "6962:7004",
+        0
+      ],
+      "audio_latent": [
+        "6962:6915",
+        1
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #6962:6895"
+    }
+  },
+  "6962:6900": {
+    "inputs": {
+      "samples": [
+        "6962:6912",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode #6962:6900"
+    }
+  },
+  "6962:6905": {
+    "inputs": {
+      "noise_seed": 405
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #6962:6905"
+    }
+  },
+  "6962:6909": {
+    "inputs": {
+      "expression": "a + b",
+      "variables.a": [
+        "6880:6827",
+        1
+      ],
+      "variables.b": [
+        "6962:6908",
+        3
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "ADD TO FRAME COUNT #6962:6909"
+    }
+  },
+  "6962:6912": {
+    "inputs": {
+      "av_latent": [
+        "6962:6910",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #6962:6912"
+    }
+  },
+  "6962:6914": {
+    "inputs": {
+      "samples": [
+        "6962:6912",
+        1
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode",
+    "_meta": {
+      "title": "LTXV Audio VAE Decode #6962:6914"
+    }
+  },
+  "6962:6915": {
+    "inputs": {
+      "av_latent": [
+        "6962:6896",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #6962:6915"
+    }
+  },
+  "6962:6916": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "6955",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED) #6962:6916"
+    }
+  },
+  "6962:6921": {
+    "inputs": {
+      "value": 0,
+      "width": [
+        "1606",
+        0
+      ],
+      "height": [
+        "1591",
+        0
+      ]
+    },
+    "class_type": "SolidMask",
+    "_meta": {
+      "title": "Create Solid Mask #6962:6921"
+    }
+  },
+  "6962:6922": {
+    "inputs": {
+      "samples": [
+        "6962:6927",
+        0
+      ],
+      "mask": [
+        "6962:6921",
+        0
+      ]
+    },
+    "class_type": "SetLatentNoiseMask",
+    "_meta": {
+      "title": "Set Latent Noise Mask #6962:6922"
+    }
+  },
+  "6962:6923": {
+    "inputs": {
+      "expression": "a /  b ",
+      "values.a": [
+        "6880:6827",
+        1
+      ],
+      "values.b": [
+        "1586",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "CURRENT POSITION #6962:6923"
+    }
+  },
+  "6962:6925": {
+    "inputs": {
+      "text": "58.166666666666664",
+      "anything": [
+        "6962:6923",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "START FROM #6962:6925"
+    }
+  },
+  "6962:6926": {
+    "inputs": {
+      "noise_seed": [
+        "6958",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #6962:6926"
+    }
+  },
+  "6962:6927": {
+    "inputs": {
+      "audio": [
+        "6962:6928",
+        0
+      ],
+      "audio_vae": [
+        "1567",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEEncode",
+    "_meta": {
+      "title": "LTXV Audio VAE Encode #6962:6927"
+    }
+  },
+  "6962:6928": {
+    "inputs": {
+      "start_index": [
+        "6962:6923",
+        0
+      ],
+      "duration": [
+        "6962:6938",
+        0
+      ],
+      "audio": [
+        "1616",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio Duration #6962:6928"
+    }
+  },
+  "6962:6931": {
+    "inputs": {
+      "text": "481",
+      "anything": [
+        "6962:6937",
+        1
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "WINDOW FRAMES #6962:6931"
+    }
+  },
+  "6962:6932": {
+    "inputs": {
+      "text": "20.041666666666668",
+      "anything": [
+        "6962:6938",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "WINDOW DURATION #6962:6932"
+    }
+  },
+  "6962:6935": {
+    "inputs": {
+      "start_index": [
+        "6962:6923",
+        0
+      ],
+      "duration": [
+        "6962:6938",
+        0
+      ],
+      "audio": [
+        "1598",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio Duration #6962:6935"
+    }
+  },
+  "6962:6936": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "6962:6943",
+        0
+      ],
+      "positive": [
+        "6962:6945",
+        0
+      ],
+      "negative": [
+        "6962:6945",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #6962:6936"
+    }
+  },
+  "6962:6937": {
+    "inputs": {
+      "expression": "((round((a -1) / 8))*8)+1 ",
+      "variables.a": [
+        "6952",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #6962:6937"
+    }
+  },
+  "6962:6938": {
+    "inputs": {
+      "expression": "a/b",
+      "variables.a": [
+        "6962:6937",
+        1
+      ],
+      "variables.b": [
+        "1586",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "Frames 2 seconds #6962:6938"
+    }
+  },
+  "6962:6940": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "6962:6943",
+        0
+      ],
+      "positive": [
+        "6962:6945",
+        0
+      ],
+      "negative": [
+        "6962:6945",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #6962:6940"
+    }
+  },
+  "6962:6941": {
+    "inputs": {
+      "width": [
+        "1631",
+        0
+      ],
+      "height": [
+        "1631",
+        1
+      ],
+      "length": [
+        "6962:6937",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo #6962:6941"
+    }
+  },
+  "6962:6943": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "6961",
+        0
+      ],
+      "vae": [
+        "1569",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override #6962:6943"
+    }
+  },
+  "6962:6945": {
+    "inputs": {
+      "frame_rate": [
+        "1586",
+        0
+      ],
+      "positive": [
+        "6961",
+        1
+      ],
+      "negative": [
+        "6693",
+        0
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning #6962:6945"
+    }
+  },
+  "6962:6896": {
+    "inputs": {
+      "noise": [
+        "6962:6926",
+        0
+      ],
+      "guider": [
+        "6962:6936",
+        0
+      ],
+      "sampler": [
+        "2180",
+        0
+      ],
+      "sigmas": [
+        "2187",
+        0
+      ],
+      "latent_image": [
+        "6962:6892",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 5 - Pass 1"
+    }
+  },
+  "6962:6910": {
+    "inputs": {
+      "noise": [
+        "6962:6905",
+        0
+      ],
+      "guider": [
+        "6962:6940",
+        0
+      ],
+      "sampler": [
+        "2174",
+        0
+      ],
+      "sigmas": [
+        "2176",
+        0
+      ],
+      "latent_image": [
+        "6962:6895",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "Scene 5 - Pass 2"
+    }
+  },
+  "6962:6997": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6962:6997"
+    }
+  },
+  "6962:7001": {
+    "inputs": {
+      "strength": 1,
+      "bypass": false
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6962:7001"
+    }
+  },
+  "6962:7000": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "6962:6894",
+        0
+      ],
+      "latent": [
+        "6962:6941",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6962:7000"
+    }
+  },
+  "6962:7004": {
+    "inputs": {
+      "strength": [
+        "1722",
+        0
+      ],
+      "bypass": [
+        "6963",
+        0
+      ],
+      "vae": [
+        "1559",
+        0
+      ],
+      "image": [
+        "6962:6916",
+        0
+      ],
+      "latent": [
+        "6962:6888",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #6962:7004"
+    }
+  },
+  "6962:7059:7051": {
+    "inputs": {
+      "filename_prefix": [
+        "4735",
+        0
+      ],
+      "format": "mp4",
+      "codec": "h264",
+      "video": [
+        "6962:7059:7055",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save Video #6962:7059:7051"
+    }
+  },
+  "6962:7059:7052": {
+    "inputs": {
+      "video": [
+        "6962:7059:7055",
+        0
+      ]
+    },
+    "class_type": "GetVideoComponents",
+    "_meta": {
+      "title": "Get Video Components #6962:7059:7052"
+    }
+  },
+  "6962:7059:7054": {
+    "inputs": {
+      "image": [
+        "6962:7059:7052",
+        0
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #6962:7059:7054"
+    }
+  },
+  "6962:7059:7055": {
+    "inputs": {
+      "fps": [
+        "1586",
+        0
+      ],
+      "bit_depth": 8,
+      "images": [
+        "6962:6900",
+        0
+      ],
+      "audio": [
+        "6962:6935",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create Video #6962:7059:7055"
+    }
+  },
+  "6962:6906": {
+    "inputs": {
+      "empty_cache": true,
+      "gc_collect": true,
+      "unload_all_models": false,
+      "image_pass": [
+        "6962:7059:7054",
+        0
+      ]
+    },
+    "class_type": "VRAM_Debug",
+    "_meta": {
+      "title": "VRAM Debug #6962:6906"
+    }
+  },
+  "6962:6908": {
+    "inputs": {
+      "image": [
+        "6962:6906",
+        1
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count #6962:6908"
+    }
+  }
+}

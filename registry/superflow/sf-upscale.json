@@ -1,0 +1,76 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Source Image"
+    },
+    "inputs": {
+      "image": "PLACEHOLDER.png"
+    }
+  },
+  "2": {
+    "class_type": "UpscaleModelLoader",
+    "_meta": {
+      "title": "Upscale Model"
+    },
+    "inputs": {
+      "model_name": "4x_foolhardy_Remacri.pth"
+    }
+  },
+  "3": {
+    "class_type": "ImageUpscaleWithModel",
+    "_meta": {
+      "title": "Upscale (4x model)"
+    },
+    "inputs": {
+      "upscale_model": [
+        "2",
+        0
+      ],
+      "image": [
+        "1",
+        0
+      ]
+    }
+  },
+  "4": {
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Scale / 4"
+    },
+    "inputs": {
+      "expression": "a / 4",
+      "values.a": 2.0
+    }
+  },
+  "5": {
+    "class_type": "ImageScaleBy",
+    "_meta": {
+      "title": "Scale To Factor"
+    },
+    "inputs": {
+      "image": [
+        "3",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "scale_by": [
+        "4",
+        0
+      ]
+    }
+  },
+  "6": {
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Image"
+    },
+    "inputs": {
+      "filename_prefix": "superflow/upscale",
+      "images": [
+        "5",
+        0
+      ]
+    }
+  }
+}

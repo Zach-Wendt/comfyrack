@@ -1,0 +1,79 @@
+description: Text-targeted inpaint - SAM3 selects 'target', Qwen-Image-Edit-2511 + Lightning 4-step
+  LoRA repaints it (crop-and-stitch, composited at full size). Wraps registry/qwen/segment-inpaint
+  with one segment phrase and no reference image; the model file uses the Lightning LoRA at 8 steps
+  as in the original.
+workflow: sf-segment-inpaint.json
+mode: [i2i]
+output: image
+output_node_title: Image
+outputs:
+  - {title: Image, kind: image}
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    DifferentialDiffusion: core
+    InpaintCropImproved: comfyui-inpaint-cropandstitch
+    InpaintModelConditioning: core
+    InpaintStitchImproved: comfyui-inpaint-cropandstitch
+    KSampler: core
+    LoadImage: core
+    LoadSAM3Model: ComfyUI-SAM3
+    LoraLoaderModelOnly: core
+    ModelSamplingAuraFlow: core
+    SAM3Grounding: ComfyUI-SAM3
+    SaveImage: core
+    TextEncodeQwenImageEditPlus: core
+    UNETLoader: core
+    VAEDecode: core
+    VAELoader: core
+  custom_node_packs:
+  - name: comfyui-inpaint-cropandstitch
+    git: https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch
+    registry_id: comfyui-inpaint-cropandstitch
+  - name: ComfyUI-SAM3
+    git: https://github.com/PozzettiAndrea/ComfyUI-SAM3
+    registry_id: comfyui-sam3
+  models:
+  - directory: diffusion_models
+    name: qwen_image_edit_2511_bf16.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2511_bf16.safetensors
+  - directory: loras
+    name: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+    url: https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: sam3
+    name: sam3.safetensors
+    url: https://huggingface.co/apozz/sam3-safetensors/resolve/main/sam3.safetensors
+flags:
+  image:
+    node_title: Source Image
+    param: image
+    type: image
+    required: true
+    node: '1'
+  target:
+    node_title: SAM3 Segment
+    param: text_prompt
+    type: str
+    required: true
+    help: Single phrase for what to select, e.g. 'the lamp on the nightstand'.
+    node: '3'
+  instruction:
+    node_title: Positive Prompt
+    param: prompt
+    type: str
+    required: true
+    help: What to paint in the selected area.
+    node: '12'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 42
+    node: '15'

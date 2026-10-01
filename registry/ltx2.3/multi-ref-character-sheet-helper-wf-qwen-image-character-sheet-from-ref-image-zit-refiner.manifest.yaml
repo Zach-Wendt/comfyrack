@@ -1,0 +1,129 @@
+description: 'Two-stage Qwen-Image-Edit-2511 character-sheet helper: stage 1 (TextEncodeQwenImageEditPlus
+  + ''KSampler #12'') generates a full character sheet (face close-up + full-body
+  front/side/back) from a character reference image conditioned on an OpenPose pose-reference
+  image, saved by ''Save Image #19''; stage 2 feeds that result through a Z-Image-Turbo
+  (''zit'') img2img refiner pass (''KSampler #55'', denoise 0.5) for a final detail/quality
+  pass, saved by ''Save Image #47''. ''Save Image #47'' is chosen as output_node_title
+  since it is the final refined deliverable the workflow''s own name highlights; ''Save
+  Image #19'' is left available as the pre-refine intermediate -- both are equally
+  real save nodes, this is a judgment call on which is ''the'' output.'
+workflow: multi-ref-character-sheet-helper-wf-qwen-image-character-sheet-from-ref-image-zit-refiner.json
+mode: [i2i]
+output_node_title: 'Save Image #47'
+flags:
+  character_ref:
+    node_title: Load a character
+    param: image
+    type: image
+    required: true
+    node: '6'
+  pose_ref:
+    node_title: Load Pose Image
+    param: image
+    type: image
+    required: true
+    help: Auto-converted to an OpenPose skeleton internally via the AIO Aux Preprocessor
+      node.
+    node: '2'
+  positive_prompt:
+    node_title: Prompt (Positive)
+    param: prompt
+    type: str
+    required: false
+    default: "Transform person in first image into a character sheet view with all\
+      \ poses from the second image. Follow poses exactly. Arranged left to right:\
+      \ a close-up of the face, then full-body front, side, and backviews, on a white\
+      \ background. The person must look exactly same in every pose. \n\nMaintain\
+      \ identity, ID and facial characteristic of first image. Keep the consistency\
+      \ of face from first image.  High quality highly detailed character sheet. \n\
+      \n"
+    node: '11'
+  negative_prompt:
+    node_title: Prompt (Negative)
+    param: prompt
+    type: str
+    required: false
+    default: 'blurry, low quality, low resolution, bad anatomy, deformed, distorted,
+      extra limbs, missing limbs, extra fingers, fused fingers, text, watermark, logo,
+      artifacts, overexposed, underexposed, grainy
+
+      '
+    node: '13'
+  seed:
+    node_title: 'KSampler #12'
+    param: seed
+    type: int
+    required: false
+    default: 43
+    node: '12'
+  steps:
+    node_title: 'KSampler #12'
+    param: steps
+    type: int
+    required: false
+    default: 20
+    node: '12'
+  cfg:
+    node_title: 'KSampler #12'
+    param: cfg
+    type: float
+    required: false
+    default: 5
+    node: '12'
+  aspect_ratio:
+    node_title: Resolution Selector
+    param: aspect_ratio
+    type: str
+    required: false
+    default: 16:9 (Widescreen)
+    node: '44'
+  refiner_positive_prompt:
+    node_title: CLIP Text Encode (Positive Prompt)
+    param: text
+    type: str
+    required: false
+    default: High quality, highly detailed. Cinematic, High Contrast, highly detailed,
+      taken using a Canon EOS R camera, hyper detailed photo-realistic maximum detail,
+      32k, Color Grading, ultra HD, extreme meticulous detailing, skin pore detailing,
+      hyper sharpness, perfect without deformations.
+    node: '56'
+  refiner_negative_prompt:
+    node_title: CLIP Text Encode (Negative Prompt)
+    param: text
+    type: str
+    required: false
+    default: blurry ugly bad
+    node: '51'
+  refiner_denoise:
+    node_title: 'KSampler #55'
+    param: denoise
+    type: float
+    required: false
+    default: 0.5
+    help: How strongly the Z-Image-Turbo refiner repaints the stage-1 character sheet;
+      0.5 (stock) keeps the stage-1 composition, 1.0 would regenerate from scratch.
+    node: '55'
+  refiner_seed:
+    node_title: 'KSampler #55'
+    param: seed
+    type: int
+    required: false
+    default: 43
+    node: '55'
+  filename_prefix:
+    node_title: 'Save Image #47'
+    param: filename_prefix
+    type: str
+    required: false
+    default: ComfyUI
+    node: '47'
+  intermediate_filename_prefix:
+    node_title: 'Save Image #19'
+    param: filename_prefix
+    type: str
+    required: false
+    default: QwenEditPlusOpenPose\QEPOpenPose
+    help: 'Filename prefix for the pre-refiner intermediate save (node ''Save Image
+      #19'', not the chosen final output_node_title) -- useful to keep if you want
+      to inspect stage 1 vs stage 2 separately.'
+    node: '19'

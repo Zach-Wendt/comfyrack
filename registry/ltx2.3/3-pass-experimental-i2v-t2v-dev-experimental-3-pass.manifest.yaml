@@ -1,0 +1,118 @@
+description: 'LTX-2.3 experimental "dev" 3-pass image-to-video (or text-to-video,
+  via the Text To Video no-image-ref toggle) with synced audio: a base multimodal
+  (video+audio) sampling pass, then two further denoise/upscale passes each through
+  a distilled LoRA''d model, muxed to an MP4 with generated audio. Includes an in-graph
+  LLM prompt-enhancer subgraph (Gemma via TextGenerateLTX2Prompt, gated by the "ENABLE
+  PROMPT ENHANCER" boolean, default on) that rewrites the raw positive_prompt before
+  it reaches the CLIP encoder -- not exposed by this manifest (no bool flag type),
+  so it stays on; edit node 2031 in the JSON directly to disable it.
+
+  '
+workflow: 3-pass-experimental-i2v-t2v-dev-experimental-3-pass.json
+mode: [i2v, t2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  positive_prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    default: "Make this image come alive with natural smooth motions.\nHigh quality\
+      \ cinematic video.  \n\nScene starts with an extreme close up of the face of\
+      \ a beautiful female humanoid robot. \n\nThe camera slowly starts pulling away\
+      \ from the female robot, and she talks with a robotic voice saying : \"So you\
+      \ wanted a 3-way... well here you go. 3 passes, 3 samplers ... \". \n\nAs the\
+      \ camera pulls away further, the scene starts to show the beautiful female robot\
+      \ sitting at a ledge of a high-rise building in a futuristic city. \n\nA stunning\
+      \ cyberpunk cityscape start showing in the background with neon ad signs changing\
+      \ colors, and ambient sound of the city in the background \n"
+    help: Raw user prompt. Feeds the CLIP text encoder directly if the prompt enhancer
+      is off, or is folded into the Gemma-rewritten prompt if it's on (see description)
+      -- either way this is the flag that actually changes the result.
+    node: '352'
+  negative_prompt:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    default: blurry, oversaturated, pixelated, low resolution, grainy, distorted,
+      noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo,
+      signature, copyright, subtitles, distorted sound, saturated sound, loud
+    node: '110'
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: First-frame reference image for i2v conditioning. Ignored if the JSON's
+      'Text To Video (no image ref)' bypass toggle (node 290) is flipped to true --
+      that toggle is not exposed here.
+    node: '167'
+  seed_pass1:
+    node_title: 'RandomNoise #115'
+    param: noise_seed
+    type: int
+    default: 1026387197666903
+    help: Seed for the base-resolution multimodal (video+audio) first pass.
+    node: '115'
+  seed_pass2:
+    node_title: 'RandomNoise #114'
+    param: noise_seed
+    type: int
+    default: 43
+    help: Seed for the first upscale/refine pass (2x spatial upsample of pass 1's
+      video latent, distilled-LoRA model, cfg=1).
+    node: '114'
+  seed_pass3:
+    node_title: 'RandomNoise #449'
+    param: noise_seed
+    type: int
+    default: 44
+    help: Seed for the second/final upscale-refine pass.
+    node: '449'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    default: 1920
+    node: '292'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    default: 1088
+    node: '293'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    default: 10
+    node: '291'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '285'
+  steps:
+    node_title: STEPS
+    param: value
+    type: int
+    default: 35
+    help: Only drives the base-pass (pass 1) BasicScheduler step count -- passes 2
+      and 3 use fixed hand-authored sigma schedules (ManualSigmas) unaffected by this
+      flag.
+    node: '470'
+  video_cfg:
+    node_title: VIDEO CFG
+    param: value
+    type: float
+    default: 3
+    help: Only affects pass 1's multimodal guider -- passes 2/3 use distilled models
+      hard-coded to cfg=1 in the JSON.
+    node: '471'
+  audio_cfg:
+    node_title: AUDIO CFG
+    param: value
+    type: float
+    default: 7
+    help: Only affects pass 1's multimodal guider (audio branch).
+    node: '472'

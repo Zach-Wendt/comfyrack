@@ -1,0 +1,284 @@
+description: 'LTX-2.3 chained 5-scene music video generator, ''prompt relay'' variant
+  -- like multi-scene-save-per-segment (same chained-latent 5-scene pipeline, per-scene
+  SaveVideo + final merge), but scene text conditioning is produced by a custom PromptRelayEncodeTimeline
+  node per scene instead of a plain CLIPTextEncode: each scene''s node holds a `global_prompt`
+  (identical boilerplate across all 5, not flagged), a human-editable `local_prompts`
+  string (flagged as sceneN_prompt), a `max_frames` time budget (flagged as sceneN_max_frames),
+  and a `timeline_data` JSON blob + `segment_lengths` string that encode the same
+  per-scene action text split into timed sub-segments -- these two structural fields
+  are NOT flagged because they must stay hand-synced with local_prompts/max_frames
+  (the manifest system can only patch one scalar field at a time, not keep a JSON
+  blob and its flat-text twin consistent). Negative conditioning is auto-zeroed (ConditioningZeroOut),
+  not a literal negative prompt, so no negative_prompt flag exists. Output is FINAL
+  VIDEO (the merged 5-scene deliverable), same choice as the sibling multi-scene workflows;
+  per-scene ''Save Video''/''Video From This Group'' nodes (save_output=False or intermediate)
+  write the individual segment files but are not the primary deliverable.'
+workflow: music-video-creator-i2v-t2v-music-video-prompt-relay-multi-scene-save-per-segment.json
+mode: [i2v, t2v]
+output_node_title: FINAL VIDEO
+flags:
+  audio_file:
+    node_title: Load Audio
+    param: audio
+    type: str
+    required: false
+    default: ComfyUI_00185_.mp3
+    help: Backing track filename -- must already exist in ComfyUI's input dir.
+    node: '1594'
+  audio_start_seconds:
+    node_title: START AUDIO FROM
+    param: start_index
+    type: int
+    required: false
+    default: 35
+    help: Offset (seconds) into the audio file where playback/sync starts.
+    node: '1598'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    required: false
+    default: 832
+    node: '1606'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    required: false
+    default: 480
+    node: '1591'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    node: '1586'
+  scene1_image:
+    node_title: 'Load Image #444'
+    param: image
+    type: image
+    required: true
+    help: Scene 1 first frame.
+    node: '444'
+  scene1_prompt:
+    node_title: 'Prompt Relay Encode (Timeline) #6692'
+    param: local_prompts
+    type: str
+    required: false
+    default: "She is walking through a dystopian abandoned hall, tracking camera as\
+      \ she walks towards the viewer. The camera pulls away slowly keeping same distance\
+      \ to the woman. \n\nShe sings with expressive face emotion and body gesticulation\
+      \ as she sings the words of the song. She sings with perfect lip-sync to the\
+      \ attached audio. \n\nRock music video. The woman has attitude and expressive\
+      \ body language. Cinematic, volumetric lights, shadow play. \n\n | Scene cut\
+      \ / scene change.\n\nShe is standing on top of a stone block inside the hallway.\
+      \ Camera rapidly pulls in towards the woman, dolly zoom. \n\nShe sings with\
+      \ expressive face emotion and body gesticulation as she sings the words of the\
+      \ song. She sings with perfect lip-sync to the attached audio. \n\nRock music\
+      \ video. The woman has attitude and expressive body language. Cinematic, volumetric\
+      \ lights, shadow play. "
+    help: 'Scene 1 human-readable action prompt (this node''s own free-text field).
+      NOTE: this Prompt-Relay node ALSO carries a `timeline_data` JSON blob with the
+      same prompt text plus segment-boundary metadata (segment_lengths) -- changing
+      this flag does NOT update timeline_data in sync, so a mismatched pair may confuse
+      the relay''s timing. For full control edit the workflow JSON directly.'
+    node: '6692'
+  scene1_max_frames:
+    node_title: 'Prompt Relay Encode (Timeline) #6692'
+    param: max_frames
+    type: int
+    required: false
+    default: 433
+    help: Scene 1 total frame/time budget (see this node's time_units field for frames
+      vs seconds).
+    node: '6692'
+  scene1_seed:
+    node_title: Start Seed
+    param: value
+    type: int
+    required: false
+    default: 1012
+    node: '1527'
+  scene2_image:
+    node_title: 'Load Image #4750'
+    param: image
+    type: image
+    required: true
+    help: Scene 2 first frame.
+    node: '4750'
+  scene2_prompt:
+    node_title: 'Prompt Relay Encode (Timeline) #6701'
+    param: local_prompts
+    type: str
+    required: false
+    default: "She is walking through a dystopian abandoned train wagon, tracking camera\
+      \ as she walks towards the viewer. The camera pulls away slowly keeping same\
+      \ distance to the woman. \n\nShe sings with expressive face emotion and body\
+      \ gesticulation as she sings the words of the song. She sings with perfect lip-sync\
+      \ to the attached audio. \n\nRock music video. The woman has attitude and expressive\
+      \ body language. Cinematic, volumetric lights, shadow play.  | She walks over\
+      \ to the train wagon wall, and leans up against the wall. And sings with expressive\
+      \ face.\nShe pulls her hands through her hair as she sings with emotions.\n\n\
+      She sings with expressive face emotion and body gesticulation as she sings the\
+      \ words of the song. She sings with perfect lip-sync to the attached audio.\
+      \ \n\nRock music video. The woman has attitude and expressive body language.\
+      \ Cinematic, volumetric lights, shadow play. "
+    help: 'Scene 2 human-readable action prompt (this node''s own free-text field).
+      NOTE: this Prompt-Relay node ALSO carries a `timeline_data` JSON blob with the
+      same prompt text plus segment-boundary metadata (segment_lengths) -- changing
+      this flag does NOT update timeline_data in sync, so a mismatched pair may confuse
+      the relay''s timing. For full control edit the workflow JSON directly.'
+    node: '6701'
+  scene2_max_frames:
+    node_title: 'Prompt Relay Encode (Timeline) #6701'
+    param: max_frames
+    type: int
+    required: false
+    default: 289
+    help: Scene 2 total frame/time budget (see this node's time_units field for frames
+      vs seconds).
+    node: '6701'
+  scene2_seed:
+    node_title: 'SEED #2284'
+    param: value
+    type: int
+    required: false
+    default: 1023
+    node: '2284'
+  scene3_image:
+    node_title: 'Load Image #6791'
+    param: image
+    type: image
+    required: true
+    help: Scene 3 first frame.
+    node: '6791'
+  scene3_prompt:
+    node_title: 'Prompt Relay Encode (Timeline) #6797'
+    param: local_prompts
+    type: str
+    required: false
+    default: "She is walking through a dystopian abandoned theater,  tracking camera\
+      \ as she walks towards the viewer. The camera pulls away slowly keeping same\
+      \ distance to the woman. \n\nShe sings with expressive face emotion and body\
+      \ gesticulation as she sings the words of the song. She sings with perfect lip-sync\
+      \ to the attached audio. \n\nRock music video. The woman has attitude and expressive\
+      \ body language. Cinematic, volumetric lights, shadow play.  | She sits down\
+      \ at one of the chairs and sings with expressive face. She points towards the\
+      \ viewer as she sings.\n\nShe sings with expressive face emotion and body gesticulation\
+      \ as she sings the words of the song. She sings with perfect lip-sync to the\
+      \ attached audio. \n\nRock music video. The woman has attitude and expressive\
+      \ body language. Cinematic, volumetric lights, shadow play. "
+    help: 'Scene 3 human-readable action prompt (this node''s own free-text field).
+      NOTE: this Prompt-Relay node ALSO carries a `timeline_data` JSON blob with the
+      same prompt text plus segment-boundary metadata (segment_lengths) -- changing
+      this flag does NOT update timeline_data in sync, so a mismatched pair may confuse
+      the relay''s timing. For full control edit the workflow JSON directly.'
+    node: '6797'
+  scene3_max_frames:
+    node_title: 'Prompt Relay Encode (Timeline) #6797'
+    param: max_frames
+    type: int
+    required: false
+    default: 457
+    help: Scene 3 total frame/time budget (see this node's time_units field for frames
+      vs seconds).
+    node: '6797'
+  scene3_seed:
+    node_title: 'SEED #6794'
+    param: value
+    type: int
+    required: false
+    default: 1030
+    node: '6794'
+  scene4_image:
+    node_title: 'Load Image #6873'
+    param: image
+    type: image
+    required: true
+    help: Scene 4 first frame.
+    node: '6873'
+  scene4_prompt:
+    node_title: 'Prompt Relay Encode (Timeline) #6879'
+    param: local_prompts
+    type: str
+    required: false
+    default: "She is walking through a dystopian abandoned american diner, tracking\
+      \ camera as she walks towards the viewer. The camera pulls away slowly keeping\
+      \ same distance to the woman. \n\nShe sings with expressive face emotion and\
+      \ body gesticulation as she sings the words of the song. She sings with perfect\
+      \ lip-sync to the attached audio. \n\nRock music video. The woman has attitude\
+      \ and expressive body language. Cinematic, volumetric lights, shadow play. \
+      \ | Camera starts orbiting around her as sings. \n\nShe sings with expressive\
+      \ face emotion and body gesticulation as she sings the words of the song. She\
+      \ sings with perfect lip-sync to the attached audio. \n\nRock music video. The\
+      \ woman has attitude and expressive body language. Cinematic, volumetric lights,\
+      \ shadow play. "
+    help: 'Scene 4 human-readable action prompt (this node''s own free-text field).
+      NOTE: this Prompt-Relay node ALSO carries a `timeline_data` JSON blob with the
+      same prompt text plus segment-boundary metadata (segment_lengths) -- changing
+      this flag does NOT update timeline_data in sync, so a mismatched pair may confuse
+      the relay''s timing. For full control edit the workflow JSON directly.'
+    node: '6879'
+  scene4_max_frames:
+    node_title: 'Prompt Relay Encode (Timeline) #6879'
+    param: max_frames
+    type: int
+    required: false
+    default: 217
+    help: Scene 4 total frame/time budget (see this node's time_units field for frames
+      vs seconds).
+    node: '6879'
+  scene4_seed:
+    node_title: 'SEED #6876'
+    param: value
+    type: int
+    required: false
+    default: 1040
+    node: '6876'
+  scene5_image:
+    node_title: 'Load Image #6955'
+    param: image
+    type: image
+    required: true
+    help: Scene 5 first frame.
+    node: '6955'
+  scene5_prompt:
+    node_title: 'Prompt Relay Encode (Timeline) #6961'
+    param: local_prompts
+    type: str
+    required: false
+    default: "She is walking through a dystopian abandoned street at night, tracking\
+      \ camera as she walks towards the viewer. The camera pulls away slowly keeping\
+      \ same distance to the woman. \n\nShe sings with expressive face emotion and\
+      \ body gesticulation as she sings the words of the song. She sings with perfect\
+      \ lip-sync to the attached audio. \n\nRock music video. The woman has attitude\
+      \ and expressive body language. Cinematic, volumetric lights, shadow play. \
+      \ | She stops in the street and stands with a demonstrative pose. The camera\
+      \ pulls in slowly towards her face as she sings. \n\nShe sings with expressive\
+      \ face emotion and body gesticulation as she sings the words of the song. She\
+      \ sings with perfect lip-sync to the attached audio. \n\nRock music video. The\
+      \ woman has attitude and expressive body language. Cinematic, volumetric lights,\
+      \ shadow play. "
+    help: 'Scene 5 human-readable action prompt (this node''s own free-text field).
+      NOTE: this Prompt-Relay node ALSO carries a `timeline_data` JSON blob with the
+      same prompt text plus segment-boundary metadata (segment_lengths) -- changing
+      this flag does NOT update timeline_data in sync, so a mismatched pair may confuse
+      the relay''s timing. For full control edit the workflow JSON directly.'
+    node: '6961'
+  scene5_max_frames:
+    node_title: 'Prompt Relay Encode (Timeline) #6961'
+    param: max_frames
+    type: int
+    required: false
+    default: 481
+    help: Scene 5 total frame/time budget (see this node's time_units field for frames
+      vs seconds).
+    node: '6961'
+  scene5_seed:
+    node_title: 'SEED #6958'
+    param: value
+    type: int
+    required: false
+    default: 1050
+    node: '6958'

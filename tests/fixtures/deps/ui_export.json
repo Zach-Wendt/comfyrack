@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {"id": 1, "type": "KSampler", "properties": {}},
+    {"id": 2, "type": "SomeCnrNode", "properties": {"cnr_id": "comfy-core"}},
+    {"id": 3, "type": "SomeAuxNode", "properties": {"aux_id": "owner/repo"}}
+  ],
+  "definitions": {
+    "subgraphs": [
+      {
+        "nodes": [
+          {
+            "id": 4,
+            "type": "SubLoader",
+            "properties": {
+              "models": [
+                {
+                  "name": "sub/model.safetensors",
+                  "url": "https://example.com/model.safetensors",
+                  "directory": "loras"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

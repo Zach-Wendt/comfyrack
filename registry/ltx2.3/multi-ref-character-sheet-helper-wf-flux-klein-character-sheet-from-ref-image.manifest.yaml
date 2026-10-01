@@ -1,0 +1,83 @@
+description: 'Flux-2 Klein character-sheet helper: given a character identity reference
+  image and a pose/layout reference image, generates a single character-sheet image
+  (close-up face, then full-body front/side/back views arranged left to right) that
+  preserves the character''s face/hair/clothing while matching the second image''s
+  poses, on a white background. Standalone image-generation workflow used to prep
+  reference images for the main LTX i2v/t2v multi-subject-reference and face-ID character-sheet
+  workflows -- not itself an LTX video workflow.'
+workflow: multi-ref-character-sheet-helper-wf-flux-klein-character-sheet-from-ref-image.json
+mode: [i2i]
+output_node_title: Save Image
+flags:
+  character_ref:
+    node_title: CHARACTER
+    param: image
+    type: image
+    required: true
+    help: Identity reference image -- the character whose face/hair/clothing must
+      be preserved.
+    node: '3'
+  pose_ref:
+    node_title: POSE IMAGE
+    param: image
+    type: image
+    required: true
+    help: Pose/layout reference image -- defines the poses and panel arrangement the
+      output character sheet must match (auto-converted to an OpenPose skeleton internally
+      via the AIO Aux Preprocessor node).
+    node: '115'
+  positive_prompt:
+    node_title: CLIP Text Encode (Positive Prompt)
+    param: text
+    type: str
+    required: false
+    default: "Using the character from Image 1, generate a full-body image matching\
+      \ the exact pose and composition shown in Image 2. Make the character perform\
+      \ the action from Image 2 while preserving the exact facial features, hair,\
+      \ and clothing of the subject in Image 1. Keep everything else unchanged, maintaining\
+      \ high-fidelity character consistency. Follow poses exactly. Arranged left to\
+      \ right: a close-up of the face, then full-body front, side, and backviews,\
+      \ on a white background. The person must look exactly same in every pose. \n"
+    node: '114'
+  negative_prompt:
+    node_title: CLIP Text Encode ( Negative Prompt)
+    param: text
+    type: str
+    required: false
+    default: ''
+    node: '113'
+  seed:
+    node_title: RandomNoise
+    param: noise_seed
+    type: int
+    required: false
+    default: 43
+    node: '97'
+  steps:
+    node_title: Flux2Scheduler
+    param: steps
+    type: int
+    required: false
+    default: 6
+    node: '102'
+  aspect_ratio:
+    node_title: Resolution Selector
+    param: aspect_ratio
+    type: str
+    required: false
+    default: 16:9 (Widescreen)
+    node: '119'
+  megapixels:
+    node_title: Resolution Selector
+    param: megapixels
+    type: float
+    required: false
+    default: 1.5
+    node: '119'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    required: false
+    default: comfyui-relight-product
+    node: '2'

@@ -1,0 +1,114 @@
+description: Generates a smooth AI transition/morph between two separate shot videos
+  using masked (inpaint-style) latent guidance rather than a named IC-LoRA, and concatenates
+  shot A + generated transition + shot B into one final video with crossfaded audio;
+  the graph also emits the transition-only clip as a separate debug/preview save node.
+  No specific named LoRA drives this variant (the Power Lora Loader present in the
+  graph is empty).
+workflow: video-2-video-shot-to-shot-transition-v2v-shot-to-shot-transition-re-take-inpaint.json
+mode: [v2v]
+output_node_title: FINAL
+flags:
+  shot_a_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162\
+      \ #5999"
+    param: video
+    type: str
+    required: false
+    default: Scene A - Batman.mp4
+    help: First shot (transition starts from its ending). Must already exist in ComfyUI's
+      input directory -- no upload path exists for video in this CLI yet.
+    node: '5999'
+  shot_b_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162\
+      \ #6000"
+    param: video
+    type: str
+    required: false
+    default: Scene B - Batman.mp4
+    help: Second shot (transition ends into its beginning). Must already exist in
+      ComfyUI's input directory -- no upload path exists for video in this CLI yet.
+    node: '6000'
+  prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    required: false
+    default: "zhuanchang, Animatediff Style, Cinematic video shot. The scene morph\
+      \ transforms from animated cartoon version of Batman to a scene from  live-action\
+      \ Batman movie. Morphing transformation. \nOne long continuous camera shot.\
+      \ Cinematic \n\nLow-volume transition sound in the background, low volume swosh\
+      \ sound fx without any music. "
+    help: Positive prompt describing the desired transition/morph (may be auto-enhanced
+      via LLM before use, see prompt_enhancer).
+    node: '6037'
+  negative_prompt:
+    node_title: CLIP Text Encode (Prompt)
+    param: text
+    type: str
+    required: false
+    default: narrator, dialog, monolog, spoken words, text, subtitles, logo, low quality,
+      distorted, bad anatomy, oversaturated, pixelated, low resolution, grainy, compression
+      artifacts, jpeg artifacts, glitches, watermark, signature, copyright,  distortedsound,
+      saturated sound, loud sound , deformed facial features, asymmetrical face, missing
+      facial features, extra limbs, disfigured hands, blurry teeth, disfigured teeth
+    help: Negative prompt for the video/visual branch.
+    node: '6031'
+  negative_audio_prompt:
+    node_title: Negative Audio Prompt
+    param: text
+    type: str
+    required: false
+    default: ' distorted sound, saturated sound, loud sound'
+    help: Negative prompt for the generated audio branch.
+    node: '5885'
+  transition_seconds:
+    node_title: TRANSITION (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 2
+    help: Duration (seconds) of the generated transition segment between the two shots.
+    node: '6036'
+  ref_frames:
+    node_title: 'REF FRAMES #6032'
+    param: value
+    type: int
+    required: false
+    default: 97
+    help: Number of reference/overlap frames taken from the end of shot A and start
+      of shot B to guide the transition and mask region.
+    node: '6032'
+  seed:
+    node_title: RandomNoise
+    param: noise_seed
+    type: int
+    required: false
+    default: 47
+    help: Seed for the transition sampling pass.
+    node: '5998'
+  fps:
+    node_title: 'FPS #5985'
+    param: value
+    type: float
+    required: false
+    default: 24
+    help: Frame rate used for loading the shots and for the final video combine.
+    node: '5985'
+  max_pixel_size:
+    node_title: MAX PIXEL SIZE (longest)
+    param: value
+    type: int
+    required: false
+    default: 960
+    help: Longest-edge pixel size the shots are resized to before generation.
+    node: '5986'
+  prompt_enhancer:
+    node_title: PROMPT ENHANCER
+    param: value
+    type: str
+    required: false
+    default: 'False'
+    help: If true, the prompt is rewritten/expanded by an LLM (Gemma via TextGenerateLTX2Prompt,
+      using the shots' frames as visual context) before use; if false, the raw prompt
+      text is used as-is.
+    node: '6021'

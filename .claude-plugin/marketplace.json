@@ -1,0 +1,11 @@
+{
+  "name": "comfyrack",
+  "owner": { "name": "Zach Wendt" },
+  "plugins": [
+    {
+      "name": "comfyrack",
+      "source": "./",
+      "description": "A catalog and command-line tool for ComfyUI workflows. Find, check and run a workflow by name, and read the result as JSON."
+    }
+  ]
+}

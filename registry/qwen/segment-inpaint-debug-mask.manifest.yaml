@@ -1,0 +1,34 @@
+description: "Diagnostic: dumps the raw SAM3 mask for one text phrase without running the crop, edit, and stitch pipeline. Covers the single-phrase shape only."
+workflow: segment-inpaint-debug-mask.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    LoadImage: core
+    LoadSAM3Model: ComfyUI-SAM3
+    MaskToImage: core
+    SAM3Grounding: ComfyUI-SAM3
+    SaveImage: core
+  custom_node_packs:
+  - name: ComfyUI-SAM3
+    git: https://github.com/PozzettiAndrea/ComfyUI-SAM3
+    registry_id: comfyui-sam3
+flags:
+  image:
+    node_title: Source Image
+    param: image
+    type: image
+    required: true
+    node: '1'
+  segment_prompt:
+    node_title: SAM3 Segment
+    param: text_prompt
+    type: str
+    required: true
+    node: '3'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: debug_mask/wfcli_run
+    node: '5'

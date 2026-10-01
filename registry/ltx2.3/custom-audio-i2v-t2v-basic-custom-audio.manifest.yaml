@@ -1,0 +1,92 @@
+description: 'LTX-2.3 basic image-to-video (or text-to-video via the Text To Video
+  no-image-ref toggle) driven by a caller-supplied audio track instead of LTX-generated
+  audio: the custom audio is trimmed to length and (optionally, vocals-only via the
+  "USE ONLY VOCALS" Mel-Band RoFormer switch, default off, not exposed here) fed back
+  in as conditioning latent so the video''s motion/lipsync follows it, via a "Custom
+  Audio = true | LTX Audio = false" switch (default true, not exposed here -- no bool
+  flag type). The final muxed output audio track is always the trimmed custom audio
+  itself (node 373), never the vocals-only version, regardless of that switch. This
+  variant''s prompt is unconditionally rewritten by the in-graph Gemma prompt enhancer
+  -- unlike its sibling manifests there''s no bypass toggle here.
+
+  '
+workflow: custom-audio-i2v-t2v-basic-custom-audio.json
+mode: [i2v, t2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  positive_prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    default: "Make this image come alive with fluid motion. \n\nA man with an intimidating\
+      \ expression speaks with expressive body language and gesticulations. \n\nHe\
+      \ looks at the vewer and talks, he says  : \"If you say a bad word about LTX\
+      \ 2 point 3, i will find you.... and i will kill you\" "
+    help: Raw user prompt. Always rewritten by the in-graph Gemma prompt enhancer
+      before reaching CLIP -- this flag changes the enhancer's input, not the final
+      CLIP text directly.
+    node: '352'
+  negative_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #110'
+    param: text
+    type: str
+    default: blurry, oversaturated, pixelated, low resolution, grainy, distorted,
+      noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo,
+      signature, copyright, subtitles, distorted sound, saturated sound, loud
+    node: '110'
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: First-frame reference image for i2v conditioning. Ignored if the JSON's
+      'Text To Video (no image ref)' bypass toggle (node 290) is flipped to true --
+      that toggle is not exposed here.
+    node: '167'
+  custom_audio_file:
+    node_title: Load Audio
+    param: audio
+    type: str
+    default: ComfyUI_00128_.mp3
+    help: Must already exist in ComfyUI's input directory -- no upload path exists
+      for audio yet in this CLI. This becomes both the video's audio-driven conditioning
+      input AND the final output audio track.
+    node: '372'
+  seed_pass1:
+    node_title: 'RandomNoise #115'
+    param: noise_seed
+    type: int
+    default: 43
+    help: Seed for the base pass.
+    node: '115'
+  seed_pass2:
+    node_title: 'RandomNoise #114'
+    param: noise_seed
+    type: int
+    default: 420
+    help: Seed for the upscale/refine pass.
+    node: '114'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    default: 1280
+    node: '292'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    default: 736
+    node: '293'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    default: 10
+    node: '291'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '285'

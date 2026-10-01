@@ -1,0 +1,135 @@
+description: 'LTX-2.3 i2v/t2v "Movie Maker" single-image, 4-segment noir-detective
+  short story (a Blade-Runner-style scene with in-scene spoken dialogue) driven by
+  "Prompt Relay Encode (Timeline)" (global_prompt + timeline_data JSON of {prompt,length,color}
+  segments -- local_ prompts/segment_lengths on the same node are literal duplicates
+  of timeline_data''s own segments, kept in sync in the shipped JSON but not flagged
+  separately here, same convention as this workflow''s sibling manifests). Distinguishing
+  "dev model" technique: uses the un-distilled "ltx-2.3-22b-dev" UNET checkpoint (+
+  the standard distilled-dynamic acceleration LoRA re-applied on top at fixed strength
+  0.6, plus "Patch Sage Attention KJ") together with a MultimodalGuider ("Multimodal
+  Guider" node, fixed on via a hardcoded-true ComfySwitchNode) that drives the BASE
+  sampling pass with SEPARATE per-modality CFG values for video vs. the model''s own
+  generated speech/audio (no reference audio is loaded anywhere in this workflow --
+  dialogue audio is generated purely from the timeline segments'' quoted spoken lines)
+  -- these two cfg values are this workflow''s defining tunable knobs and are flagged
+  below. The "CLIP Text Encode (Prompt)" node is a dead end (PromptRelayEncodeTimeline
+  has no negative-text input of its own -- its negative conditioning is auto-generated
+  then zeroed via ConditioningZeroOut) -- traced and confirmed unreferenced, so no
+  negative_prompt flag exists for this workflow. Base pass (noise 774, MultimodalGuider)
+  -> LTXVLatentUpsampler spatial-upscale second pass (noise 773, plain CFGGuider)
+  -> single VHS_VideoCombine save (only one save node exists, so output selection
+  is unambiguous).
+
+  '
+workflow: movie-maker-prompt-relay-dev-model-i2v-t2v-short-story-promptrelay-timeline-multi-sequence-dev-model.json
+mode: [i2v, t2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  image1:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    node: '584'
+  global_prompt:
+    node_title: Prompt Relay Encode (Timeline)
+    param: global_prompt
+    type: str
+    required: false
+    default: 'Cinematic video. Continuous long shot. neo noir. A modern detective
+      movie in style of Blade Runner. Realism, photo relastic, shot with high quality
+      film camera. '
+    node: '819'
+  timeline_data:
+    node_title: Prompt Relay Encode (Timeline)
+    param: timeline_data
+    type: str
+    required: false
+    default: '{"segments":[{"prompt":"A sultry woman walks down a London So-Ho alley
+      at night. cloudy ominous weather. Its raining.  The moon casts shadows at the
+      street. Its raining. \n\nThe woman talks with soft British voice : \"I wonder
+      where this road leads, hopefully to my destination\". ","length":204,"color":"#4f8edc"},{"prompt":"She
+      walks up one of the buildings in the stret. A front door there is a do not enter
+      sign. \n\nShe says \"This must be the place.\" She opens the front door, and
+      walks inside.  The building has dim lights inside.  Tracking camera as the woman
+      keeps walking deeper inside the building. \n\nScene cut to next scene. ","length":191,"color":"#e07b3a"},{"prompt":"The
+      scene is inside a detective office. \nThe detective is sitting behind his desk,
+      smoking a sigarette.\nAt the desk there is a glass of whiskey.  \n\nHe talks
+      with a deep British voice : \"of all the towns, she had to walk into mine\".\n\nCamera
+      pans around to show the woman. \n\n","length":225,"color":"#5cb85c"},{"prompt":"The
+      woman talks to the detective. And the woman says: \"so tell me about this prompt
+      relay thing.\" \n\nThe detective takes a deep breath. And he says: \"I''ll let
+      you in on a secret...\" \n\nThe woman points the finger towards the camera,
+      and she talks to the camera and she says: \"lets get rid of these people watching.\"
+      ","length":341,"color":"#d9534f"}]}'
+    node: '819'
+  base_pass_video_cfg:
+    node_title: Video -  Guider Parameters
+    param: cfg
+    type: float
+    required: false
+    default: 3
+    help: CFG for the VIDEO modality of the base pass's MultimodalGuider -- this workflow's
+      defining 'dev model' technique.
+    node: 845:842
+  base_pass_audio_cfg:
+    node_title: Audio - Guider Parameters
+    param: cfg
+    type: float
+    required: false
+    default: 7
+    help: CFG for the model-generated AUDIO/speech modality of the base pass's MultimodalGuider.
+    node: 845:843
+  image_strength_base_pass:
+    node_title: 'LTXVImgToVideoInplace #810'
+    param: strength
+    type: float
+    required: false
+    default: 0.7
+    help: Image-conditioning strength on the base (first) sampling pass.
+    node: '810'
+  image_strength_upsample_pass:
+    node_title: 'LTXVImgToVideoInplace #767'
+    param: strength
+    type: float
+    required: false
+    default: 0.7
+    help: Image-conditioning strength on the spatial-upsampler (second) sampling pass.
+    node: '767'
+  seed_base_pass:
+    node_title: 'RandomNoise #774'
+    param: noise_seed
+    type: int
+    required: false
+    default: 2342342
+    help: Seed for the base (first) sampling pass (the one driven by the MultimodalGuider).
+    node: '774'
+  seed_upsample_pass:
+    node_title: 'RandomNoise #773'
+    param: noise_seed
+    type: int
+    required: false
+    default: 43
+    help: Seed for the spatial-upsampler (second) sampling pass.
+    node: '773'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    required: false
+    default: 1027
+    node: '699'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    required: false
+    default: 576
+    node: '701'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    node: '697'

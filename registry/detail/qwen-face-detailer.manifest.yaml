@@ -1,0 +1,173 @@
+description: 'Localized face and eye fix, not a full-image regeneration: detects the face bounding box with a YOLO face detector, crops, re-samples the crop with Qwen-Image-Edit-2511 at adjustable denoise, and pastes it back; pixels outside the detected face bbox stay unchanged. Uses the qwen-image-edit-2511 GGUF backbone, a Lightning LoRA, and the face_yolov8m.pt detector -- only face detection is wired, so other regions need a different detector model.'
+workflow: qwen-face-detailer.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    LoadImage: core
+    LoraLoaderModelOnly: core
+    ModelSamplingAuraFlow: core
+    SaveImage: core
+    UltralyticsDetectorProvider: ComfyUI-Impact-Subpack
+    UnetLoaderGGUF: ComfyUI-GGUF
+    VAELoader: core
+    VNCCS_QWEN_Detailer: ComfyUI_VNCCS
+  custom_node_packs:
+  - name: ComfyUI-Impact-Subpack
+    git: https://github.com/ltdrdata/ComfyUI-Impact-Subpack
+    registry_id: comfyui-impact-subpack
+  - name: ComfyUI-GGUF
+    git: https://github.com/city96/ComfyUI-GGUF
+    registry_id: ComfyUI-GGUF
+  - name: ComfyUI_VNCCS
+    git: https://github.com/AHEKOT/ComfyUI_VNCCS
+    registry_id: vnccs
+  models:
+  - directory: upscale_models
+    name: bbox/face_yolov8m.pt
+    url: https://huggingface.co/Bingsu/adetailer/resolve/main/face_yolov8m.pt
+  - directory: diffusion_models
+    name: qwen-image-edit-2511-Q5_1.gguf
+    url: https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF/resolve/main/qwen-image-edit-2511-Q5_1.gguf
+  - directory: loras
+    name: Qwen-Image-Edit-2511-Lightning-8steps-V1.0-bf16.safetensors
+    url: https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-8steps-V1.0-bf16.safetensors
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+flags:
+  image:
+    node_title: Face Image
+    param: image
+    type: image
+    required: true
+    help: The full source image to detect a face in and detail. Not pre-cropped --
+      the node finds the face bbox itself.
+    node: '1'
+  bbox_model:
+    node_title: Face Detector
+    param: model_name
+    type: str
+    default: bbox/face_yolov8m.pt
+    help: Impact-Subpack YOLO bbox model. Only face_yolov8m.pt tested; face_yolov9c.pt
+      and hand_yolov8s.pt are unproven for this workflow.
+    node: '2'
+  prompt:
+    node_title: Face Detailer
+    param: prompt
+    type: str
+    required: true
+    help: Describes the desired face-crop content/fix (e.g. 'clear symmetrical eyes,
+      sharp detailed iris and pupil'). This is the detailer's own re-sample instruction,
+      separate from the optional `instruction` field (left at the node's default VL-caption
+      instruction, not exposed as a flag here).
+    node: '9'
+  denoise:
+    node_title: Face Detailer
+    param: denoise
+    type: float
+    default: 0.3
+    help: THE key control. Background outside the detected bbox stays byte-identical
+      at any value (real paste-back, not a blend). 0.15/0.3/0.5 all held identity
+      in the one test done so far, with higher denoise cleaning a real linework defect
+      more thoroughly -- 0.3 is the safe default, 0.5 untested beyond one face/seed.
+      See this manifest's description for the sweep evidence.
+    node: '9'
+  threshold:
+    node_title: Face Detailer
+    param: threshold
+    type: float
+    default: 0.5
+    help: YOLO bbox detection confidence threshold.
+    node: '9'
+  dilation:
+    node_title: Face Detailer
+    param: dilation
+    type: int
+    default: 0
+    node: '9'
+  drop_size:
+    node_title: Face Detailer
+    param: drop_size
+    type: int
+    default: 10
+    node: '9'
+  feather:
+    node_title: Face Detailer
+    param: feather
+    type: int
+    default: 0
+    help: Blend-edge softness at the crop/paste-back seam.
+    node: '9'
+  steps:
+    node_title: Face Detailer
+    param: steps
+    type: int
+    default: 4
+    node: '9'
+  cfg:
+    node_title: Face Detailer
+    param: cfg
+    type: float
+    default: 1.0
+    node: '9'
+  seed:
+    node_title: Face Detailer
+    param: seed
+    type: int
+    required: true
+    node: '9'
+  sampler_name:
+    node_title: Face Detailer
+    param: sampler_name
+    type: str
+    default: euler
+    node: '9'
+  scheduler:
+    node_title: Face Detailer
+    param: scheduler
+    type: str
+    default: simple
+    node: '9'
+  target_size:
+    node_title: Face Detailer
+    param: target_size
+    type: int
+    default: 1024
+    help: Resolution the detected face crop is upscaled to before re-sampling.
+    node: '9'
+  gguf_name:
+    node_title: GGUF Loader
+    param: unet_name
+    type: str
+    default: qwen-image-edit-2511-Q5_1.gguf
+    node: '3'
+  clip_name:
+    node_title: Load CLIP
+    param: clip_name
+    type: str
+    default: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    node: '7'
+  vae_name:
+    node_title: Load VAE
+    param: vae_name
+    type: str
+    default: qwen_image_vae.safetensors
+    node: '8'
+  lora_name:
+    node_title: Load LoRA
+    param: lora_name
+    type: str
+    default: Qwen-Image-Edit-2511-Lightning-8steps-V1.0-bf16.safetensors
+    node: '4'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: qwen_face_detailer/wfcli_run
+    node: '10'

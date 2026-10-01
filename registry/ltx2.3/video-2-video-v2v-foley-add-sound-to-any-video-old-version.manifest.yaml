@@ -1,0 +1,57 @@
+description: 'Video-to-audio foley generation (LTX-2.3, legacy pre-IC-LoRA version
+  -- uses only the base model''s native V2A capability, no dedicated foley LoRA).
+  AMBIGUOUS OUTPUT: the graph has THREE dead-end VHS_VideoCombine save nodes left
+  over from a shared recreate/extend template -- ''LTX RECREATED VIDEO + AUDIO'' (#578,
+  a full video regeneration, unused by this workflow''s stated purpose), ''ORG. VIDEO
+  + EXTENDED FRAMES'' (#725, a frame-extension branch, likewise unused), and ''ORIGINAL
+  VIDEO + LTX SOUND'' (#712, the original loaded video frames muxed with the newly
+  generated audio) -- picked #712 as it is the one matching ''add sound to any video''
+  (original visuals preserved, only audio is new); the video-content prompt (positive/negative
+  CLIPTextEncode feeding the recreate branch) and its seed (#115) are NOT exposed
+  here since they don''t affect the picked output.'
+workflow: video-2-video-v2v-foley-add-sound-to-any-video-old-version.json
+mode: [v2v]
+output_node_title: ORIGINAL VIDEO + LTX SOUND
+flags:
+  sound_prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    default: 'Sound of summer outdoors, sound of scate board rolling down a rugged
+      path, and the frog on top pf the scate bord making frog sounds. '
+    help: Description of the sound/foley to generate for this video.
+    node: '487'
+  negative_audio_prompt:
+    node_title: Negative Audio Prompt
+    param: text
+    type: str
+    default: ' distorted sound, saturated sound, loud sound'
+    node: '626'
+  seed:
+    node_title: 'RandomNoise #243'
+    param: noise_seed
+    type: int
+    default: 224929713884723
+    help: 'Seed for the sampling pass that actually feeds the picked output''s generated
+      audio (LTXVAudioVAEDecode <- pass #258).'
+    node: '243'
+  source_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: video
+    type: str
+    default: 450x_auto__ (10).mp4
+    help: Filename of source video; must already exist in ComfyUI's input directory
+      (no upload path for video yet in this CLI).
+    node: '711'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '214'
+  max_pixel_size:
+    node_title: MAX PIXEL SIZE (longest)
+    param: value
+    type: int
+    default: 960
+    node: '497'

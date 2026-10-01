@@ -1,0 +1,163 @@
+description: 'LTX-2.3 t2v/r2v workflow driving BOTH visual identity (a face/character-sheet
+  reference image + Best-Face-ID LoRA) and voice identity (a reference audio clip,
+  vocal-isolated via Mel-Band RoFormer, fed through an LTXVReferenceAudio ID-LoRA
+  node + a TalkVid/CelebHQ ID-LoRA) so the generated character both looks AND sounds
+  like the references. Prompt uses a structured [VISUAL]/[SPEECH]/[SOUNDS]/ref_t2v
+  format. 2-pass: base pass uses a real scalar step count (unlike the other face-ref
+  workflows in this family, which pin the base pass to a fixed manual sigma schedule),
+  refine/upscale pass uses a fixed 4-value schedule.'
+workflow: multi-ref-character-sheet-t2v-r2v-face-ref-audio-ref-best-face-id-lora-id-lora-audio.json
+mode: [r2v, t2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  character_ref:
+    node_title: CHARACTER SHEET
+    param: image
+    type: image
+    required: true
+    help: Face/character-sheet reference image driving visual identity.
+    node: '104'
+  reference_audio:
+    node_title: Load Audio
+    param: audio
+    type: str
+    required: false
+    default: godfather..mp3
+    help: Voice reference audio clip -- must already exist in ComfyUI's input directory.
+      Vocals are isolated from it via Mel-Band RoFormer before being used as the voice-identity
+      reference for the ID-LoRAs.
+    node: '2351'
+  positive_prompt:
+    node_title: Positive Prompt
+    param: value
+    type: str
+    required: false
+    default: "[VISUAL]:  caricature 3d animation of The Godfather. He is wearing a\
+      \ suit, and holds a cigar in his arm, and speaks broken  American English with\
+      \ a strong Italian accent. He is seated at a table in a dim lit mahogny gentlemans\
+      \ club. \n[SPEECH]: Keep your friends close, but your enemies closer. Get Face\
+      \ ID lora, Leave the gun, take the cannoli.\n[SOUNDS]: broken American English\
+      \ with strong Italian accent voice, raspy voice, motionless face.  Low volume\
+      \ background sound from restaurant. \n\n\nref_t2v: caricature 3d animation of\
+      \ The Godfather. He is wearing a suit, and holds a cigar in his arm, and speaks\
+      \ broken  American English with a strong Italian accent.  He is seated at a\
+      \ table in a dim lit mahogny gentlemans club. He  gesticulates with his arms\
+      \  as he talks. \n"
+    help: Uses a structured [VISUAL]/[SPEECH]/[SOUNDS]/ref_t2v prompt format.
+    node: '102'
+  negative_prompt:
+    node_title: CLIP Text Encode (Prompt)
+    param: text
+    type: str
+    required: false
+    default: subtitles, subtitle, text, pc game, console game, video game, cartoon,
+      childish, ugly, artifacts, low resolution, blurry, jagged edges
+    node: '35'
+  seed:
+    node_title: 'RandomNoise #50'
+    param: noise_seed
+    type: int
+    required: false
+    default: 999
+    node: '50'
+  refine_seed:
+    node_title: 'RandomNoise #131'
+    param: noise_seed
+    type: int
+    required: false
+    default: 42
+    node: '131'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    required: false
+    default: 1280
+    node: '2265'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    required: false
+    default: 736
+    node: '2266'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 10
+    node: '2263'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    node: '2259'
+  steps:
+    node_title: BasicScheduler (for more steps)
+    param: steps
+    type: int
+    required: false
+    default: 15
+    help: Base-pass step count (this variant, unlike the other face-ref workflows,
+      actually wires a scalar BasicScheduler into the base pass instead of a fixed
+      manual sigma schedule).
+    node: '66'
+  cfg:
+    node_title: 'CFG Guider #81'
+    param: cfg
+    type: float
+    required: false
+    default: 2
+    help: Base-pass CFG (2 here, vs the 1 used by the other face-ref workflows --
+      deliberately raised, presumably for stronger prompt/audio adherence).
+    node: '81'
+  audio_trim_start:
+    node_title: Trim Audio Duration
+    param: start_index
+    type: int
+    required: false
+    default: 5
+    help: Seconds into the reference audio clip to start reading from.
+    node: '2348'
+  audio_trim_duration:
+    node_title: Trim Audio Duration
+    param: duration
+    type: int
+    required: false
+    default: 15
+    help: Seconds of the reference audio clip to use.
+    node: '2348'
+  identity_guidance_scale:
+    node_title: LTXV Reference Audio (ID-LoRA)
+    param: identity_guidance_scale
+    type: float
+    required: false
+    default: 2
+    help: How strongly the voice-identity ID-LoRA guidance is applied.
+    node: '2355'
+  id_lora_talkvid_strength:
+    node_title: ID-LORA (Talk Vid or CelebHQ)
+    param: strength_model
+    type: float
+    required: false
+    default: 1.5
+    help: Strength of the LTX-2.3-ID-LoRA-TalkVid-3K LoRA (voice/audio identity).
+    node: '2411'
+  faceid_lora_strength:
+    node_title: Best Face ID Lora
+    param: strength_model
+    type: float
+    required: false
+    default: 1.5
+    help: Strength of the Best_FaceID_v1.0 LoRA (visual identity).
+    node: '2412'
+  filename_prefix:
+    node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: filename_prefix
+    type: str
+    required: false
+    default: LTX-2
+    node: '2308'

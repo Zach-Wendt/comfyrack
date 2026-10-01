@@ -1,0 +1,108 @@
+description: 'Batch captioner for LoRA training datasets: loads every image in a folder, captions each one with a model-family-specific prompt template (FLUX, SD1.5, SDXL, SD3, Stable Cascade, Qwen-Image, Wan Video, LTX, HunyuanVideo, Ideogram 4, Krea 2, or custom) through a local QwenVL node, and writes one .json caption file per image. Output is text on disk, not an image: the standard run path waits for an image frame and will not retrieve this workflow''s result.'
+workflow: caption.json
+mode: [i2i]
+output_node_title: Show Image + Text Pairs
+requires:
+  nodes:
+    AILab_QwenVL: ComfyUI-QwenVL
+    CCC_BBoxConverter: ComfyUI-Mickmumpitz-Nodes
+    CCC_ImageBatchLoader: ComfyUI-Mickmumpitz-Nodes
+    CCC_PromptStudio: ComfyUI-Mickmumpitz-Nodes
+    CCC_ShowImageTextPairs: ComfyUI-Mickmumpitz-Nodes
+    CR Text Replace: ComfyUI_Comfyroll_CustomNodes
+    GetImageSizeAndCount: ComfyUI-KJNodes
+    Image Resize (rgthree): rgthree-comfy
+    PreviewImage: core
+    PrimitiveString: core
+    Save Text File: was-node-suite-comfyui
+    ShowText|pysssss: ComfyUI-Custom-Scripts
+    Text Concatenate: was-node-suite-comfyui
+  custom_node_packs:
+  - name: ComfyUI-QwenVL
+    git: https://github.com/1038lab/ComfyUI-QwenVL
+    registry_id: ComfyUI-QwenVL
+  - name: ComfyUI-Mickmumpitz-Nodes
+    git: https://github.com/mickmumpitz/ComfyUI-Mickmumpitz-Nodes
+  - name: ComfyUI_Comfyroll_CustomNodes
+    git: https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes
+  - name: ComfyUI-KJNodes
+    git: https://github.com/kijai/ComfyUI-KJNodes
+    registry_id: comfyui-kjnodes
+  - name: rgthree-comfy
+    git: https://github.com/rgthree/rgthree-comfy
+    registry_id: rgthree-comfy
+  - name: was-node-suite-comfyui
+    git: https://github.com/ltdrdata/was-node-suite-comfyui
+    registry_id: was-ns
+  - name: ComfyUI-Custom-Scripts
+    git: https://github.com/pythongosssss/ComfyUI-Custom-Scripts
+    registry_id: comfyui-custom-scripts
+flags:
+  image_dir:
+    node_title: Insert Dataset Image Location
+    param: value
+    type: str
+    required: true
+    help: Folder of images to caption. Also used (via CR Text Replace) to strip the
+      folder+extension out of each output filename_prefix -- keep this in sync with
+      the actual image_dir if you change it.
+    node: '17'
+  trigger_word:
+    node_title: Set Lora Trigger Word (not relevant for ideogram tagging)
+    param: value
+    type: str
+    required: true
+    help: Substituted for {trigger} in the selected model_selection prompt template.
+      Not used when model_selection is Ideogram 4 (that template has its own hardcoded
+      CHARACTER TRIGGER WORDS block).
+    node: '19'
+  model_selection:
+    node_title: Prompt Studio (For Image Tagging)
+    param: model_selection
+    type: str
+    required: true
+    help: 'One of: ''01 - FLUX (1 & 2)'', ''02 - SD 1.5'', ''03 - SDXL'', ''04 - SD3'',
+      ''05 - Stable Cascade'', ''06 - Qwen-Image-2512'', ''07 - Wan Video'', ''08
+      - LTX Video'', ''09 - HunyuanVideo'', ''10 - Ideogram 4'', ''11 - Custom'',
+      ''12 - Krea 2''. No default on purpose -- the source workflow defaults to Ideogram
+      4, which is rarely what a LoRA dataset needs.'
+    node: '77'
+  lora_type:
+    node_title: Prompt Studio (For Image Tagging)
+    param: lora_type
+    type: str
+    default: character
+    help: '''character'' or ''style'' -- picks the [[CHARACTER]] vs [[STYLE]] branch
+      inside whichever model_selection template is active.'
+    node: '77'
+  batch_size:
+    node_title: Image Batch Loader
+    param: batch_size
+    type: int
+    default: 0
+    help: 0 = load all images in image_dir.
+    node: '4'
+  start_from:
+    node_title: Image Batch Loader
+    param: start_from
+    type: int
+    default: 1
+    node: '4'
+  qwen_model_name:
+    node_title: QwenVL
+    param: model_name
+    type: str
+    default: Qwen3-VL-4B-Instruct
+    node: '70:14'
+  qwen_max_tokens:
+    node_title: QwenVL
+    param: max_tokens
+    type: int
+    default: 1024
+    node: '70:14'
+  qwen_seed:
+    node_title: QwenVL
+    param: seed
+    type: int
+    default: 6
+    node: '70:14'

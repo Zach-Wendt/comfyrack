@@ -1,0 +1,160 @@
+{
+  "1": {
+    "inputs": {
+      "image": "cel_anchor.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Face Image"
+    }
+  },
+  "2": {
+    "inputs": {
+      "model_name": "bbox/face_yolov8m.pt"
+    },
+    "class_type": "UltralyticsDetectorProvider",
+    "_meta": {
+      "title": "Face Detector"
+    }
+  },
+  "3": {
+    "inputs": {
+      "unet_name": "qwen-image-edit-2511-Q5_1.gguf"
+    },
+    "class_type": "UnetLoaderGGUF",
+    "_meta": {
+      "title": "GGUF Loader"
+    }
+  },
+  "4": {
+    "inputs": {
+      "lora_name": "Qwen-Image-Edit-2511-Lightning-8steps-V1.0-bf16.safetensors",
+      "strength_model": 1,
+      "model": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Load LoRA"
+    }
+  },
+  "5": {
+    "inputs": {
+      "shift": 3,
+      "model": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingAuraFlow",
+    "_meta": {
+      "title": "ModelSamplingAuraFlow"
+    }
+  },
+  "6": {
+    "inputs": {
+      "strength": 1,
+      "pre_cfg": false,
+      "model": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "CFGNorm",
+    "_meta": {
+      "title": "CFGNorm"
+    }
+  },
+  "7": {
+    "inputs": {
+      "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP"
+    }
+  },
+  "8": {
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "9": {
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "bbox_detector": [
+        "2",
+        0
+      ],
+      "model": [
+        "6",
+        0
+      ],
+      "clip": [
+        "7",
+        0
+      ],
+      "vae": [
+        "8",
+        0
+      ],
+      "prompt": "clear symmetrical eyes, sharp detailed iris and pupil, natural eyelids, high quality face, correct anatomy",
+      "threshold": 0.5,
+      "dilation": 0,
+      "drop_size": 10,
+      "feather": 0,
+      "steps": 4,
+      "cfg": 1.0,
+      "seed": 42,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 0.3,
+      "tiled_vae_decode": false,
+      "tile_size": 512,
+      "sam_detection_hint": "center-1",
+      "sam_dilation": 0,
+      "sam_threshold": 0.93,
+      "sam_bbox_expansion": 0,
+      "sam_mask_hint_threshold": 0.7,
+      "sam_mask_hint_use_negative": "False",
+      "target_size": 1024,
+      "upscale_method": "nearest-exact",
+      "crop_method": "disabled",
+      "instruction": "Describe the key features of the input image (color, shape, size, texture, objects, background), then explain how the user's text instruction should alter or modify the image. Generate a new image that meets the user's requirements while maintaining consistency with the original input where appropriate.",
+      "inpaint_mode": false,
+      "inpaint_prompt": "[!!!IMPORTANT!!!] Inpaint mode: draw only inside black box.",
+      "color_match_method": "kornia_reinhard",
+      "seam_fix": true,
+      "qwen_2511": true,
+      "distortion_fix": true
+    },
+    "class_type": "VNCCS_QWEN_Detailer",
+    "_meta": {
+      "title": "Face Detailer"
+    }
+  },
+  "10": {
+    "inputs": {
+      "filename_prefix": "qwen_face_detailer\\test",
+      "images": [
+        "9",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}

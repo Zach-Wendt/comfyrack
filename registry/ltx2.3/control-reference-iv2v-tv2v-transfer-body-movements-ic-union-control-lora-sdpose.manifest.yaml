@@ -1,0 +1,121 @@
+description: 'LTX-2.3 control/reference i2v: transfers body-movement performance from
+  a driving "Control Video" onto a single reference image, via a "union control" IC-LoRA
+  fed by SDPose keypoint extraction+drawing (optionally blended with Depth Anything
+  depth via the "BLEND POSE & DEPTH?" switch, default off, pose-only -- not exposed
+  here, no bool flag type), 2-pass sample+upscale, then muxes to an MP4. Also saves
+  a pose-preview clip via node 5120 (filename_prefix "AnimateDiff", save_output false)
+  -- not exposed by this manifest, that''s a debug/intermediate artifact, not the
+  deliverable. Sibling of the -dwpose variant (same IC-LoRA, same defaults), differing
+  only in which pose estimator feeds the control guide. Audio: by default the output
+  audio track comes from the control video''s own audio (nested switch chain gated
+  by "CUSTOM AUDIO INPUT?", default true, but the inner "From custom audio file?"
+  switch defaults false), not from the custom_audio_file flag below unless that inner
+  switch is also flipped in the JSON.
+
+  '
+workflow: control-reference-iv2v-tv2v-transfer-body-movements-ic-union-control-lora-sdpose.json
+mode: [v2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162 #5208"
+flags:
+  positive_prompt:
+    node_title: Prompt
+    param: value
+    type: str
+    default: "highly detailed, monochrime colors. Make this image come alive with\
+      \ fluid motion. \n\nA young boy wearing street fashion clothing is dancing in\
+      \ the street. \n\nHe is dancing in sync to the music "
+    help: Raw user prompt; may be rewritten by the in-graph LLM prompt enhancer before
+      reaching CLIP (see 'ENABLE PROMPT ENHANCER' node 5201, default off here -- not
+      exposed).
+    node: '5242'
+  negative_prompt:
+    node_title: CLIP Text Encode (Negative Prompt)
+    param: text
+    type: str
+    default: low contrast, washed out, text, subtitles, logo, still image, still video,
+      blurry, low quality, distorted, bad anatomy, oversaturated, pixelated, low resolution,
+      grainy, compression artifacts, jpeg artifacts, glitches, watermark, signature,
+      copyright,  distortedsound, saturated sound, loud sound , deformed facial features,
+      asymmetrical face, missing facial features, extra limbs, disfigured hands, blurry
+      teeth, disfigured teeth
+    node: '2612'
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: Reference subject image that the control video's body movements are transferred
+      onto.
+    node: '2004'
+  control_video:
+    node_title: Control Video
+    param: video
+    type: str
+    default: m2-res_1890p.mp4
+    help: Driving video whose body movements/poses are extracted and transferred.
+      Must already exist in ComfyUI's input directory -- no upload path exists for
+      video yet in this CLI.
+    node: '5192'
+  custom_audio_file:
+    node_title: Custom audio (optional)
+    param: audio
+    type: str
+    default: (Verse).mp3
+    help: Must already exist in ComfyUI's input directory. Only used if the nested
+      'From custom audio file?' switch is also flipped in the JSON -- see description;
+      by default the control video's own audio is used instead.
+    node: '5263'
+  seed_pass1:
+    node_title: 'RandomNoise #4832'
+    param: noise_seed
+    type: int
+    default: 42
+    help: Seed for the base pass.
+    node: '4832'
+  seed_pass2:
+    node_title: 'RandomNoise #5068'
+    param: noise_seed
+    type: int
+    default: 43
+    help: Seed for the upscale/refine pass.
+    node: '5068'
+  pose_strength:
+    node_title: POSE STRENGTH
+    param: value
+    type: float
+    default: 0.7
+    help: Strength of the IC-LoRA video-guide conditioning (LTXAddVideoICLoRAGuide)
+      -- how strongly the extracted pose drives the output motion.
+    node: '5299'
+  ic_lora_strength:
+    node_title: IC-LoRA Loader
+    param: strength_model
+    type: float
+    default: 0.71
+    help: Model-patch strength of the union-control IC-LoRA itself; this workflow's
+      whole technique centers on this LoRA.
+    node: '5011'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    default: 736
+    node: '5206'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    default: 1280
+    node: '5207'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    default: 10
+    node: '5205'
+  fps:
+    node_title: 'FPS #5199'
+    param: value
+    type: float
+    default: 24
+    node: '5199'

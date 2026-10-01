@@ -1,0 +1,147 @@
+description: 'Dataset generator for LoRA training: one reference image in, a fixed 24-pose training dataset out (t-pose, walk cycles, close-ups, expressions, full-body A-pose, back view, and more). Flux 2 Klein 9B with a Flux2 VAE, a Qwen 3 8B model, and a Flux2-Klein-9B-consistency-V2 LoRA (fixed at 0.35 strength) drive identity consistency through a per-pose adaptive reference-latent injection. The real output is the 24-pose folder written to disk, not a single image: the single-image fetch over the run path is unreliable, so check the output folder directly.'
+workflow: character-dataset.json
+mode: [i2i]
+output_node_title: 'Save Image #2798'
+requires:
+  nodes:
+    AutoCropFaces: ComfyUI-AutoCropFaces
+    BasicGuider: core
+    BatchImagesNode: core
+    CLIPLoader: core
+    CLIPTextEncode: core
+    EmptyFlux2LatentImage: core
+    Flux2Scheduler: core
+    FluxGuidance: core
+    GetImageSize: core
+    IdentityGuidance: ComfyUI-Flux2Klein-Enhancer
+    Image Save: was-node-suite-comfyui
+    ImageCollect: ComfyUI-Mickmumpitz-Nodes
+    ImageCollectUnpack: ComfyUI-Mickmumpitz-Nodes
+    ImageExists: ComfyUI-Mickmumpitz-Nodes
+    ImageResizeKJv2: ComfyUI-KJNodes
+    ImpactInversedSwitch: ComfyUI-Impact-Pack
+    JoinStringMulti: ComfyUI-KJNodes
+    KSamplerSelect: core
+    LoadImage: core
+    LoraLoaderModelOnly: core
+    PreviewImage: core
+    PrimitiveString: core
+    RandomNoise: core
+    ReferenceLatent: core
+    ResolutionSelector: core
+    SamplerCustomAdvanced: core
+    SaveImage: core
+    StringConstantMultiline: ComfyUI-KJNodes
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+    easy ifElse: ComfyUI-Easy-Use
+  custom_node_packs:
+  - name: ComfyUI-AutoCropFaces
+    git: https://github.com/liusida/ComfyUI-AutoCropFaces
+  - name: ComfyUI-Flux2Klein-Enhancer
+    git: https://github.com/capitan01R/ComfyUI-Flux2Klein-Enhancer
+    registry_id: ComfyUI-Flux2Klein-Enhancer
+  - name: was-node-suite-comfyui
+    git: https://github.com/ltdrdata/was-node-suite-comfyui
+    registry_id: was-ns
+  - name: ComfyUI-Mickmumpitz-Nodes
+    git: https://github.com/mickmumpitz/ComfyUI-Mickmumpitz-Nodes
+  - name: ComfyUI-KJNodes
+    git: https://github.com/kijai/ComfyUI-KJNodes
+    registry_id: comfyui-kjnodes
+  - name: ComfyUI-Impact-Pack
+    git: https://github.com/ltdrdata/ComfyUI-Impact-Pack
+    registry_id: comfyui-impact-pack
+  - name: ComfyUI-Easy-Use
+    git: https://github.com/yolain/ComfyUI-Easy-Use
+    registry_id: comfyui-easy-use
+  models:
+  - directory: diffusion_models
+    name: flux-2-klein-9b-fp8.safetensors
+    url: https://huggingface.co/black-forest-labs/FLUX.2-klein-9b-fp8/resolve/main/flux-2-klein-9b-fp8.safetensors
+  - directory: text_encoders
+    name: qwen_3_8b_fp8mixed.safetensors
+    url: https://huggingface.co/Comfy-Org/vae-text-encorder-for-flux-klein-9b/resolve/main/split_files/text_encoders/qwen_3_8b_fp8mixed.safetensors
+  - directory: vae
+    name: flux2-vae.safetensors
+    url: https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/vae/flux2-vae.safetensors
+  - directory: loras
+    name: Flux2-Klein-9B-consistency-V2.safetensors
+    url: https://huggingface.co/dx8152/Flux2-Klein-9B-Consistency/resolve/main/Flux2-Klein-9B-consistency-V2.safetensors
+  - directory: loras
+    name: Klein-consistency-lora.safetensors
+    source: unknown
+flags:
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: Single reference photo/image the whole 24-pose dataset is built from.
+    node: '535'
+  character_name:
+    node_title: NAME (CHARACTER)
+    param: value
+    type: str
+    required: true
+    help: 'Set before running -- renames every output file. Doc''s own warning: renaming
+      60+ images after the fact is not fun.'
+    node: '2905'
+  root_folder:
+    node_title: ROOT FOLDER
+    param: value
+    type: str
+    default: CCC
+    help: Output lands in ComfyUI/output/<root_folder>/<character_name>/.
+    node: '2904'
+  save_mode:
+    node_title: Save Dataset   (1 = save  |  2 = preview only)
+    param: select
+    type: int
+    default: 1
+    help: 1 = save all 24 poses to disk. 2 = preview only (PreviewImage branch, nothing
+      written).
+    node: '2922'
+  style:
+    node_title: STYLE [OPTIONAL]
+    param: string
+    type: str
+    default: ''
+    help: 'Prepended into all 24 pose prompts. Source default was ''A bavarian woman,
+      pixar 3d animation, rendered in octane, stylized cg'' -- deliberately blanked
+      so the dataset does not default to a Pixar look. Set explicitly per run, e.g.
+      ''cel-shaded 2D western animation style, flat colors, bold linework''.'
+    node: '547'
+  clothes:
+    node_title: CLOTHES [OPTIONAL]
+    param: string
+    type: str
+    default: ''
+    node: '549'
+  extra_lora_name:
+    node_title: Extra Chained LoRA (optional, strength 0 = off by default)
+    param: lora_name
+    type: str
+    default: Flux2-Klein-9B-consistency-V2.safetensors
+    help: 'SECOND lora slot (node 90001, chained model -> 664 consistency LoRA ->
+      90001 -> 824 identity guidance), not in the original graph. At strength 0 (this flag''s default)
+      it''s a no-op regardless of which filename is set here (a valid filename is
+      still required for the dropdown to validate). Point this at your own second Flux
+      2 Klein LoRA (a style LoRA, for example) and raise extra_lora_strength above
+      0 to activate it stacked on top of the identity-consistency LoRA. The LoRA must
+      be trained for Flux 2 Klein 9B; LoRAs for other backbones do not work.'
+    node: '90001'
+  extra_lora_strength:
+    node_title: Extra Chained LoRA (optional, strength 0 = off by default)
+    param: strength_model
+    type: float
+    default: 0
+    node: '90001'
+  aspect_ratio:
+    node_title: Resolution Selector
+    param: aspect_ratio
+    type: str
+    default: 1:1 (Square)
+    node: '2903'

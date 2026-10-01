@@ -1,0 +1,1081 @@
+{
+  "164": {
+    "inputs": {
+      "frame_rate": [
+        "697",
+        0
+      ],
+      "positive": [
+        "605",
+        1
+      ],
+      "negative": [
+        "806",
+        0
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning"
+    }
+  },
+  "584": {
+    "inputs": {
+      "image": "example.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "586": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "704",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess"
+    }
+  },
+  "605": {
+    "inputs": {
+      "global_prompt": [
+        "709",
+        0
+      ],
+      "local_prompts": [
+        "668:621",
+        0
+      ],
+      "segment_lengths": [
+        "665:659",
+        0
+      ],
+      "epsilon": 0.001,
+      "model": [
+        "813",
+        0
+      ],
+      "clip": [
+        "681",
+        0
+      ],
+      "latent": [
+        "749",
+        0
+      ]
+    },
+    "class_type": "PromptRelayEncode",
+    "_meta": {
+      "title": "Prompt Relay Encode"
+    }
+  },
+  "615": {
+    "inputs": {
+      "value": "Semi-close up of an eagle flies through the sky, flapping its wings. The camera quickly zooms toward the eagle\u2019s eye as it flies. Inside the pupil, a cyberpunk city is already visible, distorted by the curved surface of the eye."
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Segment Prompt 1"
+    }
+  },
+  "625": {
+    "inputs": {
+      "value": 5
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Segment 1  (seconds)"
+    }
+  },
+  "629": {
+    "inputs": {
+      "expression": "((round((a * b -1) / 8)) * 8) + 1 ",
+      "variables.a": [
+        "697",
+        0
+      ],
+      "variables.b": [
+        "625",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #629"
+    }
+  },
+  "638": {
+    "inputs": {
+      "expression": "((round((a * b -1) / 8)) * 8) + 1 ",
+      "variables.a": [
+        "697",
+        0
+      ],
+      "variables.b": [
+        "640",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #638"
+    }
+  },
+  "640": {
+    "inputs": {
+      "value": 5
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Segment 2 (seconds)"
+    }
+  },
+  "642": {
+    "inputs": {
+      "expression": "((round((a * b -1) / 8)) * 8) + 1 ",
+      "variables.a": [
+        "697",
+        0
+      ],
+      "variables.b": [
+        "644",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #642"
+    }
+  },
+  "644": {
+    "inputs": {
+      "value": 5
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Segment 3  (seconds)"
+    }
+  },
+  "646": {
+    "inputs": {
+      "expression": "((round((a * b -1) / 8)) * 8) + 1 ",
+      "variables.a": [
+        "697",
+        0
+      ],
+      "variables.b": [
+        "648",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #646"
+    }
+  },
+  "648": {
+    "inputs": {
+      "value": 5
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Segment 4 (seconds)"
+    }
+  },
+  "676": {
+    "inputs": {
+      "vae_name": "LTX23_audio_vae_bf16.safetensors",
+      "device": "main_device",
+      "weight_dtype": "bf16"
+    },
+    "class_type": "VAELoaderKJ",
+    "_meta": {
+      "title": "VAELoader KJ"
+    }
+  },
+  "678": {
+    "inputs": {
+      "vae_name": "taeltx2_3.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #678"
+    }
+  },
+  "679": {
+    "inputs": {
+      "vae_name": "LTX23_video_vae_bf16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #679"
+    }
+  },
+  "681": {
+    "inputs": {
+      "clip_name1": "gemma_3_12B_it_fp8_scaled.safetensors",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "683": {
+    "inputs": {
+      "unet_name": "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "684": {
+    "inputs": {
+      "model_name": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+    },
+    "class_type": "LatentUpscaleModelLoader",
+    "_meta": {
+      "title": "Load Latent Upscale Model"
+    }
+  },
+  "691": {
+    "inputs": {
+      "unet_name": "LTXvideo\\LTX-2\\quantstack\\LTX-2.3-distilled-Q4_K_S.gguf"
+    },
+    "class_type": "UnetLoaderGGUF",
+    "_meta": {
+      "title": "Unet Loader (GGUF)"
+    }
+  },
+  "692": {
+    "inputs": {
+      "clip_name1": "gemma-3-12b-it-Q2_K.gguf",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "ltxv"
+    },
+    "class_type": "DualCLIPLoaderGGUF",
+    "_meta": {
+      "title": "DualCLIPLoader (GGUF)"
+    }
+  },
+  "697": {
+    "inputs": {
+      "value": 24
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "FPS"
+    }
+  },
+  "699": {
+    "inputs": {
+      "value": 1280
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "WIDTH"
+    }
+  },
+  "701": {
+    "inputs": {
+      "value": 736
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "HEIGHT"
+    }
+  },
+  "704": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "792",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED)"
+    }
+  },
+  "709": {
+    "inputs": {
+      "value": "A single continuous cinematic shot that transitions smootly into into different scenes. cinematic, high quality. "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "MASTER PROMPT : The scene (whole video)"
+    }
+  },
+  "710": {
+    "inputs": {
+      "value": "As the zoom continues, the city within the pupil grows clearer. A cyberpunk city is visible. Cars move close to the camera in layered traffic lanes, neon reflections streak across rain- soaked streets and skyscrapers, and the atmosphere feels dark, crowded, and electric."
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Segment Prompt 2"
+    }
+  },
+  "711": {
+    "inputs": {
+      "value": " The camera approaches a car driving in the distance. Then the camera starts to track and lock onto a car moving through the neon-lit cyberpunk streets. The camera slowly pans to the side of the car, revealing a man sitting in the car, wearing sunglasses. "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Segment Prompt 3"
+    }
+  },
+  "712": {
+    "inputs": {
+      "value": "The camera slowly zooms out and pulls back while the man continues driving. The camera pulls back revealing that the cyberpunk scene is playing on a television screen. The camera continues zooming out to reveal an old television set inside a cozy 20th century living room. Warm lamplight fills the space, with vintage furniture and people surrounding the TV."
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Segment Prompt 4"
+    }
+  },
+  "713": {
+    "inputs": {
+      "expression": "a",
+      "a": [
+        "697",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #713"
+    }
+  },
+  "724": {
+    "inputs": {
+      "video_latent": [
+        "767",
+        0
+      ],
+      "audio_latent": [
+        "734",
+        1
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #724"
+    }
+  },
+  "725": {
+    "inputs": {
+      "sampler_name": "euler_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect #725"
+    }
+  },
+  "734": {
+    "inputs": {
+      "av_latent": [
+        "776",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #734"
+    }
+  },
+  "735": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "772",
+        0
+      ],
+      "positive": [
+        "164",
+        0
+      ],
+      "negative": [
+        "164",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #735"
+    }
+  },
+  "736": {
+    "inputs": {
+      "noise": [
+        "773",
+        0
+      ],
+      "guider": [
+        "735",
+        0
+      ],
+      "sampler": [
+        "725",
+        0
+      ],
+      "sigmas": [
+        "745",
+        0
+      ],
+      "latent_image": [
+        "724",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced #736"
+    }
+  },
+  "737": {
+    "inputs": {
+      "samples": [
+        "734",
+        0
+      ],
+      "upscale_model": [
+        "684",
+        0
+      ],
+      "vae": [
+        "679",
+        0
+      ]
+    },
+    "class_type": "LTXVLatentUpsampler",
+    "_meta": {
+      "title": "spatial"
+    }
+  },
+  "742": {
+    "inputs": {
+      "sampler_name": "euler_ancestral_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect #742"
+    }
+  },
+  "743": {
+    "inputs": {
+      "sigmas": "1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas #743"
+    }
+  },
+  "744": {
+    "inputs": {
+      "sigmas": "0.909375, 0.725, 0.421875, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas (LTX-2)"
+    }
+  },
+  "745": {
+    "inputs": {
+      "sigmas": "0.85, 0.7250, 0.4219, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas #745"
+    }
+  },
+  "749": {
+    "inputs": {
+      "width": [
+        "785",
+        1
+      ],
+      "height": [
+        "786",
+        1
+      ],
+      "length": [
+        "665:664",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo"
+    }
+  },
+  "750": {
+    "inputs": {
+      "video_latent": [
+        "810",
+        0
+      ],
+      "audio_latent": [
+        "751",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #750"
+    }
+  },
+  "751": {
+    "inputs": {
+      "frames_number": [
+        "665:664",
+        1
+      ],
+      "frame_rate": [
+        "713",
+        1
+      ],
+      "batch_size": 1,
+      "audio_vae": [
+        "676",
+        0
+      ]
+    },
+    "class_type": "LTXVEmptyLatentAudio",
+    "_meta": {
+      "title": "LTXV Empty Latent Audio"
+    }
+  },
+  "752": {
+    "inputs": {
+      "tile_size": 512,
+      "overlap": 64,
+      "temporal_size": 4096,
+      "temporal_overlap": 8,
+      "samples": [
+        "754",
+        0
+      ],
+      "vae": [
+        "679",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeTiled",
+    "_meta": {
+      "title": "VAE Decode (Tiled)"
+    }
+  },
+  "753": {
+    "inputs": {
+      "samples": [
+        "754",
+        1
+      ],
+      "audio_vae": [
+        "676",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode",
+    "_meta": {
+      "title": "LTXV Audio VAE Decode"
+    }
+  },
+  "754": {
+    "inputs": {
+      "av_latent": [
+        "736",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #754"
+    }
+  },
+  "757": {
+    "inputs": {
+      "frame_rate": [
+        "697",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-2",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "752",
+        0
+      ],
+      "audio": [
+        "753",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "765": {
+    "inputs": {
+      "steps": 8,
+      "max_shift": 2.05,
+      "base_shift": 0.95,
+      "stretch": true,
+      "terminal": 0.1,
+      "latent": [
+        "750",
+        0
+      ]
+    },
+    "class_type": "LTXVScheduler",
+    "_meta": {
+      "title": "LTXVScheduler (for more steps)"
+    }
+  },
+  "767": {
+    "inputs": {
+      "strength": 0.7,
+      "bypass": [
+        "809",
+        0
+      ],
+      "vae": [
+        "679",
+        0
+      ],
+      "image": [
+        "586",
+        0
+      ],
+      "latent": [
+        "737",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #767"
+    }
+  },
+  "772": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "605",
+        0
+      ],
+      "vae": [
+        "678",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override"
+    }
+  },
+  "773": {
+    "inputs": {
+      "noise_seed": 43
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #773"
+    }
+  },
+  "774": {
+    "inputs": {
+      "noise_seed": 42
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #774"
+    }
+  },
+  "775": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "772",
+        0
+      ],
+      "positive": [
+        "164",
+        0
+      ],
+      "negative": [
+        "164",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #775"
+    }
+  },
+  "776": {
+    "inputs": {
+      "noise": [
+        "774",
+        0
+      ],
+      "guider": [
+        "775",
+        0
+      ],
+      "sampler": [
+        "742",
+        0
+      ],
+      "sigmas": [
+        "743",
+        0
+      ],
+      "latent_image": [
+        "750",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced #776"
+    }
+  },
+  "777": {
+    "inputs": {
+      "text": "blurry, oversaturated, pixelated, low resolution, grainy, distorted, noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo, signature, copyright, subtitles, distorted sound, saturated sound, loud",
+      "clip": [
+        "681",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Negative Prompt"
+    }
+  },
+  "785": {
+    "inputs": {
+      "expression": "a/2",
+      "values.a": [
+        "699",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #785"
+    }
+  },
+  "786": {
+    "inputs": {
+      "expression": "a/2",
+      "values.a": [
+        "701",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #786"
+    }
+  },
+  "792": {
+    "inputs": {
+      "width": [
+        "699",
+        0
+      ],
+      "height": [
+        "701",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "keep_proportion": "crop",
+      "pad_color": "0, 0, 0",
+      "crop_position": "center",
+      "divisible_by": 32,
+      "device": "cpu",
+      "image": [
+        "584",
+        0
+      ]
+    },
+    "class_type": "ImageResizeKJv2",
+    "_meta": {
+      "title": "Resize Image v2"
+    }
+  },
+  "806": {
+    "inputs": {
+      "conditioning": [
+        "605",
+        1
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "809": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "Text To Video (no image ref)"
+    }
+  },
+  "810": {
+    "inputs": {
+      "strength": 0.7,
+      "bypass": [
+        "809",
+        0
+      ],
+      "vae": [
+        "679",
+        0
+      ],
+      "image": [
+        "586",
+        0
+      ],
+      "latent": [
+        "749",
+        0
+      ]
+    },
+    "class_type": "LTXVImgToVideoInplace",
+    "_meta": {
+      "title": "LTXVImgToVideoInplace #810"
+    }
+  },
+  "813": {
+    "inputs": {
+      "PowerLoraLoaderHeaderWidget": {
+        "type": "PowerLoraLoaderHeaderWidget"
+      },
+      "\u2795 Add Lora": "",
+      "model": [
+        "683",
+        0
+      ]
+    },
+    "class_type": "Power Lora Loader (rgthree)",
+    "_meta": {
+      "title": "Power Lora Loader (rgthree)"
+    }
+  },
+  "668:619": {
+    "inputs": {
+      "string_a": [
+        "615",
+        0
+      ],
+      "string_b": [
+        "710",
+        0
+      ],
+      "delimiter": " | "
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #668:619"
+    }
+  },
+  "668:620": {
+    "inputs": {
+      "string_a": [
+        "668:619",
+        0
+      ],
+      "string_b": [
+        "711",
+        0
+      ],
+      "delimiter": " | "
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #668:620"
+    }
+  },
+  "668:621": {
+    "inputs": {
+      "string_a": [
+        "668:620",
+        0
+      ],
+      "string_b": [
+        "712",
+        0
+      ],
+      "delimiter": " | "
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #668:621"
+    }
+  },
+  "665:631": {
+    "inputs": {
+      "string_a": [
+        "665:651",
+        0
+      ],
+      "string_b": [
+        "665:654",
+        0
+      ],
+      "delimiter": ","
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #665:631"
+    }
+  },
+  "665:655": {
+    "inputs": {
+      "string_a": [
+        "665:631",
+        0
+      ],
+      "string_b": [
+        "665:656",
+        0
+      ],
+      "delimiter": ","
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #665:655"
+    }
+  },
+  "665:657": {
+    "inputs": {
+      "string_a": [
+        "665:655",
+        0
+      ],
+      "string_b": [
+        "665:658",
+        0
+      ],
+      "delimiter": ","
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #665:657"
+    }
+  },
+  "665:659": {
+    "inputs": {
+      "text": "121,121,121,121",
+      "anything": [
+        "665:657",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "Frames segment list"
+    }
+  },
+  "665:664": {
+    "inputs": {
+      "expression": "a + b + c + d ",
+      "variables.a": [
+        "629",
+        1
+      ],
+      "variables.b": [
+        "638",
+        1
+      ],
+      "variables.c": [
+        "642",
+        1
+      ],
+      "variables.d": [
+        "646",
+        1
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "TOTAL FRAMES"
+    }
+  },
+  "665:654": {
+    "inputs": {
+      "value": [
+        "638",
+        1
+      ],
+      "format_string": "{:02d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String #665:654"
+    }
+  },
+  "665:651": {
+    "inputs": {
+      "value": [
+        "629",
+        1
+      ],
+      "format_string": "{:02d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String #665:651"
+    }
+  },
+  "665:656": {
+    "inputs": {
+      "value": [
+        "642",
+        1
+      ],
+      "format_string": "{:02d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String #665:656"
+    }
+  },
+  "665:658": {
+    "inputs": {
+      "value": [
+        "646",
+        1
+      ],
+      "format_string": "{:02d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String #665:658"
+    }
+  }
+}

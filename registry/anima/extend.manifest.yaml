@@ -1,0 +1,76 @@
+description: "Masked outpaint on a locked plate: pads the canvas left and right, then regenerates only the new margins with a noise mask. Uses Anima and a cel-shading style LoRA. This outpaint path can invent wrong margin content."
+workflow: extend.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CLIPLoader: core
+    CLIPTextEncode: core
+    KSampler: core
+    LoadImage: core
+    LoadImageMask: core
+    LoraLoader: core
+    SaveImage: core
+    SetLatentNoiseMask: core
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  models:
+  - directory: diffusion_models
+    name: anima_baseV10.safetensors
+    url: https://huggingface.co/LyliaEngine/anima_baseV10/resolve/main/anima_baseV10.safetensors
+  - directory: text_encoders
+    name: qwen_3_06b_base.safetensors
+    source: unknown
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: loras
+    name: your_style_lora.safetensors
+    source: unknown
+flags:
+  image:
+    node_title: Source Image
+    param: image
+    type: image
+    required: true
+    help: Local path to the padded canvas (grey-filled margins) -- run_workflow()
+      uploads it.
+    node: '20'
+  mask:
+    node_title: Mask Image
+    param: image
+    type: image
+    required: true
+    help: Local path to the feathered noise mask (white = regenerate margins, black
+      = keep center).
+    node: '21'
+  positive_text:
+    node_title: Positive Prompt
+    param: text
+    type: str
+    default: masterpiece, best quality, fantasy village square at night,
+      thatched-roof huts, hanging paper lanterns, stone paving, hard cel shading,
+      flat colors, bold outlines
+    node: '6'
+  negative_text:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    default: (blurry),(lowres:1.2),(worst quality:1.4),(low quality:1.4),(bad anatomy:1.4),bad
+      hands,multiple views,jpeg artifacts,signature,watermark,text,logo,artist name,grey
+      background
+    node: '7'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 7
+    node: '9'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: scene_move/wfcli_run
+    node: '110'

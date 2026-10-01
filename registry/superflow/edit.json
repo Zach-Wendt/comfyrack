@@ -1,0 +1,217 @@
+{
+  "5": {
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNET Loader"
+    },
+    "inputs": {
+      "unet_name": "qwen_image_edit_2511_bf16.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "6": {
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Lightning LoRA"
+    },
+    "inputs": {
+      "model": [
+        "5",
+        0
+      ],
+      "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
+      "strength_model": 1.0
+    }
+  },
+  "7": {
+    "class_type": "ModelSamplingAuraFlow",
+    "_meta": {
+      "title": "Model Sampling"
+    },
+    "inputs": {
+      "model": [
+        "6",
+        0
+      ],
+      "shift": 3.0
+    }
+  },
+  "8": {
+    "class_type": "CFGNorm",
+    "_meta": {
+      "title": "CFG Norm"
+    },
+    "inputs": {
+      "model": [
+        "7",
+        0
+      ],
+      "strength": 1.0
+    }
+  },
+  "10": {
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "CLIP Loader"
+    },
+    "inputs": {
+      "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    }
+  },
+  "11": {
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "VAE Loader"
+    },
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "1": {
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Source Image"
+    },
+    "inputs": {
+      "image": "PLACEHOLDER.png"
+    }
+  },
+  "2": {
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Scale To Megapixel"
+    },
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "megapixels": 1.0,
+      "resolution_steps": 1
+    }
+  },
+  "12": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "_meta": {
+      "title": "Positive Prompt"
+    },
+    "inputs": {
+      "clip": [
+        "10",
+        0
+      ],
+      "vae": [
+        "11",
+        0
+      ],
+      "image1": [
+        "2",
+        0
+      ],
+      "image2": null,
+      "image3": null,
+      "prompt": "make it look like a watercolor painting"
+    }
+  },
+  "13": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "_meta": {
+      "title": "Negative Prompt"
+    },
+    "inputs": {
+      "clip": [
+        "10",
+        0
+      ],
+      "vae": [
+        "11",
+        0
+      ],
+      "image1": [
+        "2",
+        0
+      ],
+      "image2": null,
+      "image3": null,
+      "prompt": "different person, distorted face, deformed, extra limbs, blurry, lowres, photorealistic, 3d render, worst quality, low quality, artifacts, jpeg artifacts, visible seam, visible crop edge, mismatched lighting"
+    }
+  },
+  "14": {
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode"
+    },
+    "inputs": {
+      "pixels": [
+        "2",
+        0
+      ],
+      "vae": [
+        "11",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    },
+    "inputs": {
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "13",
+        0
+      ],
+      "latent_image": [
+        "14",
+        0
+      ],
+      "seed": 42,
+      "steps": 4,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "model": [
+        "8",
+        0
+      ]
+    }
+  },
+  "16": {
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    },
+    "inputs": {
+      "samples": [
+        "15",
+        0
+      ],
+      "vae": [
+        "11",
+        0
+      ]
+    }
+  },
+  "18": {
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Image"
+    },
+    "inputs": {
+      "filename_prefix": "superflow/edit",
+      "images": [
+        "16",
+        0
+      ]
+    }
+  }
+}

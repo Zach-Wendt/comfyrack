@@ -1,0 +1,312 @@
+{
+  "3": {
+    "inputs": {
+      "text": "Cinematic high-fashion editorial video in an empty grand ballroom late at night, crystal chandeliers dimmed low, gilded mirrors, honey-toned parquet stretching away. The three models stand together mid-floor in a relaxed cluster, unhurried and regal. Centre: Em1l1_05, a light-brown-skinned female model with dark curly hair, large silver hoop earrings and the Nocturne Relic Necklace with amber pendant, in a black blazer over a sheer black mesh top with embroidered swirls. Left: M4le_M0del_01, a dark-skinned male model with short braids, in a long black overcoat over a dark grey ribbed turtleneck and a fine silver curb-link chain with a triangle pendant, black leather handbag at his side. Right, a clear head taller: Berl1n_Model_v01, a pale-skinned platinum-buzzcut female with sharp eyeliner and small ear piercings, in a glossy black leather trench over a white t-shirt. Slow crane up and back, the vast ballroom and chandeliers opening around them. Direct-flash realism, three stable identities, hyper-detailed textures, cinematic interior grade, no dialogue. Instareal, l3n0v0",
+      "clip": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Positive Prompt"
+    }
+  },
+  "4": {
+    "inputs": {
+      "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走, 8k, UHD, hyper-realism, cinematic, glossy finish,",
+      "clip": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Negative Prompt"
+    }
+  },
+  "5": {
+    "inputs": {
+      "width": 1280,
+      "height": 720,
+      "length": 81,
+      "batch_size": 1
+    },
+    "class_type": "EmptyHunyuanLatentVideo",
+    "_meta": {
+      "title": "Empty HunyuanVideo 1.0 Latent"
+    }
+  },
+  "8": {
+    "inputs": {
+      "vae_name": "wan_2.1_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "9": {
+    "inputs": {
+      "samples": [
+        "169",
+        0
+      ],
+      "vae": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "22": {
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP"
+    }
+  },
+  "104": {
+    "inputs": {
+      "unet_name": "wan\\wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model (Low-Noise Stage)"
+    }
+  },
+  "106": {
+    "inputs": {
+      "unet_name": "wan\\wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model (High-Noise Stage)"
+    }
+  },
+  "115": {
+    "inputs": {
+      "nag_scale": 11,
+      "nag_alpha": 0.25,
+      "nag_tau": 2.5,
+      "input_type": "default",
+      "inplace": false,
+      "model": [
+        "135",
+        0
+      ],
+      "conditioning": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "WanVideoNAG",
+    "_meta": {
+      "title": "WanVideoNAG"
+    }
+  },
+  "135": {
+    "inputs": {
+      "PowerLoraLoaderHeaderWidget": {
+        "type": "PowerLoraLoaderHeaderWidget"
+      },
+      "lora_2": {
+        "on": true,
+        "lora": "wan\\Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors",
+        "strength": 0.6
+      },
+      "lora_3": {
+        "on": false,
+        "lora": "wan\\Instareal_low.safetensors",
+        "strength": 0.6
+      },
+      "lora_4": {
+        "on": false,
+        "lora": "wan\\Lenovo.safetensors",
+        "strength": 0.7
+      },
+      "lora_5": {
+        "on": true,
+        "lora": "wan\\stock_photography_wan22_LOW_v1.safetensors",
+        "strength": 0.45
+      },
+      "➕ Add Lora": "",
+      "model": [
+        "104",
+        0
+      ],
+      "clip": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "Power Lora Loader (rgthree)",
+    "_meta": {
+      "title": "Power Lora Loader (Low-Noise Stage)"
+    }
+  },
+  "136": {
+    "inputs": {
+      "PowerLoraLoaderHeaderWidget": {
+        "type": "PowerLoraLoaderHeaderWidget"
+      },
+      "lora_2": {
+        "on": true,
+        "lora": "wan\\Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors",
+        "strength": 0.6
+      },
+      "lora_3": {
+        "on": false,
+        "lora": "wan\\Instareal_high.safetensors",
+        "strength": 0.7
+      },
+      "lora_4": {
+        "on": false,
+        "lora": "wan\\Lenovo.safetensors",
+        "strength": 0.85
+      },
+      "➕ Add Lora": "",
+      "model": [
+        "106",
+        0
+      ],
+      "clip": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "Power Lora Loader (rgthree)",
+    "_meta": {
+      "title": "Power Lora Loader (High-Noise Stage)"
+    }
+  },
+  "140": {
+    "inputs": {
+      "density": 1,
+      "intensity": 0.04,
+      "highlights": 1,
+      "supersample_factor": 5,
+      "repeats": 1,
+      "image": [
+        "9",
+        0
+      ]
+    },
+    "class_type": "Film Grain",
+    "_meta": {
+      "title": "Film Grain"
+    }
+  },
+  "168": {
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": [
+        "197",
+        0
+      ],
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "res_2s",
+      "scheduler": "beta57",
+      "start_at_step": 0,
+      "end_at_step": 3,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "136",
+        0
+      ],
+      "positive": [
+        "3",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler Advanced (High-Noise Stage)"
+    }
+  },
+  "169": {
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": [
+        "197",
+        0
+      ],
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "res_2s",
+      "scheduler": "beta57",
+      "start_at_step": 3,
+      "end_at_step": 999,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "115",
+        0
+      ],
+      "positive": [
+        "3",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "168",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler Advanced (Low-Noise Stage)"
+    }
+  },
+  "194": {
+    "inputs": {
+      "frame_rate": 16,
+      "loop_count": 0,
+      "filename_prefix": "AnimateDiff",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 8,
+      "save_metadata": true,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "140",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine 🎥🅥🅗🅢"
+    }
+  },
+  "197": {
+    "inputs": {
+      "value": -1060640481872798
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "Int"
+    }
+  }
+}

@@ -1,0 +1,129 @@
+description: Older/v1 version of the Licon-MSR multi-subject-reference i2v workflow
+  (uses the 'LTX2.3-Licon-MSR-test_version' LoRA, node titled 'Licon Multi-Subject
+  Lora'), predating the PromptRelayEncode global_prompt/local_prompts split used by
+  the V2 workflows -- uses a single free-form positive prompt describing the whole
+  scene/dialogue directly. Takes 2 reference subject images (each background-removed
+  via RMBG before compositing) plus a separate scene background image. Same 2-pass
+  base+upscale-refine structure as the newer V2 workflows. Kept in the registry for
+  comparison against V2; see the non-'older-version' workflow for the current version.
+workflow: multi-ref-character-sheet-older-version-i2v-multi-subject-reference-licon-msr-v1-lora-older-version.json
+mode: [i2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  ref_image_1:
+    node_title: REF IMAGE 1
+    param: image
+    type: image
+    required: true
+    help: First reference subject image (background-removed via RMBG before compositing).
+    node: '33'
+  ref_image_2:
+    node_title: REF IMAGE 2
+    param: image
+    type: image
+    required: true
+    help: Second reference subject image (background-removed via RMBG before compositing).
+    node: '29'
+  background_scene:
+    node_title: SCENE BACKGROUND
+    param: image
+    type: image
+    required: true
+    help: Background/scene plate the referenced subjects get placed into.
+    node: '30'
+  positive_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #5'
+    param: text
+    type: str
+    required: false
+    default: "The scene start with a low angle shot of a soccer staium.\n\n\nThe soccer\
+      \ player in white uniform walks into frame as camera slowly cran up to be level\
+      \ with the man. \n\nThe man talks with a British accent, and he says: \"We are\
+      \ here for one thing.....\".\n\nThen the man bends down, and picks up the World\
+      \ Championship trophy and holds its up, and  he says comfidently: \"... to bring\
+      \ this baby home!\"  \n\nand then the soccer player smiles, and blinks one eye. "
+    help: Free-form prompt describing the whole scene/action/dialogue directly (this
+      older version predates the global_prompt/local_prompts PromptRelayEncode split
+      used by the V2 workflows).
+    node: '5'
+  negative_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #6'
+    param: text
+    type: str
+    required: false
+    default: worst quality, blurry, jittery, distorted, inconsistent appearance
+    node: '6'
+  seed:
+    node_title: 'RandomNoise #15'
+    param: noise_seed
+    type: int
+    required: false
+    default: 42
+    node: '15'
+  refine_seed:
+    node_title: 'RandomNoise #138'
+    param: noise_seed
+    type: int
+    required: false
+    default: 43
+    node: '138'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    required: false
+    default: 1280
+    node: '166'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    required: false
+    default: 736
+    node: '167'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 15
+    node: '165'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    node: '164'
+  steps:
+    node_title: BasicScheduler ( for more steps)
+    param: steps
+    type: int
+    required: false
+    default: 25
+    node: '1248'
+  cfg:
+    node_title: 'CFG Guider #37'
+    param: cfg
+    type: float
+    required: false
+    default: 3
+    help: 'Base-pass CFG. The refine pass (''CFG Guider #134'') is fixed at 1, not
+      exposed here.'
+    node: '37'
+  licon_msr_lora_strength:
+    node_title: Licon Multi-Subject Lora
+    param: strength_model
+    type: float
+    required: false
+    default: 1
+    help: Strength of the older/v1 'LTX2.3-Licon-MSR-test_version' multi-subject-reference
+      IC-LoRA -- the central technique this workflow is built around.
+    node: '10'
+  filename_prefix:
+    node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: filename_prefix
+    type: str
+    required: false
+    default: LTX
+    node: '72'

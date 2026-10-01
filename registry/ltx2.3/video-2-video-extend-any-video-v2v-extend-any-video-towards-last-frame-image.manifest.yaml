@@ -1,0 +1,144 @@
+description: 'Extends an existing video forward in time (two-pass: base extension
+  + spatial-upsample refine pass), steering the generated footage toward a supplied
+  target ''last frame'' image.'
+workflow: video-2-video-extend-any-video-v2v-extend-any-video-towards-last-frame-image.json
+mode: [v2v]
+output_node_title: Extended Video
+flags:
+  source_video:
+    node_title: Load Video
+    param: video
+    type: str
+    required: false
+    default: 473e79a9-56bd-4a61-979b-826b8481aefa.mp4
+    help: Source video to extend. Must already exist in ComfyUI's input directory
+      -- no upload path exists for video in this CLI yet.
+    node: '319'
+  last_frame_image:
+    node_title: LAST FRAME
+    param: image
+    type: image
+    required: false
+    default: nextscene_00076_.png
+    help: Target image the extended footage steers toward as its ending frame.
+    node: '4683'
+  force_last_frame:
+    node_title: FORCE LAST FRAME
+    param: value
+    type: str
+    required: false
+    default: 'False'
+    help: If true, forces the generated video to hard-land on last_frame_image; if
+      false, it's used as a softer directional guide.
+    node: '4709'
+  prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    required: false
+    default: "Cinematic video. High quality.  Single continuous camera shot.\n\nAn\
+      \ astronaut is drifting through outer space... \n\nHe talks with a walkie-talkie\
+      \ kinda of voice, and he says: \"nothing more peaceful than outerspace. No nagging,\
+      \ no traffic jams, no noise..  just zen\" \n\nHe drifts onto a cloud, where\
+      \ he rest to sleep. \nHe says: \"This is heaven... litterally...\" \n\n"
+    help: Positive prompt describing what happens in the extended footage (may be
+      auto-enhanced via LLM before use, see enhance_prompt).
+    node: '487'
+  negative_prompt:
+    node_title: CLIP Text Encode (Prompt)
+    param: text
+    type: str
+    required: false
+    default: text, subtitles, logo, low quality, distorted, bad anatomy, oversaturated,
+      pixelated, low resolution, grainy, compression artifacts, jpeg artifacts, glitches,
+      watermark, signature, copyright,  distortedsound, saturated sound, loud sound
+      , deformed facial features, asymmetrical face, missing facial features, extra
+      limbs, disfigured hands, blurry teeth, disfigured teeth
+    help: Negative prompt for the video/visual branch.
+    node: '110'
+  negative_audio_prompt:
+    node_title: Negative Audio Prompt
+    param: text
+    type: str
+    required: false
+    default: ' distorted sound, saturated sound, loud sound'
+    help: Negative prompt for the generated audio branch.
+    node: '626'
+  extend_seconds:
+    node_title: EXTEND (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 15
+    help: How many seconds of new footage to generate past the end of the source video,
+      ending near last_frame_image.
+    node: '211'
+  ref_length_seconds:
+    node_title: REF. LENGTH (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 3
+    help: How many seconds of the source video's tail are used as reference/overlap
+      context for the extension.
+    node: '305'
+  seed:
+    node_title: 'RandomNoise #115'
+    param: noise_seed
+    type: int
+    required: false
+    default: 44
+    help: Seed for the first (base extension) sampling pass.
+    node: '115'
+  seed_upsample:
+    node_title: 'RandomNoise #243'
+    param: noise_seed
+    type: int
+    required: false
+    default: 44
+    help: Seed for the second (spatial-upsample refine) sampling pass.
+    node: '243'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    help: Frame rate used for loading the source video and for the output video combine.
+    node: '214'
+  max_pixel_size:
+    node_title: MAX PIXEL SIZE (longest)
+    param: value
+    type: int
+    required: false
+    default: 832
+    help: Longest-edge pixel size the source video and last_frame_image are resized
+      to before generation.
+    node: '497'
+  single_pass:
+    node_title: SINGLE PASS
+    param: value
+    type: str
+    required: false
+    default: 'True'
+    help: If true, the saved video uses the single-pass (CUT) image path instead of
+      the two-pass spatial-upsample blend path.
+    node: '2214'
+  input_video_has_audio:
+    node_title: INPUT VIDEO HAS AUDIO
+    param: value
+    type: str
+    required: false
+    default: 'False'
+    help: Tells the graph whether the source video's audio track should be used/extended
+      (vs treated as silent).
+    node: '594'
+  enhance_prompt:
+    node_title: ENHANCE PROMPT
+    param: value
+    type: str
+    required: false
+    default: 'False'
+    help: If true, the prompt is rewritten/expanded by an LLM (Gemma via TextGenerateLTX2Prompt)
+      before use; if false, the raw prompt text is used as-is.
+    node: '4240'

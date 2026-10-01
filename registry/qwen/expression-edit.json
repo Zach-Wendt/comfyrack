@@ -1,0 +1,145 @@
+{
+  "1": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    },
+    "_meta": {
+      "title": "Load CLIP"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    },
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "4": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "qwen-image-edit-2511-Q5_1.gguf"
+    },
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "2": {
+    "class_type": "ModelSamplingAuraFlow",
+    "inputs": {
+      "model": ["4", 0],
+      "shift": 3.0
+    },
+    "_meta": {
+      "title": "ModelSamplingAuraFlow"
+    }
+  },
+  "7": {
+    "class_type": "CFGNorm",
+    "inputs": {
+      "model": ["2", 0],
+      "strength": 1.0
+    },
+    "_meta": {
+      "title": "CFGNorm"
+    }
+  },
+  "101": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "expr_src_placeholder.png"
+    },
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "116": {
+    "class_type": "FluxKontextImageScale",
+    "inputs": {
+      "image": ["101", 0]
+    },
+    "_meta": {
+      "title": "FluxKontextImageScale"
+    }
+  },
+  "13": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "inputs": {
+      "clip": ["1", 0],
+      "vae": ["3", 0],
+      "image1": ["116", 0],
+      "image2": null,
+      "image3": null,
+      "prompt": "The person is smiling happily, a big open cheerful warm smile, everything else about the image stays the same."
+    },
+    "_meta": {
+      "title": "TextEncodeQwenImageEditPlus (Positive)"
+    }
+  },
+  "9r": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "inputs": {
+      "clip": ["1", 0],
+      "vae": ["3", 0],
+      "image1": ["116", 0],
+      "image2": null,
+      "image3": null,
+      "prompt": "different person, different outfit, different pose, adult, aged up"
+    },
+    "_meta": {
+      "title": "TextEncodeQwenImageEditPlus (Negative)"
+    }
+  },
+  "31": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": ["116", 0],
+      "vae": ["3", 0]
+    },
+    "_meta": {
+      "title": "VAE Encode"
+    }
+  },
+  "15": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["7", 0],
+      "positive": ["13", 0],
+      "negative": ["9r", 0],
+      "latent_image": ["31", 0],
+      "seed": 6000,
+      "steps": 20,
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 0.80
+    },
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "12": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["15", 0],
+      "vae": ["3", 0]
+    },
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "110": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": ["12", 0],
+      "filename_prefix": "id_dataset/expr_wfcli_run"
+    },
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}

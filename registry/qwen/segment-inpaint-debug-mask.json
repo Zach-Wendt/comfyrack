@@ -1,0 +1,65 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Source Image"
+    },
+    "inputs": {
+      "image": "PLACEHOLDER.png"
+    }
+  },
+  "2": {
+    "class_type": "LoadSAM3Model",
+    "_meta": {
+      "title": "SAM3 Model"
+    },
+    "inputs": {
+      "precision": "auto",
+      "compile": false
+    }
+  },
+  "3": {
+    "class_type": "SAM3Grounding",
+    "_meta": {
+      "title": "SAM3 Segment"
+    },
+    "inputs": {
+      "sam3_model_config": [
+        "2",
+        0
+      ],
+      "image": [
+        "1",
+        0
+      ],
+      "confidence_threshold": 0.2,
+      "text_prompt": "PLACEHOLDER",
+      "max_detections": 1
+    }
+  },
+  "4": {
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Mask To Image"
+    },
+    "inputs": {
+      "mask": [
+        "3",
+        0
+      ]
+    }
+  },
+  "5": {
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    },
+    "inputs": {
+      "images": [
+        "4",
+        0
+      ],
+      "filename_prefix": "debug_mask/wfcli_run"
+    }
+  }
+}

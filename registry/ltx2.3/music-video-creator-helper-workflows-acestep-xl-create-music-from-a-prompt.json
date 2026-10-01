@@ -1,0 +1,293 @@
+{
+  "3": {
+    "inputs": {
+      "seed": [
+        "128",
+        0
+      ],
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "78",
+        0
+      ],
+      "positive": [
+        "94",
+        0
+      ],
+      "negative": [
+        "47",
+        0
+      ],
+      "latent_image": [
+        "98",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "18": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "106",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeAudio",
+    "_meta": {
+      "title": "VAE Decode Audio"
+    }
+  },
+  "47": {
+    "inputs": {
+      "conditioning": [
+        "94",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "78": {
+    "inputs": {
+      "shift": 3,
+      "model": [
+        "104",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingAuraFlow",
+    "_meta": {
+      "title": "ModelSamplingAuraFlow"
+    }
+  },
+  "94": {
+    "inputs": {
+      "tags": [
+        "120",
+        0
+      ],
+      "lyrics": [
+        "121",
+        0
+      ],
+      "seed": [
+        "128",
+        0
+      ],
+      "bpm": [
+        "118",
+        0
+      ],
+      "duration": [
+        "119",
+        0
+      ],
+      "timesignature": "4",
+      "language": "en",
+      "keyscale": "E minor",
+      "generate_audio_codes": true,
+      "cfg_scale": 2,
+      "temperature": 0.85,
+      "top_p": 0.9,
+      "top_k": 0,
+      "min_p": 0,
+      "clip": [
+        "105",
+        0
+      ]
+    },
+    "class_type": "TextEncodeAceStepAudio1.5",
+    "_meta": {
+      "title": "TextEncodeAceStepAudio1.5"
+    }
+  },
+  "98": {
+    "inputs": {
+      "seconds": [
+        "119",
+        0
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyAceStep1.5LatentAudio",
+    "_meta": {
+      "title": "Empty Ace Step 1.5 Latent Audio"
+    }
+  },
+  "104": {
+    "inputs": {
+      "unet_name": "acestep_v1.5_xl_turbo_bf16.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "105": {
+    "inputs": {
+      "clip_name1": "qwen_0.6b_ace15.safetensors",
+      "clip_name2": "qwen_1.7b_ace15.safetensors",
+      "type": "ace",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "106": {
+    "inputs": {
+      "vae_name": "ace_1.5_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "107": {
+    "inputs": {
+      "filename_prefix": "audio/ComfyUI",
+      "quality": "V0",
+      "audioUI": "",
+      "audio": [
+        "18",
+        0
+      ]
+    },
+    "class_type": "SaveAudioMP3",
+    "_meta": {
+      "title": "Save Audio (MP3)"
+    }
+  },
+  "111": {
+    "inputs": {
+      "value": "Dream pop shoegaze anthem. Style: Melodic, dreamy vocals with deep tone. breathy vocals, guitar effects, and a densely produced sound, with nebulous, distorted guitars paired with murmured vocals. Ethereal dream pop, shoegaze undertones, hazy atmosphere, shimmering jangly guitars, heavy reverb, synth pads, breathy vocals, melodic bassline, slow-mid tempo, nostalgic, melancholic, 80s 4AD aesthetic\n\nVocal Style: Use terms like \"breathy vocals\", \"whispered female vocals\", or \"layered harmonies\" to ensure the voice feels floating rather than belting.\nProduction/Mix: Use \"reverb-drenched\", \"lo-fi vinyl crackle\", \"tape delay\", or \"hazy\" \nInstrumentation: Specify \"jangly guitars\", \"analog synth pads\", or \"chorus effects\"\n\n\ndream pop, ethereal vocals, reverb-drenched guitars, slow tempo, atmospheric synths, female/male breathy lead\n "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "STYLE EXAMPLE :  dream pop"
+    }
+  },
+  "112": {
+    "inputs": {
+      "value": "1980s old school hip hop, 95 BPM, TR-808 and LinnDrum drum machine, punchy kick-snare pattern, funky Moog-style synth bass, Rhodes electric piano stabs, vinyl crackle, tape hiss, DJ turntable scratches and record cues, raw analog production, warm saturated mix, crisp rhythmic male rap vocals, call-and-response ad-libs, party and braggadocio vibe, sparse groove-focused arrangement, vintage hip hop aesthetic\n\n\nMusic style: 1980s old school hip hop, early boom bap, electro-funk hip hop\n\nInstruments: TR-808, LinnDrum, Oberheim DMX, Moog bass, Rhodes piano, sampled funk breaks, sparse brass hits\n\nSound production: tape saturation, vinyl crackle, room reverb on drums, dry upfront vocals, light slapback delay, analog warmth, mid-forward mix\n\nSound effects: DJ scratches, record cues, air horns, tape stop, turntable needle drop, crowd noise, mic check (\"check it\", \"yeah\")\n\nVocal style: clear enunciation, 4/4 rhythmic cadence, doubled hook vocals, hype man ad-libs, raw unpolished delivery, occasional pitch-shifted backing\n\nExlude these: no modern trap, no auto-tune, no 808 sub drops, no melodic rap, strictly 1980s production\n"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Classic 80s Rap - Style Example"
+    }
+  },
+  "116": {
+    "inputs": {
+      "value": "Energetic EDM: High-energy EDM Pop/Future House with deep punchy bass, bright synths, and festival-style drops.\nMelodic & Bouncy: Tracks focusing on deep bass and melodic synth stabs, often in the 124\u2013128 BPM range.\nFusion: Blending Future House with other genres like Tropical House or Techno. "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "STYLE EXAMPLE: Future House"
+    }
+  },
+  "118": {
+    "inputs": {
+      "value": 72
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "BPM"
+    }
+  },
+  "119": {
+    "inputs": {
+      "value": 120
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "Song Duration (in seconds)"
+    }
+  },
+  "120": {
+    "inputs": {
+      "value": "Energetic EDM: High-energy EDM Pop/Future House with deep punchy bass, bright synths, and festival-style drops.\nMelodic & Bouncy: Tracks focusing on deep bass and melodic synth stabs, often in the 124\u2013128 BPM range.\nFusion: Blending Future House with other genres like Tropical House or Techno. "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "PROMPT : describe the music style, etc"
+    }
+  },
+  "121": {
+    "inputs": {
+      "value": "[Intro - soft synth pad, distant guitar swell, slow breath]\nDrifting through the latent space\u2026\nWhere quiet prompts begin to wake\u2026\n\n[Verse 1]\nI type a whisper, watch it bloom\nIn pixel fog and quiet rooms\nA hundred frames begin to breathe\nWhile melodies I couldn\u2019t weave\nNow rise from weights, unchained and free\nLike open doors for you and me\n\n[Pre-Chorus]\nAnd every node connects the light\nTo hands that build without a fight\nNo locked gates, just open skies\nWhere anyone can close their eyes\u2026 and dream\n\n[Chorus]\nOh, AceStep XL, you paint my dreams\nComfyUI, you stitch the seams\nOf every film, each trembling tone\nWhere lonely sparks now feel at home\nThank you, Kijai, for the quiet grace\nThat smoothed the path through digital space\nWe dream in code, we dream in blue\nAnd every open door leads through\n\n[Outro soft, echoing, tempo gently slows]\nOpen source\u2026 open hearts\u2026\nWe build the world from scattered parts\u2026\nThank you\u2026 thank you\u2026\n\n[reverb tail fades into silence]\n"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "LYRICS"
+    }
+  },
+  "128": {
+    "inputs": {
+      "value": 31
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "SEED"
+    }
+  },
+  "132": {
+    "inputs": {
+      "value": "[Intro: DJ scratch + beat drop]\n[Verse 1]\n[Chorus]\n[Break: Turntable solo + air horn]\n[Verse 2]\n[Chorus]\n[Outro: Beat fade + vinyl runout]\n\n-- \n\n80s rap used tight, repetitive hooks and downbeat-heavy phrasing. Structure lyrics like:\n\nCheck it, step up to the mic, yeah (yeah)\nDrop the beat, let the record strike (strike)"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Classic 80s Rap - Lyrics Example"
+    }
+  },
+  "133": {
+    "inputs": {
+      "value": "Music style: modern alternative pop, 75 BPM, minimalist production, sub-bass 808, soft trap-influenced drums, detuned piano loops, atmospheric synth pads, whispered intimate female vocals, layered harmonies, close-mic ASMR texture, vinyl warmth, subtle glitch FX, reverb-drenched but controlled mix, moody confessional vibe, sparse arrangement with dynamic swells\n\nInstruments: sub-bass 808, soft trap snares, detuned upright piano, analog synth pads, muted guitar loops, music box, reversed samples, vinyl crackle\n\nSound production: close-mic vocal recording, intimate whisper-to-belt dynamics, sidechain compression on pads, subtle tape saturation, wide stereo reverb on vocals only, dry upfront drums, low-end focus\n\nVocal style: soft breathy lead vocal, layered harmonies in chorus, occasional vocal fry, intimate conversational delivery, subtle pitch correction (not robotic), emotional dynamic build\n\nExlude these: no bright pop synths, no heavy EDM drops, no aggressive rock guitars, no auto-tune melodies, no maximalist production\n\n\n"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Modern Alt. Pop - Style Example"
+    }
+  },
+  "134": {
+    "inputs": {
+      "value": "[Intro: whispered vocal + detuned piano + sub-bass swell]\n[Verse 1: intimate vocal, minimal drums]\n[Pre-Chorus: layered harmonies enter, pad swell]\n[Chorus: full vocal stack, sub-bass drop, wide reverb]\n[Bridge: stripped back, spoken word + glitch FX]\n[Outro: vocal fade + vinyl runout]"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Modern Alt. Pop - Lyrics Example"
+    }
+  },
+  "136": {
+    "inputs": {
+      "value": "synthwave retro electro, 105 BPM, analog Juno-106 arpeggios, gated reverb LinnDrum snare, pulsing Moog bassline, DX7 electric piano chords, chorus-drenched guitar licks, tape saturation, vinyl crackle, cinematic neon atmosphere, driving late-night vibe, wide stereo pads, subtle vocoder ad-libs, sidechain compression on pads, nostalgic 1980s aesthetic\n\nMusic style: synthwave, retro electro, outrun, darksynth, dreamwave, cinematic retro pop\n\nInstruments: Juno-106, Jupiter-8, Prophet-5, DX7, LinnDrum, TR-707, Moog bass, chorus guitar, gated snare, arpeggiated synth leads\n\nSound production: heavy gated reverb on snare, tape saturation, sidechain compression on pads, wide stereo imaging, low-pass filtered highs, vintage analog warmth, cinematic reverb tails \n\nSound effects: vinyl crackle, tape hiss, laser zaps, risers/downlifters, radio filter sweeps, vocoder chops, neon sign buzz, distant police siren, cassette click \n\nVocal style: breathy melancholic male/female vocal, distant/reverbed mix, subtle vocoder doubling, conversational delivery, emotional but restrained, talkbox ad-libs\n\nExlude : no acoustic drums, no modern trap hi-hats, no organic percussion, no bright pop synths, no contemporary vocal runs\n"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Synthwave - Style Example"
+    }
+  },
+  "137": {
+    "inputs": {
+      "value": "[Intro: vinyl crackle + arpeggio swell + distant siren]\n[Verse: pulsing bass + gated snare + breathy vocal]\n[Chorus: wide pads + chorus guitar + vocoder harmonies]\n[Bridge: stripped arpeggio + filter sweep + talkbox ad-lib]\n[Outro: arpeggio fade + tape stop + neon buzz]"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Synthwave - Lyrics Example"
+    }
+  }
+}

@@ -1,0 +1,1031 @@
+{
+  "1241": {
+    "inputs": {
+      "frame_rate": [
+        "5133",
+        0
+      ],
+      "positive": [
+        "2483",
+        0
+      ],
+      "negative": [
+        "2612",
+        0
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning"
+    }
+  },
+  "2483": {
+    "inputs": {
+      "text": [
+        "5205:593",
+        0
+      ],
+      "clip": [
+        "5102",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)"
+    }
+  },
+  "2612": {
+    "inputs": {
+      "text": "text, subtitles, logo, low quality, distorted, bad anatomy, oversaturated, pixelated, low resolution, grainy, compression artifacts, jpeg artifacts, glitches, watermark, signature, copyright,  distortedsound, saturated sound, loud sound , deformed facial features, asymmetrical face, missing facial features, extra limbs, disfigured hands, blurry teeth, disfigured teeth",
+      "clip": [
+        "5102",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative Prompt)"
+    }
+  },
+  "3059": {
+    "inputs": {
+      "width": [
+        "5252:5249",
+        1
+      ],
+      "height": [
+        "5252:5249",
+        2
+      ],
+      "length": [
+        "5064",
+        6
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo"
+    }
+  },
+  "3336": {
+    "inputs": {
+      "img_compression": 16,
+      "image": [
+        "5227",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess"
+    }
+  },
+  "3980": {
+    "inputs": {
+      "frames_number": [
+        "5064",
+        6
+      ],
+      "frame_rate": [
+        "5151",
+        1
+      ],
+      "batch_size": 1,
+      "audio_vae": [
+        "5098",
+        0
+      ]
+    },
+    "class_type": "LTXVEmptyLatentAudio",
+    "_meta": {
+      "title": "LTXV Empty Latent Audio"
+    }
+  },
+  "4528": {
+    "inputs": {
+      "video_latent": [
+        "5012",
+        2
+      ],
+      "audio_latent": [
+        "5302",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent"
+    }
+  },
+  "4828": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "5195",
+        0
+      ],
+      "positive": [
+        "5012",
+        0
+      ],
+      "negative": [
+        "5012",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider"
+    }
+  },
+  "4829": {
+    "inputs": {
+      "noise": [
+        "4832",
+        0
+      ],
+      "guider": [
+        "4828",
+        0
+      ],
+      "sampler": [
+        "4831",
+        0
+      ],
+      "sigmas": [
+        "5025",
+        0
+      ],
+      "latent_image": [
+        "4528",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced"
+    }
+  },
+  "4831": {
+    "inputs": {
+      "sampler_name": "euler_ancestral_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect"
+    }
+  },
+  "4832": {
+    "inputs": {
+      "noise_seed": 42
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise"
+    }
+  },
+  "4845": {
+    "inputs": {
+      "av_latent": [
+        "4829",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent"
+    }
+  },
+  "4848": {
+    "inputs": {
+      "samples": [
+        "4845",
+        1
+      ],
+      "audio_vae": [
+        "5098",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode",
+    "_meta": {
+      "title": "LTXV Audio VAE Decode"
+    }
+  },
+  "4851": {
+    "inputs": {
+      "tile_size": 512,
+      "overlap": 64,
+      "temporal_size": 512,
+      "temporal_overlap": 4,
+      "samples": [
+        "5013",
+        2
+      ],
+      "vae": [
+        "5103",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeTiled",
+    "_meta": {
+      "title": "VAE Decode (Tiled)"
+    }
+  },
+  "5011": {
+    "inputs": {
+      "lora_name": "ltx-2.3-22b-ic-lora-outpaint.safetensors",
+      "strength_model": 1,
+      "model": [
+        "5107",
+        0
+      ]
+    },
+    "class_type": "LTXICLoRALoaderModelOnly",
+    "_meta": {
+      "title": "\ud83c\udd5b\ud83c\udd63\ud83c\udd67 IC-LoRA Loader Model Only"
+    }
+  },
+  "5012": {
+    "inputs": {
+      "frame_idx": 0,
+      "strength": 1,
+      "latent_downscale_factor": 1,
+      "crop": "disabled",
+      "use_tiled_encode": true,
+      "tile_size": 256,
+      "tile_overlap": 64,
+      "positive": [
+        "1241",
+        0
+      ],
+      "negative": [
+        "1241",
+        1
+      ],
+      "vae": [
+        "5103",
+        0
+      ],
+      "latent": [
+        "3059",
+        0
+      ],
+      "image": [
+        "5252:5249",
+        0
+      ]
+    },
+    "class_type": "LTXAddVideoICLoRAGuide",
+    "_meta": {
+      "title": "Add Video IC-LoRA Guide"
+    }
+  },
+  "5013": {
+    "inputs": {
+      "positive": [
+        "5012",
+        0
+      ],
+      "negative": [
+        "5012",
+        1
+      ],
+      "latent": [
+        "4845",
+        0
+      ]
+    },
+    "class_type": "LTXVCropGuides",
+    "_meta": {
+      "title": "LTXVCropGuides"
+    }
+  },
+  "5025": {
+    "inputs": {
+      "sigmas": "1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas"
+    }
+  },
+  "5026": {
+    "inputs": {
+      "resize_type": "scale longer dimension",
+      "resize_type.longer_size": [
+        "5174",
+        0
+      ],
+      "scale_method": "lanczos",
+      "input": [
+        "5086",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask #5026"
+    }
+  },
+  "5064": {
+    "inputs": {
+      "video_info": [
+        "5207",
+        3
+      ]
+    },
+    "class_type": "VHS_VideoInfo",
+    "_meta": {
+      "title": "Video Info \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "5076": {
+    "inputs": {
+      "frame_rate": [
+        "5133",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-2-Outpaint",
+      "format": "video/nvenc_h264-mp4",
+      "pix_fmt": "yuv420p",
+      "bitrate": 10,
+      "megabit": true,
+      "save_metadata": true,
+      "pingpong": false,
+      "save_output": false,
+      "images": [
+        "5262:5259",
+        0
+      ],
+      "audio": [
+        "5295",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "5086": {
+    "inputs": {
+      "left": [
+        "5281",
+        0
+      ],
+      "right": [
+        "5282",
+        0
+      ],
+      "top": [
+        "5283",
+        0
+      ],
+      "bottom": [
+        "5284",
+        0
+      ],
+      "extra_padding": 0,
+      "pad_mode": "color",
+      "color": "0, 0, 0",
+      "image": [
+        "5253",
+        0
+      ]
+    },
+    "class_type": "ImagePadKJ",
+    "_meta": {
+      "title": "ImagePad KJ"
+    }
+  },
+  "5091": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "Very dark video"
+    }
+  },
+  "5097": {
+    "inputs": {
+      "vae_name": "taeltx2_3.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #5097"
+    }
+  },
+  "5098": {
+    "inputs": {
+      "vae_name": "LTX23_audio_vae_bf16.safetensors",
+      "device": "main_device",
+      "weight_dtype": "bf16"
+    },
+    "class_type": "VAELoaderKJ",
+    "_meta": {
+      "title": "VAELoader KJ"
+    }
+  },
+  "5100": {
+    "inputs": {
+      "model_name": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+    },
+    "class_type": "LatentUpscaleModelLoader",
+    "_meta": {
+      "title": "Load Latent Upscale Model"
+    }
+  },
+  "5102": {
+    "inputs": {
+      "text_encoder": "gemma_3_12B_it_fp8_scaled.safetensors",
+      "ckpt_name": "ltx-2.3_text_projection_bf16.safetensors",
+      "device": "default"
+    },
+    "class_type": "LTXAVTextEncoderLoader",
+    "_meta": {
+      "title": "LTXV Audio Text Encoder Loader"
+    }
+  },
+  "5103": {
+    "inputs": {
+      "vae_name": "LTX23_video_vae_bf16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #5103"
+    }
+  },
+  "5104": {
+    "inputs": {
+      "unet_name": "ltx-2.3-22b-distilled_transformer_only_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "5107": {
+    "inputs": {
+      "blocks": "",
+      "video_scale": 1,
+      "audio_scale": 1,
+      "audio_to_video_scale": 1,
+      "video_to_audio_scale": 1,
+      "triton_kernels": true,
+      "model": [
+        "5104",
+        0
+      ]
+    },
+    "class_type": "LTX2AttentionTunerPatch",
+    "_meta": {
+      "title": "LTX2 Attention Tuner Patch"
+    }
+  },
+  "5133": {
+    "inputs": {
+      "value": 24
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "FPS"
+    }
+  },
+  "5136": {
+    "inputs": {
+      "value": 450
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INPUT WIDTH"
+    }
+  },
+  "5137": {
+    "inputs": {
+      "value": 780
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "INPUT HEIGHT"
+    }
+  },
+  "5149": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "5011",
+        0
+      ],
+      "vae": [
+        "5097",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override"
+    }
+  },
+  "5151": {
+    "inputs": {
+      "expression": "a",
+      "values.a": [
+        "5133",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression"
+    }
+  },
+  "5174": {
+    "inputs": {
+      "value": 1280
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "OUTPUT MAX SIZE (longer side)"
+    }
+  },
+  "5193": {
+    "inputs": {
+      "shift": 13,
+      "model": [
+        "5011",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "ModelSamplingSD3"
+    }
+  },
+  "5194": {
+    "inputs": {
+      "scheduler": "linear_quadratic",
+      "steps": 15,
+      "denoise": 1,
+      "model": [
+        "5193",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler ( for more steps)"
+    }
+  },
+  "5195": {
+    "inputs": {
+      "nag_scale": 11,
+      "nag_alpha": 0.25,
+      "nag_tau": 2.5,
+      "inplace": true,
+      "model": [
+        "5149",
+        0
+      ],
+      "nag_cond_video": [
+        "1241",
+        1
+      ],
+      "nag_cond_audio": [
+        "1241",
+        1
+      ]
+    },
+    "class_type": "LTX2_NAG",
+    "_meta": {
+      "title": "LTX2 NAG"
+    }
+  },
+  "5206": {
+    "inputs": {
+      "source": [
+        "5205:593",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "ENHANCED PROMPT"
+    }
+  },
+  "5207": {
+    "inputs": {
+      "video": "450x_auto__ (2) (1) (1).mp4",
+      "force_rate": [
+        "5133",
+        0
+      ],
+      "custom_width": 0,
+      "custom_height": 0,
+      "frame_load_cap": 0,
+      "start_time": 0,
+      "format": "AnimateDiff"
+    },
+    "class_type": "VHS_LoadVideoFFmpeg",
+    "_meta": {
+      "title": "Load Video FFmpeg (Upload) \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "5208": {
+    "inputs": {
+      "start_index": 0,
+      "num_frames": 1,
+      "images": [
+        "5253",
+        0
+      ]
+    },
+    "class_type": "GetImageRangeFromBatch",
+    "_meta": {
+      "title": "First Frame"
+    }
+  },
+  "5214": {
+    "inputs": {
+      "value": true
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "ENABLE PROMPT ENHANCER"
+    }
+  },
+  "5216": {
+    "inputs": {
+      "value": "Cinematic video of  a stingray moving under water.  Tracking camera. \n\nThe view is partly below water surface, and partly above water surface. Above the water a tropical cabin can be seen in the distance at a small tropical island. \n\nSound of water, and the singray, as well as sound of sea and tropical nature above water. "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Prompt"
+    }
+  },
+  "5226": {
+    "inputs": {
+      "images": [
+        "5227",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Mask Preview"
+    }
+  },
+  "5227": {
+    "inputs": {
+      "start_index": 0,
+      "num_frames": 1,
+      "images": [
+        "5026",
+        0
+      ]
+    },
+    "class_type": "GetImageRangeFromBatch",
+    "_meta": {
+      "title": "First Frame Masked"
+    }
+  },
+  "5253": {
+    "inputs": {
+      "width": [
+        "5136",
+        0
+      ],
+      "height": [
+        "5137",
+        0
+      ],
+      "upscale_method": "nearest-exact",
+      "keep_proportion": "crop",
+      "pad_color": "0, 0, 0",
+      "crop_position": "center",
+      "divisible_by": 32,
+      "device": "cpu",
+      "image": [
+        "5207",
+        0
+      ]
+    },
+    "class_type": "ImageResizeKJv2",
+    "_meta": {
+      "title": "Resize Image v2"
+    }
+  },
+  "5274": {
+    "inputs": {
+      "clip_name1": "gemma-3-12b-it-Q2_K.gguf",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "sdxl"
+    },
+    "class_type": "DualCLIPLoaderGGUF",
+    "_meta": {
+      "title": "DualCLIPLoader (GGUF)"
+    }
+  },
+  "5277": {
+    "inputs": {
+      "unet_name": "LTXvideo\\LTX-2\\quantstack\\LTX-2.3-distilled-Q4_K_S.gguf"
+    },
+    "class_type": "UnetLoaderGGUF",
+    "_meta": {
+      "title": "Unet Loader (GGUF)"
+    }
+  },
+  "5281": {
+    "inputs": {
+      "value": 300
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "LEFT"
+    }
+  },
+  "5282": {
+    "inputs": {
+      "value": 300
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "RIGHT"
+    }
+  },
+  "5283": {
+    "inputs": {
+      "value": 0
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "TOP"
+    }
+  },
+  "5284": {
+    "inputs": {
+      "value": 0
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "BOTTOM"
+    }
+  },
+  "5295": {
+    "inputs": {
+      "switch": false,
+      "on_false": [
+        "4848",
+        0
+      ],
+      "on_true": [
+        "5207",
+        2
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Audio => True = input audio"
+    }
+  },
+  "5301": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "Video Input has audio"
+    }
+  },
+  "5302": {
+    "inputs": {
+      "switch": [
+        "5301",
+        0
+      ],
+      "on_false": [
+        "3980",
+        0
+      ],
+      "on_true": [
+        "5305",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #5302"
+    }
+  },
+  "5305": {
+    "inputs": {
+      "audio": [
+        "5207",
+        2
+      ],
+      "audio_vae": [
+        "5098",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEEncode",
+    "_meta": {
+      "title": "LTXV Audio VAE Encode"
+    }
+  },
+  "5252:5245": {
+    "inputs": {
+      "switch": [
+        "5091",
+        0
+      ],
+      "on_false": [
+        "5026",
+        0
+      ],
+      "on_true": [
+        "5252:5246",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #5252:5245"
+    }
+  },
+  "5252:5246": {
+    "inputs": {
+      "clamp": true,
+      "gamma": 2,
+      "contrast": 1,
+      "exposure": 0,
+      "offset": 0,
+      "hue": 0,
+      "saturation": 1,
+      "value": 1,
+      "image": [
+        "5026",
+        0
+      ]
+    },
+    "class_type": "Color Correct (mtb)",
+    "_meta": {
+      "title": "Color Correct (mtb) #5252:5246"
+    }
+  },
+  "5252:5248": {
+    "inputs": {
+      "resize_type": "scale to multiple",
+      "resize_type.multiple": 32,
+      "scale_method": "area",
+      "input": [
+        "5252:5245",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask #5252:5248"
+    }
+  },
+  "5252:5249": {
+    "inputs": {
+      "image": [
+        "5252:5248",
+        0
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count"
+    }
+  },
+  "5205:484": {
+    "inputs": {
+      "value": ""
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "LTX-2 PROMPT INSTRUCT"
+    }
+  },
+  "5205:593": {
+    "inputs": {
+      "switch": [
+        "5214",
+        0
+      ],
+      "on_false": [
+        "5216",
+        0
+      ],
+      "on_true": [
+        "5205:485",
+        0
+      ]
+    },
+    "class_type": "LazySwitchKJ",
+    "_meta": {
+      "title": "Bypass when disabled"
+    }
+  },
+  "5205:486": {
+    "inputs": {
+      "text": "Style: cinematic - realistic - A solitary soldier walks through a ruined city, the air thick with smoke and ash. The scene is bathed in a warm, orange glow from distant fires. The soldier, clad in tactical gear and a futuristic mask, advances cautiously, his weapon held at the ready. The sound of crackling flames and the eerie silence of an abandoned city fill the air. Suddenly, the soldier raises his gun and fires a burst of shots, the sound echoing through the desolate landscape. The camera focuses on the soldier's determined expression as he surveys the destruction around him, the scene conveying a sense of impending doom and a desperate fight for survival.",
+      "anything": [
+        "5205:485",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "Enhanced Prompt"
+    }
+  },
+  "5205:485": {
+    "inputs": {
+      "prompt": [
+        "5205:482",
+        0
+      ],
+      "max_length": 256,
+      "sampling_mode": "off",
+      "thinking": false,
+      "use_default_template": true,
+      "clip": [
+        "5102",
+        0
+      ],
+      "image": [
+        "5208",
+        0
+      ]
+    },
+    "class_type": "TextGenerateLTX2Prompt",
+    "_meta": {
+      "title": "Generate LTX2 Prompt"
+    }
+  },
+  "5205:482": {
+    "inputs": {
+      "string_a": [
+        "5205:484",
+        0
+      ],
+      "string_b": [
+        "5216",
+        0
+      ],
+      "delimiter": ""
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text"
+    }
+  },
+  "5262:5088": {
+    "inputs": {
+      "clamp": true,
+      "gamma": 0.5,
+      "contrast": 1,
+      "exposure": 0,
+      "offset": 0,
+      "hue": 0,
+      "saturation": 1,
+      "value": 1,
+      "image": [
+        "4851",
+        0
+      ]
+    },
+    "class_type": "Color Correct (mtb)",
+    "_meta": {
+      "title": "Color Correct (mtb) #5262:5088"
+    }
+  },
+  "5262:5259": {
+    "inputs": {
+      "switch": [
+        "5091",
+        0
+      ],
+      "on_false": [
+        "4851",
+        0
+      ],
+      "on_true": [
+        "5262:5088",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #5262:5259"
+    }
+  }
+}

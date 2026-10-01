@@ -1,0 +1,70 @@
+description: 'Video-to-video multilingual lip-dubbing (LTX-2.3 LipDub IC-LoRA): re-renders
+  the speaker''s mouth/face to match new dialogue audio described in the prompt (e.g.
+  a translated line), producing a lip-synced dub. Single unambiguous VHS_VideoCombine
+  output (save_output=True). The lipdub IC-LoRA''s strength lives inside a Power Lora
+  Loader (rgthree) per-slot dict (''lora_1'') and is not exposed as a flag, consistent
+  with existing registry convention for that node type.'
+workflow: video-2-video-v2v-just-dub-it-multilanguage-dubbing-ic-lora-lipdub.json
+mode: [v2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  dub_prompt:
+    node_title: Prompt
+    param: value
+    type: str
+    default: "Cinematic. A woman is talking with emotions.\n\nShe speaks in Swedish\
+      \ and she says: \"Om du f\xF6r en sekund tror att huvudstaden n\xE5gonsin kommer\
+      \ att behandla oss r\xE4ttvist, s\xE5 ljuger du f\xF6r dig sj\xE4lv. F\xF6r\
+      \ vi vet vilka de \xE4r och vad de g\xF6r..\" "
+    help: 'Scene description + the new dialogue/language line to lip-sync, e.g. ''She
+      speaks in Swedish and says: ...''.'
+    node: '5322'
+  negative_prompt:
+    node_title: CLIP Text Encode (Negative Prompt)
+    param: text
+    type: str
+    default: text, subtitles, logo, low quality, distorted, bad anatomy, oversaturated,
+      pixelated, low resolution, grainy, compression artifacts, jpeg artifacts, glitches,
+      watermark, signature, copyright,  distortedsound, saturated sound, loud sound
+      , deformed facial features, asymmetrical face, missing facial features, extra
+      limbs, disfigured hands, blurry teeth, disfigured teeth
+    node: '5318'
+  seed:
+    node_title: 'RandomNoise #77'
+    param: noise_seed
+    type: int
+    default: 35
+    node: '77'
+  seed_pass2:
+    node_title: 'RandomNoise #5428'
+    param: noise_seed
+    type: int
+    default: 26
+    help: Seed for the second (upscale/refine) sampling pass.
+    node: '5428'
+  source_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: video
+    type: str
+    default: dub_hungergames.mp4
+    help: Filename of source video; must already exist in ComfyUI's input directory
+      (no upload path for video yet in this CLI).
+    node: '840'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '830'
+  max_size:
+    node_title: MAX SIZE (longest)
+    param: value
+    type: int
+    default: 960
+    node: '846'
+  max_length_seconds:
+    node_title: MAX LENGTH (seconds)
+    param: value
+    type: int
+    default: 15
+    node: '5334'

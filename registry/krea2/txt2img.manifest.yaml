@@ -1,0 +1,125 @@
+description: 'Krea 2 Turbo text-to-image (8 steps, cfg 1) with an optional identity or style LoRA and a light post-decode pixel-noise finishing pass. The default UNet file is not on disk, so download it before running.'
+workflow: txt2img.json
+mode: [t2i]
+output_node_title: Final (enhanced)
+requires:
+  nodes:
+    CLIPLoader: core
+    CLIPTextEncode: core
+    ConditioningZeroOut: core
+    EmptyLatentImage: core
+    ImageAddNoise: core
+    KSampler: core
+    LoraLoaderModelOnly: core
+    PreviewImage: core
+    SaveImage: core
+    UNETLoader: core
+    VAEDecode: core
+    VAELoader: core
+  models:
+  - directory: diffusion_models
+    name: krea2_turbo_nvfp4.safetensors
+    url: https://huggingface.co/Comfy-Org/Krea-2/resolve/main/diffusion_models/krea2_turbo_nvfp4.safetensors
+  - directory: text_encoders
+    name: qwen3vl_4b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Krea-2/resolve/main/text_encoders/qwen3vl_4b_fp8_scaled.safetensors
+  - directory: vae
+    name: wan_2.1_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors
+  - directory: loras
+    name: krea/Multiple_realistic_02_000001400.safetensors
+    source: unknown
+flags:
+  prompt:
+    node_title: Prompt  (edit me)
+    param: text
+    type: str
+    required: true
+    node: '4'
+  seed:
+    node_title: "KSampler \u2014 Turbo (8 steps)"
+    param: seed
+    type: int
+    required: true
+    node: '7'
+  width:
+    node_title: Resolution
+    param: width
+    type: int
+    default: 1920
+    node: '6'
+  height:
+    node_title: Resolution
+    param: height
+    type: int
+    default: 1080
+    node: '6'
+  unet_name:
+    node_title: Load Diffusion Model
+    param: unet_name
+    type: str
+    default: krea2_turbo_nvfp4.safetensors
+    help: Not on disk as of 2026-07-20 -- download before running.
+    node: '1'
+  clip_name:
+    node_title: Load CLIP
+    param: clip_name
+    type: str
+    default: qwen3vl_4b_fp8_scaled.safetensors
+    node: '2'
+  vae_name:
+    node_title: Load VAE
+    param: vae_name
+    type: str
+    default: wan_2.1_vae.safetensors
+    node: '3'
+  steps:
+    node_title: "KSampler \u2014 Turbo (8 steps)"
+    param: steps
+    type: int
+    default: 10
+    node: '7'
+  cfg:
+    node_title: "KSampler \u2014 Turbo (8 steps)"
+    param: cfg
+    type: float
+    default: 1
+    node: '7'
+  sampler_name:
+    node_title: "KSampler \u2014 Turbo (8 steps)"
+    param: sampler_name
+    type: str
+    default: er_sde
+    node: '7'
+  scheduler:
+    node_title: "KSampler \u2014 Turbo (8 steps)"
+    param: scheduler
+    type: str
+    default: simple
+    node: '7'
+  lora_name:
+    node_title: Load LoRA
+    param: lora_name
+    type: str
+    default: krea\Multiple_realistic_02_000001400.safetensors
+    help: Identity/style LoRA. Point this at a trained CCC-dataset LoRA to generate
+      that character in Krea 2.
+    node: '28'
+  lora_strength:
+    node_title: Load LoRA
+    param: strength_model
+    type: float
+    default: 0.96
+    node: '28'
+  finishing_noise_strength:
+    node_title: Add Noise to Image
+    param: strength
+    type: float
+    default: 0.02
+    node: '29'
+  filename_prefix:
+    node_title: Final (enhanced)
+    param: filename_prefix
+    type: str
+    default: krea_2pass
+    node: '20'

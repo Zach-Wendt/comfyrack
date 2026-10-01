@@ -1,0 +1,74 @@
+description: 'Local Ideogram4 model (a Flux-2-family checkpoint, NOT the cloud Ideogram
+  API) text-to-image helper: builds a single multi-panel collage image (head close-up
+  + full-body turnaround + prop close-ups + an environment panel, per the Ideogram4PromptBuilderKJ
+  layout) from a structured text description alone -- no reference image input, purely
+  prompt-driven. Intended as an ''ingredients''/reference sheet for training an ingredients
+  LoRA. CAUTION -- this graph has no SaveImage node at all: its only output is the
+  ''Preview Image'' node, which is ephemeral (never written to ComfyUI''s output/
+  directory), which is why that node is the output_node_title here rather than a persisted
+  file; add a SaveImage node to the JSON if a disk-persisted result is needed.'
+workflow: multi-ref-character-sheet-helper-wf-ideogram-reference-sheet-for-ingredients-lora.json
+mode: [i2i]
+output_node_title: Preview Image
+flags:
+  high_level_description:
+    node_title: Ideogram 4 Prompt Builder KJ
+    param: high_level_description
+    type: str
+    required: false
+    default: A collage of concept art assets and environment design featuring a female,
+      clothing details, props, and an urban setting. Photographic cinematic quality
+    help: 'Top-level scene/collage description fed into the Ideogram4 prompt builder.
+      The builder also carries a large structured ''elements_data'' JSON blob (one
+      entry per collage panel: description, palette, position) on the same node --
+      not exposed as a separate flag here since it isn''t a single scalar; edit the
+      workflow JSON directly for per-panel control.'
+    node: '247'
+  negative_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #207'
+    param: text
+    type: str
+    required: false
+    default: bad anatomy, poorly drawn face, extra fingers, missing fingers, mutated
+      hands, extra limbs, missing limbs
+    node: '207'
+  seed:
+    node_title: RandomNoise
+    param: noise_seed
+    type: int
+    required: false
+    default: 278439301558151
+    node: '4'
+  steps:
+    node_title: DEFAULT - Ideogram 4 Scheduler
+    param: steps
+    type: int
+    required: false
+    default: 20
+    help: Only the DEFAULT Ideogram 4 Scheduler's steps is actually wired into the
+      sampler's sigmas input -- the QUALITY (48-step) and TURBO (12-step) scheduler
+      nodes also present in the graph are unused/disconnected alternates, not live
+      toggles.
+    node: '203'
+  aspect_ratio:
+    node_title: Resolution Selector
+    param: aspect_ratio
+    type: str
+    required: false
+    default: 16:9 (Widescreen)
+    node: '194'
+  megapixels:
+    node_title: Resolution Selector
+    param: megapixels
+    type: float
+    required: false
+    default: 2
+    node: '194'
+  lora_strength:
+    node_title: Load LoRA
+    param: strength_model
+    type: float
+    required: false
+    default: 1
+    help: Strength of the ideogram_4_turbotime_v1 LoRA.
+    node: '250'

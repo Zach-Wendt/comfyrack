@@ -1,0 +1,45 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "_meta": {"title": "Load Image"},
+    "inputs": {
+      "image": "default_upload_folder/judge_input.png"
+    }
+  },
+  "2": {
+    "class_type": "AILab_QwenVL_Advanced",
+    "_meta": {"title": "Qwen-VL Judge"},
+    "inputs": {
+      "image": ["1", 0],
+      "video": null,
+      "model_name": "Qwen3-VL-2B-Instruct",
+      "quantization": "None (FP16)",
+      "attention_mode": "auto",
+      "use_torch_compile": false,
+      "device": "auto",
+      "preset_prompt": "🖼️ Detailed Description",
+      "custom_prompt": "PLACEHOLDER -- vl_judge.py overwrites this with JUDGE_PROMPT / JUDGE_PROMPT_NO_REF before submit",
+      "max_tokens": 700,
+      "temperature": 0.2,
+      "top_p": 0.9,
+      "num_beams": 1,
+      "repetition_penalty": 1.1,
+      "frame_count": 16,
+      "keep_model_loaded": true,
+      "seed": 1,
+      "control_after_generate": "fixed"
+    }
+  },
+  "3": {
+    "class_type": "Save Text File",
+    "_meta": {"title": "Save Text File"},
+    "inputs": {
+      "text": ["2", 0],
+      "path": "./ComfyUI/output/qwen_judge",
+      "filename_prefix": "qwen_judge_temp",
+      "filename_delimiter": "",
+      "filename_number_padding": 0,
+      "file_extension": ".txt"
+    }
+  }
+}

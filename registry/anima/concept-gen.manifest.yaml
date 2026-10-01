@@ -1,0 +1,68 @@
+description: "Text-to-image generation with Anima and a cel-shading style LoRA at fixed settings: sampler er_sde, scheduler simple, 20 steps, cfg 4, 832x1216, no identity LoRA."
+workflow: concept-gen.json
+mode: [t2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CLIPLoader: core
+    CLIPTextEncode: core
+    EmptyLatentImage: core
+    KSampler: core
+    LoraLoader: core
+    SaveImage: core
+    UNETLoader: core
+    VAEDecode: core
+    VAELoader: core
+  models:
+  - directory: diffusion_models
+    name: anima_baseV10.safetensors
+    url: https://huggingface.co/LyliaEngine/anima_baseV10/resolve/main/anima_baseV10.safetensors
+  - directory: text_encoders
+    name: qwen_3_06b_base.safetensors
+    source: unknown
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: loras
+    name: your_style_lora.safetensors
+    source: unknown
+flags:
+  prompt:
+    node_title: Positive Prompt
+    param: text
+    type: str
+    required: true
+    help: Fully-composed positive text -- gen_refs.py prepends its TRIGGER constant,
+      concept_gen.py prepends _anchor(gender, age); this flag expects the final string,
+      no composition happens in the graph.
+    node: '6'
+  negative:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    required: true
+    node: '7'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    required: true
+    node: '8'
+  style_strength_model:
+    node_title: Style LoRA
+    param: strength_model
+    type: float
+    default: 1.0
+    node: '4'
+  style_strength_clip:
+    node_title: Style LoRA
+    param: strength_clip
+    type: float
+    default: 1.0
+    node: '4'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: concept_gen/wfcli_run
+    node: '10'

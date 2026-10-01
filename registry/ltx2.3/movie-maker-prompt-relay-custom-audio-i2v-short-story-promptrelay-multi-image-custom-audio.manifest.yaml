@@ -1,0 +1,205 @@
+description: 'LTX-2.3 i2v "Movie Maker" short-story pipeline with 4 DISTINCT reference/keyframe
+  images (one per scene, e.g. a lip-sync music-video sequence) plus a CUSTOM AUDIO
+  track (trimmed to start at a chosen offset via "START AUDIO FROM"), driven by a
+  "Prompt Relay Encode" node whose local_prompts/segment_lengths are built by concatenating
+  4 editable Segment Prompt #NNN + Length Segment (seconds) #NNN literal pairs --
+  this manifest flags each segment''s image/prompt/ length node directly rather than
+  the concatenated relay inputs, keeping each scene independently editable. Base pass
+  -> LTXVLatentUpsampler spatial-upscale second pass -> single VHS_VideoCombine save
+  (only one save node exists, so output selection is unambiguous).
+
+  '
+workflow: movie-maker-prompt-relay-custom-audio-i2v-short-story-promptrelay-multi-image-custom-audio.json
+mode: [i2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  master_prompt:
+    node_title: MASTER PROMPT (for the whole video)
+    param: value
+    type: str
+    required: false
+    default: mysterious  Jakarta at night, dramatic shadows and rim light,hyperrealistic,
+      Asian cinematic noir style,inspired by Wong Kar-Wai and Blade Runner 2049, photographed
+      with a Samyang AF 35mm f/1.4 RF lens, rich ambient mood,stylized color palette
+      of crimson,cyan,and deep charcoal
+    node: '709'
+  image1:
+    node_title: 'Load Image #820'
+    param: image
+    type: image
+    required: true
+    help: Reference/keyframe image for scene 1.
+    node: '820'
+  scene1_prompt:
+    node_title: 'Segment Prompt #824'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a red haired woman. \n\nShe sings with expressive motion and gesticulation.\
+      \ \nThe song she is singing is a sweet slow melancolic melody. Her lips moves\
+      \ in perfect lip-sync to the attached audio.  \n\nShe is walking through a mystical\
+      \ dreamy forrest, tracking camera as she walks towards the viewer. \nThe camera\
+      \ pulls away slowly keeping same distance to the woman.\n\nCinematic, volumetric\
+      \ lights, shadow play. \n\nIMPORTANT: The woman is singing, and her lips are\
+      \ moving with lip-sync to the lyrics of the song. \n\nSCENE CHANGE - CUT SCENE\
+      \ at end with a smooth transition to next"
+    node: '824'
+  scene1_seconds:
+    node_title: 'Length Segment  (seconds) #625'
+    param: value
+    type: int
+    required: false
+    default: 8
+    node: '625'
+  image2:
+    node_title: 'Load Image #846'
+    param: image
+    type: image
+    required: true
+    help: Reference/keyframe image for scene 2.
+    node: '846'
+  scene2_prompt:
+    node_title: 'Segment Prompt #848'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a red haired woman. \n\nShe sings with expressive motion and gesticulation.\
+      \ \nThe song she is singing is a sweet slow melancolic melody. Her lips moves\
+      \ in perfect lip-sync to the attached audio.  \n\nShe is walking through a romantic\
+      \ greenhouse with flowers and warm light, tracking camera as she walks towards\
+      \ the viewer.\n\nCinematic, volumetric lights, shadow play.\n\nIMPORTANT: The\
+      \ woman is singing, and her lips are moving with lip-sync to the lyrics of the\
+      \ song.\n\nSCENE CHANGE - CUT SCENE at end with a smooth transition to next"
+    node: '848'
+  scene2_seconds:
+    node_title: 'Length Segment  (seconds) #849'
+    param: value
+    type: int
+    required: false
+    default: 8
+    node: '849'
+  image3:
+    node_title: 'Load Image #859'
+    param: image
+    type: image
+    required: true
+    help: Reference/keyframe image for scene 3.
+    node: '859'
+  scene3_prompt:
+    node_title: 'Segment Prompt #861'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a red haired woman. \n\nShe sings with expressive motion and gesticulation.\
+      \ \nThe song she is singing is a sweet slow melancolic melody. Her lips moves\
+      \ in perfect lip-sync to the attached audio.  \n\nShe is sitting down at the\
+      \ stage at an abandoned teather.  The camera slowly orbits around the woman,\
+      \ the woman is always looking at the viewer.\n\nCinematic, volumetric lights,\
+      \ shadow play.\n\nIMPORTANT: The woman is singing, and her lips are moving with\
+      \ lip-sync to the lyrics of the song.\n\nSCENE CHANGE - CUT SCENE at end with\
+      \ a smooth transition to next"
+    node: '861'
+  scene3_seconds:
+    node_title: 'Length Segment (seconds) #862'
+    param: value
+    type: int
+    required: false
+    default: 8
+    node: '862'
+  image4:
+    node_title: 'Load Image #872'
+    param: image
+    type: image
+    required: true
+    help: Reference/keyframe image for scene 4.
+    node: '872'
+  scene4_prompt:
+    node_title: 'Segment Prompt #874'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a red haired woman. \n\nShe sings with expressive motion and gesticulation.\
+      \ \nThe song she is singing is a sweet slow melancolic melody. Her lips moves\
+      \ in perfect lip-sync to the attached audio.  \n\nShe is standing on a rooftop\
+      \ balcony with the city behind her, at night. Camera slowly orbits around her,\
+      \ with her always looking towards the viewer as she sings. \n\nThe camera slowly\
+      \ pulls in closer to the woman singing. \n\nCinematic, volumetric lights, shadow\
+      \ play.\n\nIMPORTANT: The woman is singing, and her lips are moving with lip-sync\
+      \ to the lyrics of the song."
+    node: '874'
+  scene4_seconds:
+    node_title: 'Length Segment (seconds) #875'
+    param: value
+    type: int
+    required: false
+    default: 8
+    node: '875'
+  negative_prompt:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    required: false
+    default: blurry, oversaturated, pixelated, low resolution, grainy, distorted,
+      noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo,
+      signature, copyright, subtitles, distorted sound, saturated sound, loud
+    node: '777'
+  audio:
+    node_title: Load Audio
+    param: audio
+    type: str
+    required: false
+    default: comfy lofi song_.mp3
+    help: Custom audio track (lip-sync source). Must already exist in ComfyUI's input
+      directory -- no upload path for audio in this CLI.
+    node: '953'
+  audio_start_seconds:
+    node_title: START AUDIO FROM
+    param: start_index
+    type: int
+    required: false
+    default: 22
+    help: Offset (seconds) into the loaded audio file where the trimmed clip used
+      for the final video begins; duration is computed automatically from the total
+      video length.
+    node: '956'
+  seed_pass1:
+    node_title: 'RandomNoise #773'
+    param: noise_seed
+    type: int
+    required: false
+    default: 43
+    help: Seed for the base (first) sampling pass.
+    node: '773'
+  seed_pass2:
+    node_title: 'RandomNoise #774'
+    param: noise_seed
+    type: int
+    required: false
+    default: 42
+    help: Seed for the spatial-upsampler (second) sampling pass.
+    node: '774'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    required: false
+    default: 1280
+    node: '699'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    required: false
+    default: 720
+    node: '701'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    node: '697'

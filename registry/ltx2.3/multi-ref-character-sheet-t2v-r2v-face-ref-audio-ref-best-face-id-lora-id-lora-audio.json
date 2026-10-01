@@ -1,0 +1,1134 @@
+{
+  "34": {
+    "inputs": {
+      "positive": [
+        "2355",
+        1
+      ],
+      "negative": [
+        "2355",
+        2
+      ],
+      "latent": [
+        "55",
+        0
+      ]
+    },
+    "class_type": "LTXVCropGuides",
+    "_meta": {
+      "title": "LTXVCropGuides #34"
+    }
+  },
+  "35": {
+    "inputs": {
+      "text": "subtitles, subtitle, text, pc game, console game, video game, cartoon, childish, ugly, artifacts, low resolution, blurry, jagged edges",
+      "clip": [
+        "2275",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "40": {
+    "inputs": {
+      "text": [
+        "2314:2328",
+        0
+      ],
+      "clip": [
+        "2275",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Automatic Prompt"
+    }
+  },
+  "50": {
+    "inputs": {
+      "noise_seed": 999
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #50"
+    }
+  },
+  "55": {
+    "inputs": {
+      "av_latent": [
+        "91",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #55"
+    }
+  },
+  "58": {
+    "inputs": {
+      "sampler_name": "euler_ancestral_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect #58"
+    }
+  },
+  "66": {
+    "inputs": {
+      "scheduler": "linear_quadratic",
+      "steps": 15,
+      "denoise": 1,
+      "model": [
+        "2343",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler (for more steps)"
+    }
+  },
+  "68": {
+    "inputs": {
+      "sigmas": "1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas #68"
+    }
+  },
+  "81": {
+    "inputs": {
+      "cfg": 2,
+      "model": [
+        "98",
+        0
+      ],
+      "positive": [
+        "2355",
+        1
+      ],
+      "negative": [
+        "2355",
+        2
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #81"
+    }
+  },
+  "83": {
+    "inputs": {
+      "frame_rate": [
+        "2259",
+        0
+      ],
+      "positive": [
+        "40",
+        0
+      ],
+      "negative": [
+        "35",
+        0
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning"
+    }
+  },
+  "91": {
+    "inputs": {
+      "noise": [
+        "50",
+        0
+      ],
+      "guider": [
+        "81",
+        0
+      ],
+      "sampler": [
+        "58",
+        0
+      ],
+      "sigmas": [
+        "66",
+        0
+      ],
+      "latent_image": [
+        "2296",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced #91"
+    }
+  },
+  "98": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "2331",
+        0
+      ],
+      "vae": [
+        "2274",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override"
+    }
+  },
+  "100": {
+    "inputs": {
+      "width": [
+        "2237",
+        0
+      ],
+      "height": [
+        "2239",
+        0
+      ],
+      "length": [
+        "2257",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo"
+    }
+  },
+  "102": {
+    "inputs": {
+      "value": "[VISUAL]:  caricature 3d animation of The Godfather. He is wearing a suit, and holds a cigar in his arm, and speaks broken  American English with a strong Italian accent. He is seated at a table in a dim lit mahogny gentlemans club. \n[SPEECH]: Keep your friends close, but your enemies closer. Get Face ID lora, Leave the gun, take the cannoli.\n[SOUNDS]: broken American English with strong Italian accent voice, raspy voice, motionless face.  Low volume background sound from restaurant. \n\n\nref_t2v: caricature 3d animation of The Godfather. He is wearing a suit, and holds a cigar in his arm, and speaks broken  American English with a strong Italian accent.  He is seated at a table in a dim lit mahogny gentlemans club. He  gesticulates with his arms  as he talks. \n"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Positive Prompt"
+    }
+  },
+  "104": {
+    "inputs": {
+      "image": "godfather face.JPG"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "CHARACTER SHEET"
+    }
+  },
+  "113": {
+    "inputs": {
+      "frames_number": [
+        "2257",
+        1
+      ],
+      "frame_rate": [
+        "116",
+        1
+      ],
+      "batch_size": 1,
+      "audio_vae": [
+        "2272",
+        0
+      ]
+    },
+    "class_type": "LTXVEmptyLatentAudio",
+    "_meta": {
+      "title": "LTXV Empty Latent Audio"
+    }
+  },
+  "116": {
+    "inputs": {
+      "value": [
+        "2259",
+        0
+      ]
+    },
+    "class_type": "ComfyNumberConvert",
+    "_meta": {
+      "title": "Convert Number"
+    }
+  },
+  "131": {
+    "inputs": {
+      "noise_seed": 42
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #131"
+    }
+  },
+  "132": {
+    "inputs": {
+      "video_latent": [
+        "2371",
+        3
+      ],
+      "audio_latent": [
+        "55",
+        1
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #132"
+    }
+  },
+  "133": {
+    "inputs": {
+      "sampler_name": "euler_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect #133"
+    }
+  },
+  "134": {
+    "inputs": {
+      "sigmas": "0.85, 0.7250, 0.4219, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas #134"
+    }
+  },
+  "135": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "2371",
+        0
+      ],
+      "positive": [
+        "2371",
+        1
+      ],
+      "negative": [
+        "2371",
+        2
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #135"
+    }
+  },
+  "136": {
+    "inputs": {
+      "samples": [
+        "34",
+        2
+      ],
+      "upscale_model": [
+        "2276",
+        0
+      ],
+      "vae": [
+        "2277",
+        0
+      ]
+    },
+    "class_type": "LTXVLatentUpsampler",
+    "_meta": {
+      "title": "LTXVLatentUpsampler"
+    }
+  },
+  "138": {
+    "inputs": {
+      "noise": [
+        "131",
+        0
+      ],
+      "guider": [
+        "135",
+        0
+      ],
+      "sampler": [
+        "133",
+        0
+      ],
+      "sigmas": [
+        "134",
+        0
+      ],
+      "latent_image": [
+        "132",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced #138"
+    }
+  },
+  "139": {
+    "inputs": {
+      "av_latent": [
+        "2316",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #139"
+    }
+  },
+  "146": {
+    "inputs": {
+      "tile_size": 1024,
+      "overlap": 64,
+      "temporal_size": 4096,
+      "temporal_overlap": 24,
+      "samples": [
+        "2324:2320",
+        0
+      ],
+      "vae": [
+        "2277",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeTiled",
+    "_meta": {
+      "title": "VAE Decode (Tiled)"
+    }
+  },
+  "2237": {
+    "inputs": {
+      "switch": [
+        "2267",
+        0
+      ],
+      "on_false": [
+        "2238",
+        1
+      ],
+      "on_true": [
+        "2265",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #2237"
+    }
+  },
+  "2238": {
+    "inputs": {
+      "expression": "a / 2",
+      "values.a": [
+        "2265",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #2238"
+    }
+  },
+  "2239": {
+    "inputs": {
+      "switch": [
+        "2267",
+        0
+      ],
+      "on_false": [
+        "2240",
+        1
+      ],
+      "on_true": [
+        "2266",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #2239"
+    }
+  },
+  "2240": {
+    "inputs": {
+      "expression": "a / 2",
+      "values.a": [
+        "2266",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #2240"
+    }
+  },
+  "2248": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "upscale_method": "lanczos",
+      "keep_proportion": "crop",
+      "pad_color": "255,255,255",
+      "crop_position": "center",
+      "divisible_by": 2,
+      "device": "cpu",
+      "image": [
+        "2359",
+        0
+      ]
+    },
+    "class_type": "ImageResizeKJv2",
+    "_meta": {
+      "title": "Resize Image v2"
+    }
+  },
+  "2257": {
+    "inputs": {
+      "expression": "((a * b) // 8) * 8 + 1",
+      "variables.a": [
+        "2263",
+        0
+      ],
+      "variables.b": [
+        "2259",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ"
+    }
+  },
+  "2259": {
+    "inputs": {
+      "value": 24
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "FPS"
+    }
+  },
+  "2263": {
+    "inputs": {
+      "value": 10
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "LENGTH (in seconds)"
+    }
+  },
+  "2265": {
+    "inputs": {
+      "value": 1280
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "WIDTH"
+    }
+  },
+  "2266": {
+    "inputs": {
+      "value": 736
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "HEIGHT"
+    }
+  },
+  "2267": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "Single pass"
+    }
+  },
+  "2272": {
+    "inputs": {
+      "vae_name": "LTX23_audio_vae_bf16.safetensors",
+      "device": "main_device",
+      "weight_dtype": "bf16"
+    },
+    "class_type": "VAELoaderKJ",
+    "_meta": {
+      "title": "VAELoader KJ"
+    }
+  },
+  "2274": {
+    "inputs": {
+      "vae_name": "taeltx2_3.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #2274"
+    }
+  },
+  "2275": {
+    "inputs": {
+      "clip_name1": "gemma_3_12B_it_fp4_mixed.safetensors",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "2276": {
+    "inputs": {
+      "model_name": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+    },
+    "class_type": "LatentUpscaleModelLoader",
+    "_meta": {
+      "title": "Load Latent Upscale Model"
+    }
+  },
+  "2277": {
+    "inputs": {
+      "vae_name": "LTX23_video_vae_bf16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #2277"
+    }
+  },
+  "2279": {
+    "inputs": {
+      "unet_name": "ltx-2.3-22b-distilled-1.1_transformer_only_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "2282": {
+    "inputs": {
+      "chunks": 2,
+      "dim_threshold": 4096,
+      "model": [
+        "2279",
+        0
+      ]
+    },
+    "class_type": "LTXVChunkFeedForward",
+    "_meta": {
+      "title": "LTXV Chunk FeedForward"
+    }
+  },
+  "2283": {
+    "inputs": {
+      "blocks": "",
+      "video_scale": 1,
+      "audio_scale": 1,
+      "audio_to_video_scale": 1,
+      "video_to_audio_scale": 1,
+      "triton_kernels": true,
+      "model": [
+        "2282",
+        0
+      ]
+    },
+    "class_type": "LTX2AttentionTunerPatch",
+    "_meta": {
+      "title": "LTX2 Attention Tuner Patch"
+    }
+  },
+  "2296": {
+    "inputs": {
+      "video_latent": [
+        "2372",
+        3
+      ],
+      "audio_latent": [
+        "113",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #2296"
+    }
+  },
+  "2308": {
+    "inputs": {
+      "frame_rate": [
+        "2259",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-2",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "146",
+        0
+      ],
+      "audio": [
+        "2312",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "2312": {
+    "inputs": {
+      "samples": [
+        "139",
+        1
+      ],
+      "vae": [
+        "2272",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeAudio",
+    "_meta": {
+      "title": "VAE Decode Audio"
+    }
+  },
+  "2316": {
+    "inputs": {
+      "switch": [
+        "2267",
+        0
+      ],
+      "on_false": [
+        "138",
+        0
+      ],
+      "on_true": [
+        "91",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #2316"
+    }
+  },
+  "2327": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "Prompt Enhancer"
+    }
+  },
+  "2331": {
+    "inputs": {
+      "nag_scale": 11,
+      "nag_alpha": 0.25,
+      "nag_tau": 2.5,
+      "inplace": true,
+      "model": [
+        "2355",
+        0
+      ],
+      "nag_cond_video": [
+        "83",
+        1
+      ],
+      "nag_cond_audio": [
+        "83",
+        1
+      ]
+    },
+    "class_type": "LTX2_NAG",
+    "_meta": {
+      "title": "LTX2 NAG"
+    }
+  },
+  "2343": {
+    "inputs": {
+      "shift": 13,
+      "model": [
+        "98",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "ModelSamplingSD3"
+    }
+  },
+  "2346": {
+    "inputs": {
+      "model_name": "MelBandRoformer_fp16.safetensors"
+    },
+    "class_type": "MelBandRoFormerModelLoader",
+    "_meta": {
+      "title": "Mel-Band RoFormer Model Loader"
+    }
+  },
+  "2348": {
+    "inputs": {
+      "start_index": 5,
+      "duration": 15,
+      "audio": [
+        "2351",
+        0
+      ]
+    },
+    "class_type": "TrimAudioDuration",
+    "_meta": {
+      "title": "Trim Audio Duration"
+    }
+  },
+  "2349": {
+    "inputs": {
+      "model": [
+        "2346",
+        0
+      ],
+      "audio": [
+        "2348",
+        0
+      ]
+    },
+    "class_type": "MelBandRoFormerSampler",
+    "_meta": {
+      "title": "Mel-Band RoFormer Sampler"
+    }
+  },
+  "2351": {
+    "inputs": {
+      "audio": "godfather..mp3",
+      "audioUI": "/api/view?filename=godfather..mp3&type=input&subfolder=&rand=0.4878536713971172"
+    },
+    "class_type": "LoadAudio",
+    "_meta": {
+      "title": "Load Audio"
+    }
+  },
+  "2355": {
+    "inputs": {
+      "identity_guidance_scale": 2,
+      "start_percent": 0,
+      "end_percent": 1,
+      "model": [
+        "2372",
+        0
+      ],
+      "positive": [
+        "2372",
+        1
+      ],
+      "negative": [
+        "2372",
+        2
+      ],
+      "reference_audio": [
+        "2349",
+        0
+      ],
+      "audio_vae": [
+        "2272",
+        0
+      ]
+    },
+    "class_type": "LTXVReferenceAudio",
+    "_meta": {
+      "title": "LTXV Reference Audio (ID-LoRA)"
+    }
+  },
+  "2359": {
+    "inputs": {
+      "model": "RMBG-2.0",
+      "sensitivity": 1,
+      "process_res": 1024,
+      "mask_blur": 0,
+      "mask_offset": 0,
+      "invert_output": false,
+      "refine_foreground": false,
+      "background": "Color",
+      "background_color": "#f2f2f2",
+      "image": [
+        "104",
+        0
+      ]
+    },
+    "class_type": "RMBG",
+    "_meta": {
+      "title": "Remove Background (RMBG)"
+    }
+  },
+  "2365": {
+    "inputs": {
+      "PowerLoraLoaderHeaderWidget": {
+        "type": "PowerLoraLoaderHeaderWidget"
+      },
+      "\u2795 Add Lora": "",
+      "model": [
+        "2412",
+        0
+      ]
+    },
+    "class_type": "Power Lora Loader (rgthree)",
+    "_meta": {
+      "title": "Power Lora Loader (rgthree)"
+    }
+  },
+  "2371": {
+    "inputs": {
+      "source_id": 2,
+      "phase_scale": 1,
+      "ref_resize_mode": "match_target",
+      "debug_log": false,
+      "crop_anchor": "center",
+      "layout": "overlap",
+      "reference_guidance_scale": 1,
+      "model": [
+        "98",
+        0
+      ],
+      "positive": [
+        "34",
+        0
+      ],
+      "negative": [
+        "34",
+        1
+      ],
+      "vae": [
+        "2277",
+        0
+      ],
+      "latent": [
+        "136",
+        0
+      ],
+      "reference_image": [
+        "2248",
+        0
+      ]
+    },
+    "class_type": "LTXIdentityOverlapConditioning",
+    "_meta": {
+      "title": "LTX Identity Transfer #2371"
+    }
+  },
+  "2372": {
+    "inputs": {
+      "source_id": 2,
+      "phase_scale": 1,
+      "ref_resize_mode": "match_target",
+      "debug_log": false,
+      "crop_anchor": "center",
+      "layout": "overlap",
+      "reference_guidance_scale": 1,
+      "model": [
+        "2365",
+        0
+      ],
+      "positive": [
+        "83",
+        0
+      ],
+      "negative": [
+        "83",
+        1
+      ],
+      "vae": [
+        "2277",
+        0
+      ],
+      "latent": [
+        "100",
+        0
+      ],
+      "reference_image": [
+        "2383",
+        0
+      ]
+    },
+    "class_type": "LTXIdentityOverlapConditioning",
+    "_meta": {
+      "title": "LTX Identity Transfer #2372"
+    }
+  },
+  "2383": {
+    "inputs": {
+      "resize_type": "scale by multiplier",
+      "resize_type.multiplier": 0.5,
+      "scale_method": "area",
+      "input": [
+        "2248",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask"
+    }
+  },
+  "2411": {
+    "inputs": {
+      "lora_name": "LTX-2.3-ID-LoRA-TalkVid-3K.safetensors",
+      "strength_model": 1.5,
+      "video": 0,
+      "video_to_audio": 1,
+      "audio": 1,
+      "audio_to_video": 0,
+      "other": 1,
+      "model": [
+        "2283",
+        0
+      ]
+    },
+    "class_type": "LTX2LoraLoaderAdvanced",
+    "_meta": {
+      "title": "ID-LORA (Talk Vid or CelebHQ)"
+    }
+  },
+  "2412": {
+    "inputs": {
+      "lora_name": "Best_FaceID_v1.0_LoRA.safetensors",
+      "strength_model": 1.5,
+      "video": 1,
+      "video_to_audio": 0,
+      "audio": 0,
+      "audio_to_video": 1,
+      "other": 1,
+      "model": [
+        "2411",
+        0
+      ]
+    },
+    "class_type": "LTX2LoraLoaderAdvanced",
+    "_meta": {
+      "title": "Best Face ID Lora"
+    }
+  },
+  "2314:72": {
+    "inputs": {
+      "string_a": "You will receive:\n\n1. A reference image of a person.\n2. An original `ref_t2v` video caption.\n\nYour task is to analyze the reference image and add the person\u2019s visible facial, body, clothing, and accessory details to the original caption with minimal edits.\n\nREFERENCE IMAGE:\n[REFERENCE IMAGE PROVIDED TO THE MODEL]\n\nORIGINAL VIDEO CAPTION:",
+      "string_b": [
+        "102",
+        0
+      ],
+      "delimiter": ""
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #2314:72"
+    }
+  },
+  "2314:86": {
+    "inputs": {
+      "string_a": [
+        "2314:72",
+        0
+      ],
+      "string_b": "\nMANDATORY OUTPUT RULE:\n\nThe final response must begin exactly with:\n\nref_t2v:\n\nOutput exactly one line containing only the final caption. Do not add headings, explanations, quotation marks, Markdown, or code fences.\n\nSTRICT PRESERVATION RULE:\n\nTreat the original caption as locked text.\n\nYou may only:\n\n1. Expand the first subject phrase:\n   - `A person`\n   - `A man`\n   - `A woman`\n\n2. Optionally replace later pronouns such as `They`, `He`, or `She` with a short appearance-based reference.\n\nDo not change, remove, reorder, paraphrase, or replace any other original words.\n\nPreserve exactly:\n\n- the subject category: `person`, `man`, or `woman`;\n- actions and action order;\n- environment;\n- clothing or costumes already present;\n- props and objects;\n- camera framing and movement;\n- lighting;\n- mood;\n- temporal progression;\n- principal nouns, verbs, and adjectives.\n\nNever replace original words with synonyms.\nNever add new actions, people, props, environments, or camera directions.\n\nIMAGE ANALYSIS:\n\nAnalyze the image in this order:\n\n1. Face and hair\n2. Body\n3. Clothing and accessories\n\nFACIAL DETAILS:\n\nWhen the face is visible, include at least 4 clearly visible facial or head-related details when possible:\n\n- age group;\n- skin tone;\n- hair color;\n- hair length;\n- hair texture;\n- hairstyle;\n- face shape;\n- eyebrows;\n- eye color, only if clear;\n- nose shape;\n- lip shape;\n- facial hair;\n- glasses;\n- distinctive visible facial features.\n\nBODY DETAILS:\n\nWhen the body is visible, describe the clearly visible body characteristics, such as:\n\n- build: slim, lean, average, broad, athletic, stocky;\n- relative height impression, only if visually clear;\n- shoulder width;\n- body silhouette;\n- posture;\n- stance;\n- visible proportions;\n- whether the body is upright, relaxed, rigid, leaning, or turned.\n\nDo not invent exact height, weight, measurements, or hidden body features.\n\nCLOTHING AND ACCESSORIES:\n\nWhen visible, describe the person\u2019s clothing in detail, including:\n\n- upper garments;\n- lower garments;\n- outerwear;\n- dresses, robes, uniforms, armor, or costumes;\n- footwear;\n- gloves;\n- belts;\n- hats or headwear;\n- jewelry;\n- bags;\n- glasses;\n- capes or cloaks;\n- dominant colors;\n- visible patterns;\n- layers;\n- embroidery;\n- straps;\n- collars;\n- buttons;\n- zippers;\n- metallic details;\n- clearly visible materials such as leather, denim, metal, knit fabric, or silk-like fabric.\n\nClothing and body details are mandatory whenever they are clearly visible in the reference image.\n\nIf the original caption already specifies clothing or a costume, preserve those exact words and do not replace them. Add only compatible details from the reference image.\n\nDO NOT:\n\n- identify or name the person;\n- infer ethnicity, nationality, religion, occupation, personality, health, or background;\n- invent unclear details;\n- describe body parts or clothing that are outside the frame;\n- omit facial details because clothing is visually prominent;\n- omit clothing or body details when they are clearly visible.\n\nMERGING ORDER:\n\nThe first subject mention should follow this order:\n\n1. age group and skin tone;\n2. original subject noun;\n3. hair and facial details;\n4. body build and posture;\n5. clothing and accessories;\n6. original action.\n\nExample:\n\nOriginal:\n`ref_t2v: A person speaking with a reporter on a city sidewalk, medium-wide shot.`\n\nOutput:\n`ref_t2v: A tan-skinned adult person with short dark curly hair, an angular face, thick eyebrows, and a dark mustache, with a lean build and upright posture, wearing a green embroidered cloak, layered tunic, brown trousers, leather belt, and tall boots, speaking with a reporter on a city sidewalk, medium-wide shot.`\n\nIf the original says `A person`, keep `person`.\nIf it says `A man`, keep `man`.\nIf it says `A woman`, keep `woman`.\n\nFor later mentions, either keep the original pronoun or replace only the pronoun:\n\nOriginal:\n`They adjust the hat and continue walking.`\n\nAllowed:\n`The curly-haired person in the green cloak adjusts the hat and continues walking.`\n\nDo not change the remaining words.\n\nFINAL CHECK:\n\nBefore answering, verify that:\n\n- the output begins exactly with `ref_t2v:`;\n- facial details are included when the face is visible;\n- body details are included when the body is visible;\n- clothing and accessories are included when visible;\n- the original subject noun remains;\n- all original actions, clothing, props, framing, lighting, and mood remain unchanged;\n- no original word was unnecessarily replaced;\n- no new scene details were invented;\n- no explanation or extra text appears.\n\nOutput only the final merged caption.\n",
+      "delimiter": ""
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #2314:86"
+    }
+  },
+  "2314:79": {
+    "inputs": {
+      "prompt": [
+        "2314:86",
+        0
+      ],
+      "max_length": 2048,
+      "sampling_mode": "off",
+      "thinking": false,
+      "use_default_template": true,
+      "clip": [
+        "2275",
+        0
+      ],
+      "image": [
+        "2248",
+        0
+      ]
+    },
+    "class_type": "TextGenerate",
+    "_meta": {
+      "title": "Generate Text"
+    }
+  },
+  "2314:2328": {
+    "inputs": {
+      "switch": [
+        "2327",
+        0
+      ],
+      "on_false": [
+        "102",
+        0
+      ],
+      "on_true": [
+        "2314:79",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #2314:2328"
+    }
+  },
+  "2324:2322": {
+    "inputs": {
+      "positive": [
+        "2355",
+        1
+      ],
+      "negative": [
+        "2355",
+        2
+      ],
+      "latent": [
+        "139",
+        0
+      ]
+    },
+    "class_type": "LTXVCropGuides",
+    "_meta": {
+      "title": "LTXVCropGuides #2324:2322"
+    }
+  },
+  "2324:2320": {
+    "inputs": {
+      "switch": [
+        "2267",
+        0
+      ],
+      "on_false": [
+        "139",
+        0
+      ],
+      "on_true": [
+        "2324:2322",
+        2
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #2324:2320"
+    }
+  }
+}

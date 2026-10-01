@@ -1,0 +1,135 @@
+description: Generates a smooth AI transition between two separate shot videos (via
+  the MergeGreen IC-LoRA technique) and concatenates shot A + generated transition
+  + shot B into one final video with crossfaded audio; the graph also emits the transition-only
+  clip as a separate debug/preview save node.
+workflow: video-2-video-shot-to-shot-transition-v2v-shot-to-shot-transition-mergegreen-ic-lora.json
+mode: [v2v]
+output_node_title: FINAL
+flags:
+  shot_a_video:
+    node_title: 'SHOT A #5455'
+    param: video
+    type: str
+    required: false
+    default: AnimateDiff_01042-audio.mp4
+    help: First shot (transition starts from its ending). Must already exist in ComfyUI's
+      input directory -- no upload path exists for video in this CLI yet.
+    node: '5455'
+  shot_b_video:
+    node_title: SHOT B
+    param: video
+    type: str
+    required: false
+    default: LTX-2_01876-audio.mp4
+    help: Second shot (transition ends into its beginning). Must already exist in
+      ComfyUI's input directory -- no upload path exists for video in this CLI yet.
+    node: '5453'
+  mergegreen_lora_strength:
+    node_title: "\U0001F15B\U0001F163\U0001F167 IC-LoRA Loader Model Only"
+    param: strength_model
+    type: float
+    required: false
+    default: 0.9
+    help: Strength of the MergeGreen IC-LoRA that drives the shot-to-shot transition
+      effect -- the central technique of this workflow.
+    node: '5011'
+  prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    required: false
+    default: " a smooth transiton from video A to video B.  Both videos are panning\
+      \ towards the right with a continuousmove. \n\nMake the transition smooth and\
+      \ seamless "
+    help: Positive prompt describing the desired transition (may be auto-enhanced
+      via LLM before use, see prompt_enhancer).
+    node: '5746'
+  negative_prompt:
+    node_title: CLIP Text Encode (Prompt)
+    param: text
+    type: str
+    required: false
+    default: text, subtitles, logo, low quality, distorted, bad anatomy, oversaturated,
+      pixelated, low resolution, grainy, compression artifacts, jpeg artifacts, glitches,
+      watermark, signature, copyright,  distortedsound, saturated sound, loud sound
+      , deformed facial features, asymmetrical face, missing facial features, extra
+      limbs, disfigured hands, blurry teeth, disfigured teeth
+    help: Negative prompt for the video/visual branch.
+    node: '5745'
+  negative_audio_prompt:
+    node_title: Negative Audio Prompt
+    param: text
+    type: str
+    required: false
+    default: ' distorted sound, saturated sound, loud sound'
+    help: Negative prompt for the generated audio branch.
+    node: '5744'
+  transition_sound:
+    node_title: Load Audio
+    param: audio
+    type: str
+    required: false
+    default: fire-winds-swoosh-04.mp3
+    help: Optional sound-effect audio layered under the generated transition. Must
+      already exist in ComfyUI's input directory.
+    node: '5803'
+  transition_seconds:
+    node_title: TRANSITION (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 3
+    help: Duration (seconds) of the generated transition segment between the two shots.
+    node: '5735'
+  ref_frames:
+    node_title: REF FRAMES
+    param: value
+    type: int
+    required: false
+    default: 20
+    help: Number of reference/overlap frames taken from the end of shot A and start
+      of shot B to guide and crossfade the transition.
+    node: '5759'
+  crossfade_frames:
+    node_title: crossfade frames
+    param: value
+    type: int
+    required: false
+    default: 5
+    help: Number of frames used to visually crossfade between the transition segment
+      and each shot in the final concatenated video.
+    node: 5619:5622
+  seed:
+    node_title: RandomNoise
+    param: noise_seed
+    type: int
+    required: false
+    default: 42
+    help: Seed for the transition sampling pass.
+    node: '4832'
+  fps:
+    node_title: 'FPS #5728'
+    param: value
+    type: float
+    required: false
+    default: 24
+    help: Frame rate used for loading the shots and for the final video combine.
+    node: '5728'
+  max_pixel_size:
+    node_title: MAX PIXEL SIZE (longest)
+    param: value
+    type: int
+    required: false
+    default: 1280
+    help: Longest-edge pixel size the shots are resized to before generation.
+    node: '5734'
+  prompt_enhancer:
+    node_title: PROMPT ENHANCER
+    param: value
+    type: str
+    required: false
+    default: 'True'
+    help: If true, the prompt is rewritten/expanded by an LLM (Gemma via TextGenerateLTX2Prompt,
+      using the shots' frames as visual context) before use; if false, the raw prompt
+      text is used as-is.
+    node: '5733'

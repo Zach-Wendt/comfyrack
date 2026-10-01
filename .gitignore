@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+
+# Superpowers tooling
+.superpowers/
+
+# Render output: ComfyUI-numbered provenance sidecars
+*_[0-9][0-9][0-9][0-9][0-9]_.json
+
+# Private working notes: separate repo (comfyrack-dev), never shipped
+.dev/
+CLAUDE.local.md
+graphify-out/

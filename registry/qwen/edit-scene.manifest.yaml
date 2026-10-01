@@ -1,0 +1,77 @@
+description: "Targeted single-image edit with Qwen-Image-Edit-2511: moderate denoise keeps the edit local so the rest of the scene and characters survive. Fixed shape, pure flag patching."
+workflow: edit-scene.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    ImageScaleToTotalPixels: core
+    KSampler: core
+    LoadImage: core
+    ModelSamplingAuraFlow: core
+    SaveImage: core
+    TextEncodeQwenImageEditPlus: core
+    UnetLoaderGGUF: ComfyUI-GGUF
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  custom_node_packs:
+  - name: ComfyUI-GGUF
+    git: https://github.com/city96/ComfyUI-GGUF
+    registry_id: ComfyUI-GGUF
+  models:
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: diffusion_models
+    name: qwen-image-edit-2511-Q5_1.gguf
+    url: https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF/resolve/main/qwen-image-edit-2511-Q5_1.gguf
+flags:
+  image:
+    node_title: Source Image
+    param: image
+    type: image
+    required: true
+    node: '101'
+  prompt:
+    node_title: Positive Prompt
+    param: prompt
+    type: str
+    required: true
+    help: edit instruction + edit_scene.py's KEEP cel-style-preservation clause.
+    node: '13'
+  negative:
+    node_title: Negative Prompt
+    param: prompt
+    type: str
+    default: different person, distorted face, deformed, extra limbs, blurry, lowres,
+      photorealistic, 3d render, second person, extra head, third person, extra character,
+      additional figure, background character, extra person, bystander, additional
+      child, additional boy, additional girl, unrelated person, crowd, extra people,
+      group of strangers, random extra figure, white border, picture frame, photo
+      frame, framed illustration, border, vignette, matte border, decorative border,
+      film border
+    help: QWEN_NEG from place_in_scene.py.
+    node: '9'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 99
+    node: '15'
+  denoise:
+    node_title: KSampler
+    param: denoise
+    type: float
+    default: 0.6
+    node: '15'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: place/edit
+    node: '110'

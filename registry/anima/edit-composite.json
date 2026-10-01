@@ -1,0 +1,363 @@
+{
+  "1": {
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "2": {
+    "inputs": {
+      "unet_name": "anima_baseV10.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "3": {
+    "inputs": {
+      "clip_name": "qwen_3_06b_base.safetensors",
+      "type": "stable_diffusion",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP"
+    }
+  },
+  "4": {
+    "inputs": {
+      "PowerLoraLoaderHeaderWidget": {
+        "type": "PowerLoraLoaderHeaderWidget"
+      },
+      "lora_1": {
+        "on": false,
+        "lora": "anima-turbo-lora-v0.1.safetensors",
+        "strength": 1
+      },
+      "lora_2": {
+        "on": true,
+        "lora": "your_style_lora.safetensors",
+        "strength": 1.0
+      },
+      "lora_4": {
+        "on": true,
+        "lora": "Anima\\AnimaEditV2.safetensors",
+        "strength": 0.5
+      },
+      "\u2795 Add Lora": "",
+      "model": [
+        "2",
+        0
+      ],
+      "clip": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "Power Lora Loader (rgthree)",
+    "_meta": {
+      "title": "Power Lora Loader"
+    }
+  },
+  "5": {
+    "inputs": {
+      "seed": 582252796686011,
+      "steps": 20,
+      "cfg": 5,
+      "sampler_name": "dpmpp_2m_sde_gpu",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "24",
+        0
+      ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "12",
+        1
+      ],
+      "latent_image": [
+        "12",
+        2
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "8": {
+    "inputs": {
+      "text": [
+        "74",
+        0
+      ],
+      "clip": [
+        "112",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Positive Prompt"
+    }
+  },
+  "9": {
+    "inputs": {
+      "text": "worst quality, low quality, nudity, nsfw, explicit, sexual content, exposed skin, suggestive pose, revealing clothing, spread legs, partial nudity, underwear, swimsuit, watermark, signature, artist signature, text overlay, logo, username",
+      "clip": [
+        "112",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Negative Prompt"
+    }
+  },
+  "10": {
+    "inputs": {
+      "image": "Undressed__00001_ (1).png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Base Scene Image"
+    }
+  },
+  "12": {
+    "inputs": {
+      "noise_mask": true,
+      "positive": [
+        "8",
+        0
+      ],
+      "negative": [
+        "9",
+        0
+      ],
+      "vae": [
+        "1",
+        0
+      ],
+      "pixels": [
+        "13",
+        0
+      ],
+      "mask": [
+        "13",
+        2
+      ]
+    },
+    "class_type": "InpaintModelConditioning",
+    "_meta": {
+      "title": "Inpaint Conditioning"
+    }
+  },
+  "13": {
+    "inputs": {
+      "layout": "left-right",
+      "custom_size": 0,
+      "object_image": [
+        "111",
+        0
+      ],
+      "base_image": [
+        "20",
+        0
+      ]
+    },
+    "class_type": "AILab_ICLoRAConcat",
+    "_meta": {
+      "title": "IC LoRA Concat"
+    }
+  },
+  "20": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "interpolation": "lanczos",
+      "method": "keep proportion",
+      "condition": "always",
+      "multiple_of": 0,
+      "image": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "ImageResize+",
+    "_meta": {
+      "title": "Resize Base Scene Image"
+    }
+  },
+  "21": {
+    "inputs": {
+      "tile_size": 512,
+      "overlap": 64,
+      "temporal_size": 64,
+      "temporal_overlap": 8,
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeTiled",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "24": {
+    "inputs": {
+      "lllite_name": "anima-lllite-inpainting-v2.safetensors",
+      "strength": 1,
+      "start_percent": 0,
+      "end_percent": 1,
+      "preserve_wrapper": true,
+      "model": [
+        "112",
+        0
+      ],
+      "image": [
+        "13",
+        0
+      ],
+      "mask": [
+        "13",
+        2
+      ]
+    },
+    "class_type": "AnimaLLLiteApply",
+    "_meta": {
+      "title": "Apply Anima LLLite Inpaint"
+    }
+  },
+  "29": {
+    "inputs": {
+      "target_w": [
+        "20",
+        1
+      ],
+      "target_h": [
+        "20",
+        2
+      ],
+      "crop_position": "right",
+      "offset": 0,
+      "interpolation": "lanczos",
+      "sharpening": 0,
+      "image": [
+        "21",
+        0
+      ]
+    },
+    "class_type": "Crop Image TargetSize (JPS)",
+    "_meta": {
+      "title": "Crop To Scene Size"
+    }
+  },
+  "57": {
+    "inputs": {
+      "filename_prefix": "anima_edit_composite/anima_edit_composite",
+      "images": [
+        "29",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "73": {
+    "inputs": {
+      "value": "She is wearing a winter jacket and ski goggles, winter pants and winter boots "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Edit Prompt Text"
+    }
+  },
+  "74": {
+    "inputs": {
+      "string": [
+        "75",
+        0
+      ],
+      "find": "[prompt]",
+      "replace": [
+        "73",
+        0
+      ]
+    },
+    "class_type": "StringReplace",
+    "_meta": {
+      "title": "Insert Prompt Into Template"
+    }
+  },
+  "75": {
+    "inputs": {
+      "value": "masterpiece, best quality, split screen, multiple views, the image on the right is different - [prompt]."
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Prompt Template"
+    }
+  },
+  "110": {
+    "inputs": {
+      "image": "reference.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Character Reference Image"
+    }
+  },
+  "111": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "interpolation": "lanczos",
+      "method": "keep proportion",
+      "condition": "always",
+      "multiple_of": 0,
+      "image": [
+        "110",
+        0
+      ]
+    },
+    "class_type": "ImageResize+",
+    "_meta": {
+      "title": "Resize Character Reference"
+    }
+  },
+  "112": {
+    "class_type": "LoraLoader",
+    "_meta": {
+      "title": "ID LoRA"
+    },
+    "inputs": {
+      "model": [
+        "4",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ],
+      "lora_name": "your_character_lora.safetensors",
+      "strength_model": 0.0,
+      "strength_clip": 0.0
+    }
+  }
+}

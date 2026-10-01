@@ -1,0 +1,145 @@
+description: "Full-scene text-to-image render: character and background generated from text in one pass. Uses Anima, a cel-shading style LoRA, and a per-character identity LoRA."
+workflow: character-scene.json
+mode: [t2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CLIPLoader: core
+    CLIPTextEncode: core
+    EmptyLatentImage: core
+    KSampler: core
+    LoraLoader: core
+    SaveImage: core
+    UNETLoader: core
+    VAEDecode: core
+    VAELoader: core
+  models:
+  - directory: diffusion_models
+    name: anima_baseV10.safetensors
+    url: https://huggingface.co/LyliaEngine/anima_baseV10/resolve/main/anima_baseV10.safetensors
+  - directory: text_encoders
+    name: qwen_3_06b_base.safetensors
+    source: unknown
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: loras
+    name: your_style_lora.safetensors
+    source: unknown
+flags:
+  unet_name:
+    node_title: UNET Loader
+    param: unet_name
+    type: str
+    required: true
+    node: '1'
+  clip_name:
+    node_title: CLIP Loader
+    param: clip_name
+    type: str
+    required: true
+    node: '2'
+  vae_name:
+    node_title: VAE Loader
+    param: vae_name
+    type: str
+    required: true
+    node: '3'
+  style_lora_name:
+    node_title: Style LoRA
+    param: lora_name
+    type: str
+    required: true
+    node: '4'
+  style_strength_model:
+    node_title: Style LoRA
+    param: strength_model
+    type: float
+    required: true
+    node: '4'
+  style_strength_clip:
+    node_title: Style LoRA
+    param: strength_clip
+    type: float
+    required: true
+    node: '4'
+  id_lora_name:
+    node_title: ID LoRA
+    param: lora_name
+    type: str
+    required: true
+    help: Always a real installed LoRA filename, even at strength 0.0 -- ComfyUI validates
+      the combo widget before the strength short-circuit.
+    node: '5'
+  id_strength_model:
+    node_title: ID LoRA
+    param: strength_model
+    type: float
+    required: true
+    node: '5'
+  id_strength_clip:
+    node_title: ID LoRA
+    param: strength_clip
+    type: float
+    required: true
+    node: '5'
+  positive_text:
+    node_title: Positive Prompt
+    param: text
+    type: str
+    required: true
+    node: '6'
+  negative_text:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    required: true
+    node: '7'
+  width:
+    node_title: Latent
+    param: width
+    type: int
+    required: true
+    node: '8'
+  height:
+    node_title: Latent
+    param: height
+    type: int
+    required: true
+    node: '8'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    required: true
+    node: '9'
+  steps:
+    node_title: KSampler
+    param: steps
+    type: int
+    required: true
+    node: '9'
+  cfg:
+    node_title: KSampler
+    param: cfg
+    type: float
+    required: true
+    node: '9'
+  sampler_name:
+    node_title: KSampler
+    param: sampler_name
+    type: str
+    required: true
+    node: '9'
+  scheduler:
+    node_title: KSampler
+    param: scheduler
+    type: str
+    required: true
+    node: '9'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    required: true
+    node: '11'

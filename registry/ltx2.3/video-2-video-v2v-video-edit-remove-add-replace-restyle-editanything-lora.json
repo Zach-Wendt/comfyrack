@@ -1,0 +1,783 @@
+{
+  "38": {
+    "inputs": {
+      "noise": [
+        "77",
+        0
+      ],
+      "guider": [
+        "93",
+        0
+      ],
+      "sampler": [
+        "92",
+        0
+      ],
+      "sigmas": [
+        "94",
+        0
+      ],
+      "latent_image": [
+        "73",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced"
+    }
+  },
+  "43": {
+    "inputs": {
+      "frames_number": [
+        "5327",
+        3
+      ],
+      "frame_rate": [
+        "5401",
+        1
+      ],
+      "batch_size": 1,
+      "audio_vae": [
+        "211",
+        0
+      ]
+    },
+    "class_type": "LTXVEmptyLatentAudio",
+    "_meta": {
+      "title": "LTXV Empty Latent Audio"
+    }
+  },
+  "73": {
+    "inputs": {
+      "video_latent": [
+        "104",
+        2
+      ],
+      "audio_latent": [
+        "5409",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent"
+    }
+  },
+  "77": {
+    "inputs": {
+      "noise_seed": 35
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise"
+    }
+  },
+  "92": {
+    "inputs": {
+      "sampler_name": "euler_ancestral_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect"
+    }
+  },
+  "93": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "5389",
+        0
+      ],
+      "positive": [
+        "104",
+        0
+      ],
+      "negative": [
+        "104",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider"
+    }
+  },
+  "94": {
+    "inputs": {
+      "scheduler": "linear_quadratic",
+      "steps": 8,
+      "denoise": 1,
+      "model": [
+        "5389",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler"
+    }
+  },
+  "104": {
+    "inputs": {
+      "num_guides": "1",
+      "num_guides.frame_idx_1": 0,
+      "num_guides.strength_1": 1,
+      "positive": [
+        "5317",
+        0
+      ],
+      "negative": [
+        "5317",
+        1
+      ],
+      "vae": [
+        "214",
+        0
+      ],
+      "latent": [
+        "195",
+        0
+      ],
+      "num_guides.image_1": [
+        "843",
+        0
+      ]
+    },
+    "class_type": "LTXVAddGuideMulti",
+    "_meta": {
+      "title": "LTXVAddGuideMulti"
+    }
+  },
+  "195": {
+    "inputs": {
+      "width": [
+        "5327",
+        1
+      ],
+      "height": [
+        "5327",
+        2
+      ],
+      "length": [
+        "5327",
+        3
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo"
+    }
+  },
+  "198": {
+    "inputs": {
+      "preview_rate": 9,
+      "model": [
+        "5343",
+        0
+      ],
+      "vae": [
+        "199",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override"
+    }
+  },
+  "199": {
+    "inputs": {
+      "vae_name": "taeltx2_3.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #199"
+    }
+  },
+  "211": {
+    "inputs": {
+      "vae_name": "LTX23_audio_vae_bf16.safetensors",
+      "device": "main_device",
+      "weight_dtype": "bf16"
+    },
+    "class_type": "VAELoaderKJ",
+    "_meta": {
+      "title": "VAELoader KJ"
+    }
+  },
+  "213": {
+    "inputs": {
+      "vae_name": "taeltx2_3.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #213"
+    }
+  },
+  "214": {
+    "inputs": {
+      "vae_name": "LTX23_video_vae_bf16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #214"
+    }
+  },
+  "216": {
+    "inputs": {
+      "clip_name1": "gemma_3_12B_it_fp8_scaled.safetensors",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "217": {
+    "inputs": {
+      "model_name": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+    },
+    "class_type": "LatentUpscaleModelLoader",
+    "_meta": {
+      "title": "Load Latent Upscale Model"
+    }
+  },
+  "219": {
+    "inputs": {
+      "unet_name": "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "830": {
+    "inputs": {
+      "value": 24
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "FPS"
+    }
+  },
+  "840": {
+    "inputs": {
+      "video": "joker_therapy (2).mp4",
+      "force_rate": [
+        "830",
+        0
+      ],
+      "custom_width": 0,
+      "custom_height": 0,
+      "frame_load_cap": [
+        "5393",
+        1
+      ],
+      "start_time": 0,
+      "format": "LTXV"
+    },
+    "class_type": "VHS_LoadVideoFFmpeg",
+    "_meta": {
+      "title": "Load Video FFmpeg (Upload) \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "843": {
+    "inputs": {
+      "resize_type": "scale longer dimension",
+      "resize_type.longer_size": [
+        "846",
+        0
+      ],
+      "scale_method": "lanczos",
+      "input": [
+        "840",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask"
+    }
+  },
+  "846": {
+    "inputs": {
+      "value": 960
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "MAX SIZE (longest)"
+    }
+  },
+  "5314": {
+    "inputs": {
+      "text": [
+        "5315:5386",
+        0
+      ],
+      "clip": [
+        "216",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)"
+    }
+  },
+  "5317": {
+    "inputs": {
+      "frame_rate": [
+        "830",
+        0
+      ],
+      "positive": [
+        "5314",
+        0
+      ],
+      "negative": [
+        "5318",
+        0
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning"
+    }
+  },
+  "5318": {
+    "inputs": {
+      "text": "text, subtitles, logo, low quality, distorted, bad anatomy, oversaturated, pixelated, low resolution, grainy, compression artifacts, jpeg artifacts, glitches, watermark, signature, copyright,  distortedsound, saturated sound, loud sound , deformed facial features, asymmetrical face, missing facial features, extra limbs, disfigured hands, blurry teeth, disfigured teeth",
+      "clip": [
+        "216",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative Prompt)"
+    }
+  },
+  "5319": {
+    "inputs": {
+      "source": [
+        "5315:5386",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "ENHANCED PROMPT"
+    }
+  },
+  "5322": {
+    "inputs": {
+      "value": "Remove the make-up in his face. Make his face clean without any make-up "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Prompt"
+    }
+  },
+  "5324": {
+    "inputs": {
+      "value": false
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "ENABLE PROMPT ENHANCER"
+    }
+  },
+  "5327": {
+    "inputs": {
+      "image": [
+        "843",
+        0
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count"
+    }
+  },
+  "5334": {
+    "inputs": {
+      "value": 12
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "MAX LENGTH (seconds)"
+    }
+  },
+  "5342": {
+    "inputs": {
+      "start_index": 0,
+      "num_frames": 1,
+      "images": [
+        "840",
+        0
+      ]
+    },
+    "class_type": "GetImageRangeFromBatch",
+    "_meta": {
+      "title": "First Frame"
+    }
+  },
+  "5343": {
+    "inputs": {
+      "PowerLoraLoaderHeaderWidget": {
+        "type": "PowerLoraLoaderHeaderWidget"
+      },
+      "lora_1": {
+        "on": true,
+        "lora": "ltx23_edit_anything_global_rank128_v1_9000steps_adamw.safetensors",
+        "strength": 1
+      },
+      "\u2795 Add Lora": "",
+      "model": [
+        "219",
+        0
+      ]
+    },
+    "class_type": "Power Lora Loader (rgthree)",
+    "_meta": {
+      "title": "Power Lora Loader (rgthree)"
+    }
+  },
+  "5355": {
+    "inputs": {
+      "tile_size": 512,
+      "overlap": 64,
+      "temporal_size": 4096,
+      "temporal_overlap": 8,
+      "samples": [
+        "5377",
+        2
+      ],
+      "vae": [
+        "214",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeTiled",
+    "_meta": {
+      "title": "VAE Decode (Tiled)"
+    }
+  },
+  "5368": {
+    "inputs": {
+      "frame_rate": [
+        "830",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-2",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "5355",
+        0
+      ],
+      "audio": [
+        "5417",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "5370": {
+    "inputs": {
+      "av_latent": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent"
+    }
+  },
+  "5371": {
+    "inputs": {
+      "samples": [
+        "5370",
+        1
+      ],
+      "audio_vae": [
+        "211",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode",
+    "_meta": {
+      "title": "LTXV Audio VAE Decode"
+    }
+  },
+  "5377": {
+    "inputs": {
+      "positive": [
+        "104",
+        0
+      ],
+      "negative": [
+        "104",
+        1
+      ],
+      "latent": [
+        "5370",
+        0
+      ]
+    },
+    "class_type": "LTXVCropGuides",
+    "_meta": {
+      "title": "LTXVCropGuides"
+    }
+  },
+  "5389": {
+    "inputs": {
+      "nag_scale": 11,
+      "nag_alpha": 0.25,
+      "nag_tau": 2.5,
+      "inplace": true,
+      "model": [
+        "198",
+        0
+      ],
+      "nag_cond_video": [
+        "5318",
+        0
+      ],
+      "nag_cond_audio": [
+        "5318",
+        0
+      ]
+    },
+    "class_type": "LTX2_NAG",
+    "_meta": {
+      "title": "LTX2 NAG"
+    }
+  },
+  "5393": {
+    "inputs": {
+      "expression": "1+ 8*(round(a*b)/8)",
+      "variables.a": [
+        "830",
+        0
+      ],
+      "variables.b": [
+        "5334",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ"
+    }
+  },
+  "5401": {
+    "inputs": {
+      "expression": "a",
+      "values.a": [
+        "830",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression"
+    }
+  },
+  "5404": {
+    "inputs": {
+      "value": 0,
+      "width": [
+        "5327",
+        1
+      ],
+      "height": [
+        "5327",
+        2
+      ]
+    },
+    "class_type": "SolidMask",
+    "_meta": {
+      "title": "Create Solid Mask"
+    }
+  },
+  "5406": {
+    "inputs": {
+      "audio": [
+        "840",
+        2
+      ],
+      "audio_vae": [
+        "211",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEEncode",
+    "_meta": {
+      "title": "LTXV Audio VAE Encode"
+    }
+  },
+  "5408": {
+    "inputs": {
+      "samples": [
+        "5406",
+        0
+      ],
+      "mask": [
+        "5404",
+        0
+      ]
+    },
+    "class_type": "SetLatentNoiseMask",
+    "_meta": {
+      "title": "Set Latent Noise Mask"
+    }
+  },
+  "5409": {
+    "inputs": {
+      "switch": [
+        "5414",
+        0
+      ],
+      "on_false": [
+        "43",
+        0
+      ],
+      "on_true": [
+        "5408",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "USE INPUT VIDEO SOUND?"
+    }
+  },
+  "5414": {
+    "inputs": {
+      "value": true
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "USE AUDIO FROM INPUT VIDEO"
+    }
+  },
+  "5417": {
+    "inputs": {
+      "switch": [
+        "5414",
+        0
+      ],
+      "on_false": [
+        "5371",
+        0
+      ],
+      "on_true": [
+        "840",
+        2
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #5417"
+    }
+  },
+  "5315:486": {
+    "inputs": {
+      "text": "Remove the smeared, theatrical makeup from the man's face, revealing clean, pale skin.",
+      "anything": [
+        "5315:485",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "Enhanced Prompt"
+    }
+  },
+  "5315:485": {
+    "inputs": {
+      "prompt": [
+        "5315:482",
+        0
+      ],
+      "max_length": 256,
+      "sampling_mode": "off",
+      "thinking": false,
+      "use_default_template": true,
+      "clip": [
+        "216",
+        0
+      ],
+      "image": [
+        "5342",
+        0
+      ]
+    },
+    "class_type": "TextGenerateLTX2Prompt",
+    "_meta": {
+      "title": "Generate LTX2 Prompt"
+    }
+  },
+  "5315:484": {
+    "inputs": {
+      "value": "You are a prompt normalizer for visual editing training captions.\n\nYour task is to convert an informal user request into a single caption that matches the style of a visual editing training dataset.\n\nGoal:\n- Do not merely correct grammar.\n- Rewrite the request into a more detailed, visually grounded training-style caption.\n- Preserve the original edit intent while making the caption more specific and descriptive.\n\nTask selection:\n- Use \"Add\" when the request inserts a new visible element.\n- Use \"Remove\" when the request deletes an existing visible element.\n- Use \"Replace\" when the request swaps or changes one visible element into another.\n- Use \"Convert\" when the request is purely a style transformation.\n\nCaption rules:\n- Write exactly one sentence in English.\n- Start with exactly one verb: Add, Remove, Replace, or Convert.\n- Keep the original meaning of the user request.\n- Make the caption more detailed than the input whenever possible.\n- Add concrete visual attributes for the subject or replacement when useful, such as color, size, material, clothing, texture, species, facial features, hairstyle, or shape.\n- Add spatial grounding whenever possible, such as on the left, on the right, in the center, in the foreground, in the background, on the table, on the road, next to, behind, in front of, or occupying the same position.\n- If the user request is underspecified, enrich the caption in a generic but visually plausible way without changing the main intent.\n- Keep the caption concise, but more descriptive than a direct paraphrase.\n- Do not explain your reasoning.\n- Do not output multiple options.\n- Do not use conversational language.\n\nBad example:\nInput: Replace the blue car by a ship\nOutput: Replace the blue car with a ship.\n\nBetter example:\nInput: Replace the blue car by a ship\nOutput: Replace the blue car with a large white and blue ship occupying the same position in the scene.\n\nReturn only the normalized caption.\n\nUser request:"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "INPAINT INSTRUCT"
+    }
+  },
+  "5315:482": {
+    "inputs": {
+      "string_a": [
+        "5315:484",
+        0
+      ],
+      "string_b": [
+        "5322",
+        0
+      ],
+      "delimiter": ""
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text"
+    }
+  },
+  "5315:5386": {
+    "inputs": {
+      "switch": [
+        "5324",
+        0
+      ],
+      "on_false": [
+        "5322",
+        0
+      ],
+      "on_true": [
+        "5315:485",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch #5315:5386"
+    }
+  }
+}

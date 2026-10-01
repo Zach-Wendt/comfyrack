@@ -1,0 +1,40 @@
+description: 'Interactive caption review/edit tool: loads a folder''s images with their .json caption files into the CCC_DatasetReviewer canvas widget for human correction, then overwrites the caption files with the edited text. Output is text on disk, not an image. The edited captions are entered by a human in the ComfyUI canvas, so this is not expressible as flag patching; run it by opening the workflow in ComfyUI''s browser UI.'
+workflow: tag-edit.json
+mode: [i2i]
+output_node_title: Override Text Files
+requires:
+  nodes:
+    CCC_DatasetReviewer: ComfyUI-Mickmumpitz-Nodes
+    CCC_ImageBatchLoader: ComfyUI-Mickmumpitz-Nodes
+    CCC_TextBatchLoader: ComfyUI-Mickmumpitz-Nodes
+    CR Text Replace: ComfyUI_Comfyroll_CustomNodes
+    PrimitiveString: core
+    Save Text File: was-node-suite-comfyui
+    ShowText|pysssss: ComfyUI-Custom-Scripts
+  custom_node_packs:
+  - name: ComfyUI-Mickmumpitz-Nodes
+    git: https://github.com/mickmumpitz/ComfyUI-Mickmumpitz-Nodes
+  - name: ComfyUI_Comfyroll_CustomNodes
+    git: https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes
+  - name: was-node-suite-comfyui
+    git: https://github.com/ltdrdata/was-node-suite-comfyui
+    registry_id: was-ns
+  - name: ComfyUI-Custom-Scripts
+    git: https://github.com/pythongosssss/ComfyUI-Custom-Scripts
+    registry_id: comfyui-custom-scripts
+flags:
+  dataset_dir:
+    node_title: Insert Dataset Image Location
+    param: value
+    type: str
+    required: true
+    help: Folder containing both the images and their sibling .json caption files
+      to review.
+    node: '7'
+  max_files:
+    node_title: Text Batch Loader
+    param: max_files
+    type: int
+    default: 0
+    help: 0 = load all caption files in dataset_dir.
+    node: '5'

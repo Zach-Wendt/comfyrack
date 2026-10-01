@@ -1,0 +1,118 @@
+{
+  "5": {
+    "inputs": {
+      "folder_path": [
+        "7",
+        0
+      ],
+      "extension": ".json",
+      "max_files": 0
+    },
+    "class_type": "CCC_TextBatchLoader",
+    "_meta": {
+      "title": "Text Batch Loader"
+    }
+  },
+  "6": {
+    "inputs": {
+      "image_dir": [
+        "7",
+        0
+      ],
+      "batch_size": 0,
+      "start_from": 1,
+      "mode": "sequential"
+    },
+    "class_type": "CCC_ImageBatchLoader",
+    "_meta": {
+      "title": "Image Batch Loader"
+    }
+  },
+  "7": {
+    "inputs": {
+      "value": "path/to/dataset"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Insert Dataset Image Location"
+    }
+  },
+  "9": {
+    "inputs": {
+      "path": [
+        "7",
+        0
+      ],
+      "filename_prefix": [
+        "12",
+        0
+      ],
+      "filename_delimiter": "",
+      "filename_number_padding": 0,
+      "file_extension": ".json",
+      "encoding": "utf-8",
+      "filename_suffix": "",
+      "text": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "Save Text File",
+    "_meta": {
+      "title": "Override Text Files"
+    }
+  },
+  "11": {
+    "inputs": {
+      "text_0": "0372c7ef-bfe9-47b2-8c9c-d917bb12fe85.txt",
+      "text_1": "0fe36a48-dcd6-460b-80fa-17d7fe88f5da.txt",
+      "text_2": "1ComfyUI_00343_.txt",
+      "text_3": "1ComfyUI_00360_.txt",
+      "text_4": "1ComfyUI_00361_.txt",
+      "text": [
+        "5",
+        1
+      ]
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "12": {
+    "inputs": {
+      "find1": ".",
+      "replace1": "",
+      "find2": "json",
+      "replace2": "",
+      "find3": "txt",
+      "replace3": "",
+      "text": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "CR Text Replace",
+    "_meta": {
+      "title": "🔤 CR Text Replace"
+    }
+  },
+  "16": {
+    "inputs": {
+      "bbox_format": "",
+      "edited_data_json": "",
+      "images": [
+        "6",
+        0
+      ],
+      "captions": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "CCC_DatasetReviewer",
+    "_meta": {
+      "title": "Dataset Reviewer"
+    }
+  }
+}

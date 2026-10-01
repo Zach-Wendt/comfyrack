@@ -1,0 +1,103 @@
+description: 'LTX-2.3 experimental 3-pass image-to-video (or text-to-video, via the
+  Text To Video no-image-ref toggle) with synced audio and NAG guidance: a base pass
+  on the distilled model, then two further 2x-spatial-upsample+refine passes, muxed
+  to an MP4 with generated audio. Includes the same in-graph LLM prompt-enhancer subgraph
+  as the "dev" sibling workflow (Gemma via TextGenerateLTX2Prompt, gated by "ENABLE
+  PROMPT ENHANCER", default on) -- not exposed here (no bool flag type); edit node
+  1995 in the JSON to disable it.
+
+  '
+workflow: 3-pass-experimental-i2v-t2v-experimental-3-pass.json
+mode: [i2v, t2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  positive_prompt:
+    node_title: Text String (Multiline)
+    param: value
+    type: str
+    default: "Make this image come alive with natural smooth motions.\nHigh quality\
+      \ cinematic video.\n\nThe scene start with an extreme close up of a humanoid\
+      \ android. \n\nThe camera pulls away from the android, showing the surrounding\
+      \ of a futuristic cyberpunk city. \n\nExtremely intricate and detailed view\
+      \ of the city emerges. \n\nA voice over narrator says with a robotic voice:\
+      \ \"The future is now. 3 Pass workflow with high fidelity details\". \n\nCinematic,\
+      \ extremely detailed, volumetric light, reflective surfaces, light and shadow\
+      \ play \n\n\n"
+    help: Raw user prompt. Feeds the CLIP text encoder directly if the prompt enhancer
+      is off, or is folded into the Gemma-rewritten prompt if it's on (see description)
+      -- either way this is the flag that actually changes the result.
+    node: '1998'
+  negative_prompt:
+    node_title: CLIP Text Encode (Negative Prompt)
+    param: text
+    type: str
+    default: camera zooming out, low resolution, blurry, grainy, pixelated, wide shot,
+      distant view, shallow focus, motion blur, low detail, flat lighting, dark scene,
+      noisy image, poor texture, soft edges, muted colors, overexposed, underexposed,
+      static, silent, no movement, blurry, low quality, still frame, frames, watermark,
+      overlay, titles, has subtitles, Deformed, scene cut, scene transition, no movement,
+      glitching, low resolution, extra hands appearing, extra limbs appearing, warping,
+      extra body parts
+    node: '40'
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: First-frame reference image for i2v conditioning. Ignored if the JSON's
+      'Text To Video (no image ref)' bypass toggle (node 30) is flipped to true --
+      that toggle is not exposed here.
+    node: '94'
+  seed_pass1:
+    node_title: 'RandomNoise #88'
+    param: noise_seed
+    type: int
+    default: 42
+    help: Seed for the base-resolution first pass.
+    node: '88'
+  seed_pass2:
+    node_title: 'RandomNoise #89'
+    param: noise_seed
+    type: int
+    default: 509076301173895
+    help: Seed for the first upscale/refine pass.
+    node: '89'
+  seed_pass3:
+    node_title: 'RandomNoise #1985'
+    param: noise_seed
+    type: int
+    default: 509076301173888
+    help: Seed for the second/final upscale-refine pass.
+    node: '1985'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    default: 2048
+    node: '96'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    default: 1440
+    node: '95'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    default: 10
+    node: '77'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '33'
+  nag_scale:
+    node_title: LTX2 NAG
+    param: nag_scale
+    type: float
+    default: 11
+    help: Normalized attention guidance scale, applied on all three passes' shared
+      model patch.
+    node: '2000'

@@ -1,0 +1,15 @@
+#!/bin/sh
+# Runs the plugin's OWN bundled copy, so plugin version and CLI version are
+# identical by construction. Resolving `comfyrack` from PATH here would
+# either recurse into this shim or silently run a different, older install.
+PLUGIN_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
+# Under MSYS/Git Bash/Cygwin, `pwd` yields /c/... which a native Windows Python
+# resolves against the current drive root. MSYS only translates paths that are
+# standalone arguments, never ones interpolated into a -c source string, so
+# translate here before interpolating.
+if command -v cygpath >/dev/null 2>&1; then
+  PLUGIN_ROOT="$(cygpath -m -- "$PLUGIN_ROOT")"
+fi
+exec "${COMFYRACK_PYTHON:-python3}" -c \
+  "import sys; sys.path.insert(0, r'${PLUGIN_ROOT}/src'); from comfyrack.cli.main import main; sys.exit(main())" \
+  "$@"

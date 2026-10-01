@@ -1,0 +1,67 @@
+description: "Re-angles the camera of a locked plate with Qwen-Image-Edit: rotate, dolly, close-up, top-down, or doorway. No character placement. Fixed shape, pure flag patching."
+workflow: navigate-room.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    ImageScaleToTotalPixels: core
+    KSampler: core
+    LoadImage: core
+    LoraLoaderModelOnly: core
+    ModelSamplingAuraFlow: core
+    SaveImage: core
+    TextEncodeQwenImageEditPlus: core
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  models:
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: diffusion_models
+    name: qwen_image_edit_2511_bf16.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2511_bf16.safetensors
+  - directory: loras
+    name: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+    url: https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+flags:
+  image:
+    node_title: Source Image
+    param: image
+    type: image
+    required: true
+    help: Local path -- run_workflow() uploads it.
+    node: '101'
+  prompt:
+    node_title: Positive Prompt
+    param: prompt
+    type: str
+    required: true
+    help: Camera-move instruction, e.g. 'Turn the camera to a close-up on X. Keep
+      the same style and lighting.'
+    node: '13'
+  negative:
+    node_title: Negative Prompt
+    param: prompt
+    type: str
+    default: different room, different furniture, photorealistic, 3d render, blurry,
+      lowres, people, person, human
+    node: '9'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 7000
+    node: '15'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: navigate_room/wfcli_run
+    node: '110'

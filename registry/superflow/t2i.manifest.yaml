@@ -1,0 +1,65 @@
+description: Text to image (Krea 2 Turbo fp8, 10 steps, cfg 1). Wraps registry/krea2/txt2img without
+  its identity LoRA and finishing-noise pass. Runs from Superflow's Images tab. Output is a batch of
+  1-4 images.
+workflow: t2i.json
+mode: [t2i]
+output: image
+output_node_title: Image
+outputs:
+  - {title: Image, kind: image}
+requires:
+  nodes:
+    CLIPLoader: core
+    CLIPTextEncode: core
+    ConditioningZeroOut: core
+    EmptyLatentImage: core
+    KSampler: core
+    SaveImage: core
+    UNETLoader: core
+    VAEDecode: core
+    VAELoader: core
+  models:
+  - directory: diffusion_models
+    name: krea2_turbo_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Krea-2/resolve/main/diffusion_models/krea2_turbo_fp8_scaled.safetensors
+  - directory: text_encoders
+    name: qwen3vl_4b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Krea-2/resolve/main/text_encoders/qwen3vl_4b_fp8_scaled.safetensors
+  - directory: vae
+    name: wan_2.1_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors
+flags:
+  prompt:
+    node_title: Prompt
+    param: text
+    type: str
+    required: true
+    help: What to generate.
+    node: '4'
+  width:
+    node_title: Resolution
+    param: width
+    type: int
+    default: 1024
+    node: '6'
+  height:
+    node_title: Resolution
+    param: height
+    type: int
+    default: 1024
+    node: '6'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 42
+    node: '7'
+  batch_size:
+    node_title: Resolution
+    param: batch_size
+    type: int
+    default: 2
+    min: 1
+    max: 4
+    help: Images per run (1-4).
+    node: '6'

@@ -1,0 +1,144 @@
+description: 'LTX-2.3 i2v/t2v "Movie Maker" short-story pipeline: one starting image
+  is animated into a single 4-scene continuous video via a "Prompt Relay Encode" node.
+  Each scene has its own editable Segment Prompt N + Segment N (seconds) literal,
+  chained together by StringConcatenate/ SimpleCalculatorKJ nodes into the relay''s
+  local_prompts/segment_lengths inputs -- this manifest flags each segment''s own
+  prompt/length node directly (the concat chain just recombines them, so patching
+  the segment-level literals is equivalent and keeps each scene independently editable).
+  Base pass -> LTXVLatentUpsampler spatial-upscale second pass -> single VHS_VideoCombine
+  save (only one save node exists, so output selection is unambiguous).
+
+  '
+workflow: movie-maker-i2v-t2v-short-story-promptrelay-multi-sequence.json
+mode: [i2v, t2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  master_prompt:
+    node_title: 'MASTER PROMPT : The scene (whole video)'
+    param: value
+    type: str
+    required: false
+    default: 'A single continuous cinematic shot that transitions smootly into into
+      different scenes. cinematic, high quality. '
+    node: '709'
+  scene1_prompt:
+    node_title: Segment Prompt 1
+    param: value
+    type: str
+    required: false
+    default: "Semi-close up of an eagle flies through the sky, flapping its wings.\
+      \ The camera quickly zooms toward the eagle\u2019s eye as it flies. Inside the\
+      \ pupil, a cyberpunk city is already visible, distorted by the curved surface\
+      \ of the eye."
+    node: '615'
+  scene1_seconds:
+    node_title: Segment 1  (seconds)
+    param: value
+    type: int
+    required: false
+    default: 5
+    node: '625'
+  scene2_prompt:
+    node_title: Segment Prompt 2
+    param: value
+    type: str
+    required: false
+    default: As the zoom continues, the city within the pupil grows clearer. A cyberpunk
+      city is visible. Cars move close to the camera in layered traffic lanes, neon
+      reflections streak across rain- soaked streets and skyscrapers, and the atmosphere
+      feels dark, crowded, and electric.
+    node: '710'
+  scene2_seconds:
+    node_title: Segment 2 (seconds)
+    param: value
+    type: int
+    required: false
+    default: 5
+    node: '640'
+  scene3_prompt:
+    node_title: Segment Prompt 3
+    param: value
+    type: str
+    required: false
+    default: ' The camera approaches a car driving in the distance. Then the camera
+      starts to track and lock onto a car moving through the neon-lit cyberpunk streets.
+      The camera slowly pans to the side of the car, revealing a man sitting in the
+      car, wearing sunglasses. '
+    node: '711'
+  scene3_seconds:
+    node_title: Segment 3  (seconds)
+    param: value
+    type: int
+    required: false
+    default: 5
+    node: '644'
+  scene4_prompt:
+    node_title: Segment Prompt 4
+    param: value
+    type: str
+    required: false
+    default: The camera slowly zooms out and pulls back while the man continues driving.
+      The camera pulls back revealing that the cyberpunk scene is playing on a television
+      screen. The camera continues zooming out to reveal an old television set inside
+      a cozy 20th century living room. Warm lamplight fills the space, with vintage
+      furniture and people surrounding the TV.
+    node: '712'
+  scene4_seconds:
+    node_title: Segment 4 (seconds)
+    param: value
+    type: int
+    required: false
+    default: 5
+    node: '648'
+  negative_prompt:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    required: false
+    default: blurry, oversaturated, pixelated, low resolution, grainy, distorted,
+      noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo,
+      signature, copyright, subtitles, distorted sound, saturated sound, loud
+    node: '777'
+  seed_pass1:
+    node_title: 'RandomNoise #773'
+    param: noise_seed
+    type: int
+    required: false
+    default: 43
+    help: Seed for the base (first) sampling pass.
+    node: '773'
+  seed_pass2:
+    node_title: 'RandomNoise #774'
+    param: noise_seed
+    type: int
+    required: false
+    default: 42
+    help: Seed for the spatial-upsampler (second) sampling pass.
+    node: '774'
+  image1:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    node: '584'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    required: false
+    default: 1280
+    node: '699'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    required: false
+    default: 736
+    node: '701'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    node: '697'

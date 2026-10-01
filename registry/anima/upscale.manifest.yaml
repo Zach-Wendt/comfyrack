@@ -1,0 +1,110 @@
+description: "Upscales 4x with the 4x-AnimeSharp model, then a low-denoise img2img refine using Anima and a cel-shading style LoRA, with an optional per-character identity LoRA. Sampler dpmpp_2m_sde_gpu, scheduler simple, 30 steps, cfg 5."
+workflow: upscale.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CLIPLoader: core
+    CLIPTextEncode: core
+    ImageScale: core
+    ImageUpscaleWithModel: core
+    KSampler: core
+    LoadImage: core
+    LoraLoader: core
+    SaveImage: core
+    UNETLoader: core
+    UpscaleModelLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  models:
+  - directory: diffusion_models
+    name: anima_baseV10.safetensors
+    url: https://huggingface.co/LyliaEngine/anima_baseV10/resolve/main/anima_baseV10.safetensors
+  - directory: text_encoders
+    name: qwen_3_06b_base.safetensors
+    source: unknown
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: loras
+    name: your_style_lora.safetensors
+    source: unknown
+  - directory: upscale_models
+    name: 4x-AnimeSharp.pth
+    url: https://huggingface.co/Kim2091/AnimeSharp/resolve/main/4x-AnimeSharp.pth
+flags:
+  style_strength_model:
+    node_title: Style LoRA
+    param: strength_model
+    type: float
+    required: true
+    node: '4'
+  style_strength_clip:
+    node_title: Style LoRA
+    param: strength_clip
+    type: float
+    required: true
+    node: '4'
+  id_lora_name:
+    node_title: ID LoRA
+    param: lora_name
+    type: str
+    required: true
+    help: Real installed filename even when strength is 0.0 -- ComfyUI validates the
+      combo widget regardless of strength.
+    node: '5'
+  id_strength_model:
+    node_title: ID LoRA
+    param: strength_model
+    type: float
+    required: true
+    node: '5'
+  id_strength_clip:
+    node_title: ID LoRA
+    param: strength_clip
+    type: float
+    required: true
+    node: '5'
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    node: '20'
+  width:
+    node_title: Image Scale
+    param: width
+    type: int
+    required: true
+    node: '23'
+  height:
+    node_title: Image Scale
+    param: height
+    type: int
+    required: true
+    node: '23'
+  positive_text:
+    node_title: Positive Prompt
+    param: text
+    type: str
+    required: true
+    node: '6'
+  negative_text:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    required: true
+    node: '7'
+  denoise:
+    node_title: KSampler
+    param: denoise
+    type: float
+    required: true
+    node: '9'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    required: true
+    node: '11'

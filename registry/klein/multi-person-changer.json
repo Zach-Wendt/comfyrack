@@ -1,0 +1,1517 @@
+{
+  "224": {
+    "inputs": {
+      "video": "Video by gracieegolfs [DaJJRMhhUqX].mp4",
+      "force_rate": 0,
+      "custom_width": 0,
+      "custom_height": 0,
+      "frame_load_cap": 0,
+      "skip_first_frames": 0,
+      "select_every_nth": 1,
+      "format": "None"
+    },
+    "class_type": "VHS_LoadVideo",
+    "_meta": {
+      "title": "Load Video (Upload) \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "227": {
+    "inputs": {
+      "video_info": [
+        "224",
+        3
+      ]
+    },
+    "class_type": "VHS_VideoInfo",
+    "_meta": {
+      "title": "Video Info \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "283": {
+    "inputs": {
+      "image": "2e42c8f6-65c5-4461-b0ab-4393be930e37 \u2014 \u043a\u043e\u043f\u0438\u044f.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image [top]"
+    }
+  },
+  "941": {
+    "inputs": {
+      "value": 1
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "Megapixels"
+    }
+  },
+  "949": {
+    "inputs": {
+      "seed": 71644290921915
+    },
+    "class_type": "Seed (rgthree)",
+    "_meta": {
+      "title": "Seed (rgthree)"
+    }
+  },
+  "1021": {
+    "inputs": {
+      "rem_mode": "RMBG-1.4",
+      "image_output": "Hide",
+      "save_prefix": "ComfyUI",
+      "torchscript_jit": false,
+      "add_background": "white",
+      "refine_foreground": false,
+      "images": [
+        "283",
+        0
+      ]
+    },
+    "class_type": "easy imageRemBg",
+    "_meta": {
+      "title": "Image Remove Bg"
+    }
+  },
+  "1026": {
+    "inputs": {
+      "images": [
+        "1019:981",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image [top#2]"
+    }
+  },
+  "1029": {
+    "inputs": {
+      "image": "\u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435 (31).png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image [top#2]"
+    }
+  },
+  "1034": {
+    "inputs": {
+      "images": [
+        "1020:1001",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image [top#3]"
+    }
+  },
+  "1059": {
+    "inputs": {
+      "images": [
+        "1058:1039",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image [top#4]"
+    }
+  },
+  "1082": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "megapixels": [
+        "941",
+        0
+      ],
+      "resolution_steps": 1,
+      "image": [
+        "1193",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Scale Image to Total Pixels [top]"
+    }
+  },
+  "1083": {
+    "inputs": {
+      "image": [
+        "1082",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Get Image Size [top]"
+    }
+  },
+  "1109": {
+    "inputs": {
+      "images": [
+        "1164:1149",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image [top#5]"
+    }
+  },
+  "1116": {
+    "inputs": {
+      "value": 20
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "Scene threshold"
+    }
+  },
+  "1119": {
+    "inputs": {
+      "String": "Remove any outfit, clothes, objects, accesories and background. \nDraw this character naked  with arms at sides."
+    },
+    "class_type": "String",
+    "_meta": {
+      "title": "Step 1"
+    }
+  },
+  "1120": {
+    "inputs": {
+      "String": "change the actions and poses in Image 1 to match those in Image 2"
+    },
+    "class_type": "String",
+    "_meta": {
+      "title": "Step 2"
+    }
+  },
+  "1193": {
+    "inputs": {
+      "boolean": [
+        "1194",
+        0
+      ],
+      "on_true": [
+        "1029",
+        0
+      ],
+      "on_false": [
+        "1029",
+        0
+      ]
+    },
+    "class_type": "Switch any [Crystools]",
+    "_meta": {
+      "title": "\ud83e\ude9b Switch any"
+    }
+  },
+  "1194": {
+    "inputs": {
+      "value": true
+    },
+    "class_type": "PrimitiveBoolean",
+    "_meta": {
+      "title": "Multi images"
+    }
+  },
+  "1196": {
+    "inputs": {
+      "rgthree_comparer": {
+        "images": [
+          {
+            "name": "A1",
+            "selected": true,
+            "url": "/api/view?filename=rgthree.compare._temp_ppieq_00001_.png&type=temp&subfolder=&rand=0.5504174240101298"
+          },
+          {
+            "name": "A2",
+            "selected": false,
+            "url": "/api/view?filename=rgthree.compare._temp_ppieq_00003_.png&type=temp&subfolder=&rand=0.5039947214828902"
+          },
+          {
+            "name": "B1",
+            "selected": true,
+            "url": "/api/view?filename=rgthree.compare._temp_ppieq_00002_.png&type=temp&subfolder=&rand=0.953233025792198"
+          },
+          {
+            "name": "B2",
+            "selected": false,
+            "url": "/api/view?filename=rgthree.compare._temp_ppieq_00004_.png&type=temp&subfolder=&rand=0.41135677516768765"
+          }
+        ]
+      },
+      "image_a": [
+        "1082",
+        0
+      ],
+      "image_b": [
+        "1058:1039",
+        0
+      ]
+    },
+    "class_type": "Image Comparer (rgthree)",
+    "_meta": {
+      "title": "Image Comparer (rgthree)"
+    }
+  },
+  "1202": {
+    "inputs": {
+      "String": "make a product image for her entire outfit."
+    },
+    "class_type": "String",
+    "_meta": {
+      "title": "Step 3"
+    }
+  },
+  "1203": {
+    "inputs": {
+      "String": "attach the outfit in Image 2 to the person in Image 1\nHigh resolution"
+    },
+    "class_type": "String",
+    "_meta": {
+      "title": "Step 4"
+    }
+  },
+  "1212": {
+    "inputs": {
+      "filename_prefix": "insanegen_scenes\\prepared\\frames",
+      "images": [
+        "1058:1039",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "1019:979": {
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect [strip]"
+    }
+  },
+  "1019:980": {
+    "inputs": {
+      "noise": [
+        "1019:982",
+        0
+      ],
+      "guider": [
+        "1019:985",
+        0
+      ],
+      "sampler": [
+        "1019:979",
+        0
+      ],
+      "sigmas": [
+        "1019:994",
+        0
+      ],
+      "latent_image": [
+        "1019:984",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced [strip]"
+    }
+  },
+  "1019:981": {
+    "inputs": {
+      "samples": [
+        "1019:980",
+        0
+      ],
+      "vae": [
+        "1019:988",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode [strip]"
+    }
+  },
+  "1019:983": {
+    "inputs": {
+      "clip_name": "qwen_3_8b_fp8mixed.safetensors",
+      "type": "flux2",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP [strip]"
+    }
+  },
+  "1019:984": {
+    "inputs": {
+      "width": [
+        "1019:986",
+        0
+      ],
+      "height": [
+        "1019:986",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyFlux2LatentImage",
+    "_meta": {
+      "title": "Empty Flux 2 Latent [strip]"
+    }
+  },
+  "1019:985": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "1019:993",
+        0
+      ],
+      "positive": [
+        "1019:989",
+        0
+      ],
+      "negative": [
+        "1019:987",
+        0
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider [strip]"
+    }
+  },
+  "1019:986": {
+    "inputs": {
+      "image": [
+        "1019:1080",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Get Image Size [strip]"
+    }
+  },
+  "1019:987": {
+    "inputs": {
+      "conditioning": [
+        "1019:991",
+        0
+      ],
+      "latent": [
+        "1019:992",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [strip]"
+    }
+  },
+  "1019:988": {
+    "inputs": {
+      "vae_name": "full_encoder_small_decoder.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE [strip]"
+    }
+  },
+  "1019:989": {
+    "inputs": {
+      "conditioning": [
+        "1019:990",
+        0
+      ],
+      "latent": [
+        "1019:992",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [strip#2]"
+    }
+  },
+  "1019:990": {
+    "inputs": {
+      "text": [
+        "1119",
+        0
+      ],
+      "clip": [
+        "1019:983",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt) [strip]"
+    }
+  },
+  "1019:991": {
+    "inputs": {
+      "conditioning": [
+        "1019:990",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut [strip]"
+    }
+  },
+  "1019:992": {
+    "inputs": {
+      "pixels": [
+        "1019:1080",
+        0
+      ],
+      "vae": [
+        "1019:988",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode [strip]"
+    }
+  },
+  "1019:993": {
+    "inputs": {
+      "unet_name": "flux-2-klein-9b-fp8.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model [strip]"
+    }
+  },
+  "1019:994": {
+    "inputs": {
+      "steps": 8,
+      "width": [
+        "1019:986",
+        0
+      ],
+      "height": [
+        "1019:986",
+        1
+      ]
+    },
+    "class_type": "Flux2Scheduler",
+    "_meta": {
+      "title": "Flux2Scheduler [strip]"
+    }
+  },
+  "1019:982": {
+    "inputs": {
+      "noise_seed": [
+        "949",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise [strip]"
+    }
+  },
+  "1019:1080": {
+    "inputs": {
+      "width": [
+        "1083",
+        0
+      ],
+      "height": [
+        "1083",
+        1
+      ],
+      "upscale_method": "nearest-exact",
+      "keep_proportion": "pad",
+      "pad_color": "255, 255, 255",
+      "crop_position": "center",
+      "divisible_by": 2,
+      "device": "cpu",
+      "image": [
+        "1021",
+        0
+      ]
+    },
+    "class_type": "ImageResizeKJv2",
+    "_meta": {
+      "title": "Resize Image v2 [strip]"
+    }
+  },
+  "1020:997": {
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect [pose-transfer]"
+    }
+  },
+  "1020:998": {
+    "inputs": {
+      "steps": 4,
+      "width": [
+        "1020:1007",
+        0
+      ],
+      "height": [
+        "1020:1007",
+        1
+      ]
+    },
+    "class_type": "Flux2Scheduler",
+    "_meta": {
+      "title": "Flux2Scheduler [pose-transfer]"
+    }
+  },
+  "1020:999": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "1020:1018",
+        0
+      ],
+      "positive": [
+        "1020:1010",
+        0
+      ],
+      "negative": [
+        "1020:1009",
+        0
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider [pose-transfer]"
+    }
+  },
+  "1020:1000": {
+    "inputs": {
+      "noise": [
+        "1020:1002",
+        0
+      ],
+      "guider": [
+        "1020:999",
+        0
+      ],
+      "sampler": [
+        "1020:997",
+        0
+      ],
+      "sigmas": [
+        "1020:998",
+        0
+      ],
+      "latent_image": [
+        "1020:1006",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced [pose-transfer]"
+    }
+  },
+  "1020:1001": {
+    "inputs": {
+      "samples": [
+        "1020:1000",
+        0
+      ],
+      "vae": [
+        "1020:1012",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode [pose-transfer]"
+    }
+  },
+  "1020:1003": {
+    "inputs": {
+      "clip_name": "qwen_3_8b_fp8mixed.safetensors",
+      "type": "flux2",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP [pose-transfer]"
+    }
+  },
+  "1020:1004": {
+    "inputs": {
+      "text": [
+        "1120",
+        0
+      ],
+      "clip": [
+        "1020:1003",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt) [pose-transfer]"
+    }
+  },
+  "1020:1005": {
+    "inputs": {
+      "conditioning": [
+        "1020:1004",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut [pose-transfer]"
+    }
+  },
+  "1020:1006": {
+    "inputs": {
+      "width": [
+        "1020:1007",
+        0
+      ],
+      "height": [
+        "1020:1007",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyFlux2LatentImage",
+    "_meta": {
+      "title": "Empty Flux 2 Latent [pose-transfer]"
+    }
+  },
+  "1020:1007": {
+    "inputs": {
+      "image": [
+        "1020:1015",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Get Image Size [pose-transfer]"
+    }
+  },
+  "1020:1008": {
+    "inputs": {
+      "pixels": [
+        "1020:1015",
+        0
+      ],
+      "vae": [
+        "1020:1012",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode [pose-transfer]"
+    }
+  },
+  "1020:1009": {
+    "inputs": {
+      "conditioning": [
+        "1020:1014",
+        0
+      ],
+      "latent": [
+        "1020:1011",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [pose-transfer]"
+    }
+  },
+  "1020:1010": {
+    "inputs": {
+      "conditioning": [
+        "1020:1013",
+        0
+      ],
+      "latent": [
+        "1020:1011",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [pose-transfer#2]"
+    }
+  },
+  "1020:1011": {
+    "inputs": {
+      "pixels": [
+        "1020:1016",
+        0
+      ],
+      "vae": [
+        "1020:1012",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode [pose-transfer#2]"
+    }
+  },
+  "1020:1012": {
+    "inputs": {
+      "vae_name": "full_encoder_small_decoder.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE [pose-transfer]"
+    }
+  },
+  "1020:1013": {
+    "inputs": {
+      "conditioning": [
+        "1020:1004",
+        0
+      ],
+      "latent": [
+        "1020:1008",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [pose-transfer#3]"
+    }
+  },
+  "1020:1014": {
+    "inputs": {
+      "conditioning": [
+        "1020:1005",
+        0
+      ],
+      "latent": [
+        "1020:1008",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [pose-transfer#4]"
+    }
+  },
+  "1020:1016": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "megapixels": [
+        "941",
+        0
+      ],
+      "resolution_steps": 1,
+      "image": [
+        "1082",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Scale Image to Total Pixels [pose-transfer]"
+    }
+  },
+  "1020:1017": {
+    "inputs": {
+      "unet_name": "flux-2-klein-9b-fp8.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model [pose-transfer]"
+    }
+  },
+  "1020:1018": {
+    "inputs": {
+      "lora_name": "klein\\KleinBase9B_PoseTransfer.safetensors",
+      "strength_model": 2,
+      "model": [
+        "1020:1017",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Load LoRA [pose-transfer]"
+    }
+  },
+  "1020:1002": {
+    "inputs": {
+      "noise_seed": [
+        "949",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise [pose-transfer]"
+    }
+  },
+  "1020:1015": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "megapixels": [
+        "941",
+        0
+      ],
+      "resolution_steps": 1,
+      "image": [
+        "1019:981",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Scale Image to Total Pixels [pose-transfer#2]"
+    }
+  },
+  "1164:1147": {
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect [product-image]"
+    }
+  },
+  "1164:1148": {
+    "inputs": {
+      "noise": [
+        "1164:1162",
+        0
+      ],
+      "guider": [
+        "1164:1152",
+        0
+      ],
+      "sampler": [
+        "1164:1147",
+        0
+      ],
+      "sigmas": [
+        "1164:1161",
+        0
+      ],
+      "latent_image": [
+        "1164:1151",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced [product-image]"
+    }
+  },
+  "1164:1149": {
+    "inputs": {
+      "samples": [
+        "1164:1148",
+        0
+      ],
+      "vae": [
+        "1164:1155",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode [product-image]"
+    }
+  },
+  "1164:1150": {
+    "inputs": {
+      "clip_name": "qwen_3_8b_fp8mixed.safetensors",
+      "type": "flux2",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP [product-image]"
+    }
+  },
+  "1164:1151": {
+    "inputs": {
+      "width": [
+        "1164:1153",
+        0
+      ],
+      "height": [
+        "1164:1153",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyFlux2LatentImage",
+    "_meta": {
+      "title": "Empty Flux 2 Latent [product-image]"
+    }
+  },
+  "1164:1152": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "1164:1165",
+        0
+      ],
+      "positive": [
+        "1164:1156",
+        0
+      ],
+      "negative": [
+        "1164:1154",
+        0
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider [product-image]"
+    }
+  },
+  "1164:1153": {
+    "inputs": {
+      "image": [
+        "1164:1163",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Get Image Size [product-image]"
+    }
+  },
+  "1164:1154": {
+    "inputs": {
+      "conditioning": [
+        "1164:1158",
+        0
+      ],
+      "latent": [
+        "1164:1159",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [product-image]"
+    }
+  },
+  "1164:1155": {
+    "inputs": {
+      "vae_name": "full_encoder_small_decoder.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE [product-image]"
+    }
+  },
+  "1164:1156": {
+    "inputs": {
+      "conditioning": [
+        "1164:1157",
+        0
+      ],
+      "latent": [
+        "1164:1159",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [product-image#2]"
+    }
+  },
+  "1164:1157": {
+    "inputs": {
+      "text": [
+        "1202",
+        0
+      ],
+      "clip": [
+        "1164:1150",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt) [product-image]"
+    }
+  },
+  "1164:1158": {
+    "inputs": {
+      "conditioning": [
+        "1164:1157",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut [product-image]"
+    }
+  },
+  "1164:1159": {
+    "inputs": {
+      "pixels": [
+        "1164:1163",
+        0
+      ],
+      "vae": [
+        "1164:1155",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode [product-image]"
+    }
+  },
+  "1164:1160": {
+    "inputs": {
+      "unet_name": "flux-2-klein-9b-fp8.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model [product-image]"
+    }
+  },
+  "1164:1161": {
+    "inputs": {
+      "steps": 8,
+      "width": [
+        "1164:1153",
+        0
+      ],
+      "height": [
+        "1164:1153",
+        1
+      ]
+    },
+    "class_type": "Flux2Scheduler",
+    "_meta": {
+      "title": "Flux2Scheduler [product-image]"
+    }
+  },
+  "1164:1162": {
+    "inputs": {
+      "noise_seed": [
+        "949",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise [product-image]"
+    }
+  },
+  "1164:1163": {
+    "inputs": {
+      "width": [
+        "1083",
+        0
+      ],
+      "height": [
+        "1083",
+        1
+      ],
+      "upscale_method": "nearest-exact",
+      "keep_proportion": "pad",
+      "pad_color": "255, 255, 255",
+      "crop_position": "center",
+      "divisible_by": 2,
+      "device": "cpu",
+      "image": [
+        "1082",
+        0
+      ]
+    },
+    "class_type": "ImageResizeKJv2",
+    "_meta": {
+      "title": "Resize Image v2 [product-image]"
+    }
+  },
+  "1164:1165": {
+    "inputs": {
+      "lora_name": "klein\\KleinBase9B_ProductImage.safetensors",
+      "strength_model": 2,
+      "model": [
+        "1164:1160",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Load LoRA [product-image]"
+    }
+  },
+  "1058:1035": {
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect [outfit-attach]"
+    }
+  },
+  "1058:1036": {
+    "inputs": {
+      "steps": 4,
+      "width": [
+        "1058:1044",
+        0
+      ],
+      "height": [
+        "1058:1044",
+        1
+      ]
+    },
+    "class_type": "Flux2Scheduler",
+    "_meta": {
+      "title": "Flux2Scheduler [outfit-attach]"
+    }
+  },
+  "1058:1037": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "1058:1062",
+        0
+      ],
+      "positive": [
+        "1058:1047",
+        0
+      ],
+      "negative": [
+        "1058:1046",
+        0
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider [outfit-attach]"
+    }
+  },
+  "1058:1038": {
+    "inputs": {
+      "noise": [
+        "1058:1055",
+        0
+      ],
+      "guider": [
+        "1058:1037",
+        0
+      ],
+      "sampler": [
+        "1058:1035",
+        0
+      ],
+      "sigmas": [
+        "1058:1036",
+        0
+      ],
+      "latent_image": [
+        "1058:1043",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced [outfit-attach]"
+    }
+  },
+  "1058:1039": {
+    "inputs": {
+      "samples": [
+        "1058:1038",
+        0
+      ],
+      "vae": [
+        "1058:1049",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode [outfit-attach]"
+    }
+  },
+  "1058:1040": {
+    "inputs": {
+      "clip_name": "qwen_3_8b_fp8mixed.safetensors",
+      "type": "flux2",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP [outfit-attach]"
+    }
+  },
+  "1058:1041": {
+    "inputs": {
+      "text": [
+        "1203",
+        0
+      ],
+      "clip": [
+        "1058:1040",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt) [outfit-attach]"
+    }
+  },
+  "1058:1042": {
+    "inputs": {
+      "conditioning": [
+        "1058:1041",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut [outfit-attach]"
+    }
+  },
+  "1058:1043": {
+    "inputs": {
+      "width": [
+        "1058:1044",
+        0
+      ],
+      "height": [
+        "1058:1044",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyFlux2LatentImage",
+    "_meta": {
+      "title": "Empty Flux 2 Latent [outfit-attach]"
+    }
+  },
+  "1058:1044": {
+    "inputs": {
+      "image": [
+        "1058:1056",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Get Image Size [outfit-attach]"
+    }
+  },
+  "1058:1045": {
+    "inputs": {
+      "pixels": [
+        "1058:1056",
+        0
+      ],
+      "vae": [
+        "1058:1049",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode [outfit-attach]"
+    }
+  },
+  "1058:1046": {
+    "inputs": {
+      "conditioning": [
+        "1058:1051",
+        0
+      ],
+      "latent": [
+        "1058:1048",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [outfit-attach]"
+    }
+  },
+  "1058:1047": {
+    "inputs": {
+      "conditioning": [
+        "1058:1050",
+        0
+      ],
+      "latent": [
+        "1058:1048",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [outfit-attach#2]"
+    }
+  },
+  "1058:1048": {
+    "inputs": {
+      "pixels": [
+        "1058:1052",
+        0
+      ],
+      "vae": [
+        "1058:1049",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode [outfit-attach#2]"
+    }
+  },
+  "1058:1049": {
+    "inputs": {
+      "vae_name": "full_encoder_small_decoder.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE [outfit-attach]"
+    }
+  },
+  "1058:1050": {
+    "inputs": {
+      "conditioning": [
+        "1058:1041",
+        0
+      ],
+      "latent": [
+        "1058:1045",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [outfit-attach#3]"
+    }
+  },
+  "1058:1051": {
+    "inputs": {
+      "conditioning": [
+        "1058:1042",
+        0
+      ],
+      "latent": [
+        "1058:1045",
+        0
+      ]
+    },
+    "class_type": "ReferenceLatent",
+    "_meta": {
+      "title": "ReferenceLatent [outfit-attach#4]"
+    }
+  },
+  "1058:1052": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "megapixels": [
+        "941",
+        0
+      ],
+      "resolution_steps": 1,
+      "image": [
+        "1164:1149",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Scale Image to Total Pixels [outfit-attach]"
+    }
+  },
+  "1058:1053": {
+    "inputs": {
+      "unet_name": "flux-2-klein-9b-fp8.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model [outfit-attach]"
+    }
+  },
+  "1058:1055": {
+    "inputs": {
+      "noise_seed": [
+        "949",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise [outfit-attach]"
+    }
+  },
+  "1058:1056": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "megapixels": [
+        "941",
+        0
+      ],
+      "resolution_steps": 1,
+      "image": [
+        "1020:1001",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "Scale Image to Total Pixels [outfit-attach#2]"
+    }
+  },
+  "1058:1054": {
+    "inputs": {
+      "lora_name": "klein\\KleinBase9B_TryOn.safetensors",
+      "strength_model": 1.5,
+      "model": [
+        "1058:1053",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Load LoRA [outfit-attach]"
+    }
+  },
+  "1058:1062": {
+    "inputs": {
+      "lora_name": "klein\\Klein_HighResolution9B.safetensors",
+      "strength_model": 1,
+      "model": [
+        "1058:1054",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Load LoRA [outfit-attach#2]"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+description: 'Qwen-Image-Edit-2511 image transform driven by a custom ''next-scene''
+  LoRA -- takes one loaded image and rewrites it per a text instruction (new scene/location
+  or a different camera angle while preserving identity), saving the transformed frame
+  (Music-Video-Creator helper workflow for building the next scene''s starting image).
+  NOTE: the next-scene LoRA''s strength lives inside rgthree Power Lora Loader''s
+  nested `lora_1` dict input, which the manifest flag system can''t address as a scalar
+  param -- left unflagged; edit the JSON directly to change it from its baked-in strength
+  1.'
+workflow: music-video-creator-helper-workflows-qwen-image-transform-firstframe-next-scene-or-different-angle-lora.json
+mode: [i2i]
+output_node_title: Save Image
+flags:
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: The source frame to transform.
+    node: '41'
+  prompt:
+    node_title: TextEncodeQwenImageEditPlus (Positive)
+    param: prompt
+    type: str
+    required: false
+    default: 'Next Scene:  Transform the scene to a beach. Maintain the womans identity
+      and character. Keep her facial features exactly the same'
+    help: Edit instruction describing the desired next-scene/angle change.
+    node: '177'
+  negative_prompt:
+    node_title: TextEncodeQwenImageEditPlus
+    param: prompt
+    type: str
+    required: false
+    default: ''
+    node: '175'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    required: false
+    default: 704114447673856
+    node: '191'
+  enable_4steps_lora:
+    node_title: Enable 4steps LoRA?
+    param: value
+    type: str
+    required: false
+    default: 'True'
+    help: Toggles between the fast 4-step Lightning LoRA path (steps=4, cfg=1) and
+      the slower 40-step/cfg=4 path via the graph's Switch nodes. Pass "True" or "False".
+    node: '188'

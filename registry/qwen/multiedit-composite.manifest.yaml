@@ -1,0 +1,119 @@
+description: "Multi-image compositor for Qwen-Image-Edit-2511: one main image plus two reference images. The full two-reference shape only; zero- or one-reference variants are not expressible as flag patching."
+workflow: multiedit-composite.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    CLIPTextEncode: core
+    KSampler: core
+    LoadImage: core
+    LoaderGGUF: gguf
+    LoraLoaderModelOnly: core
+    ModelSamplingAuraFlow: core
+    QwenEditAdaptiveLongestEdge: Comfyui-QwenEditUtils
+    QwenEditConfigPreparer: Comfyui-QwenEditUtils
+    SaveImage: core
+    TextEncodeQwenImageEditPlusCustom_lrzjason: Comfyui-QwenEditUtils
+    VAEDecode: core
+    VAELoader: core
+  custom_node_packs:
+  - name: gguf
+    git: https://github.com/calcuis/gguf
+    registry_id: gguf
+  - name: Comfyui-QwenEditUtils
+    git: https://github.com/lrzjason/Comfyui-QwenEditUtils
+    registry_id: qweneditutils
+  models:
+  - directory: diffusion_models
+    name: qwen-image-edit-2511-Q4_K_S.gguf
+    url: https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF/resolve/main/qwen-image-edit-2511-Q4_K_S.gguf
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: loras
+    name: Qwen-Image-Edit-2511-Lightning-8steps-V1.0-bf16.safetensors
+    url: https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-8steps-V1.0-bf16.safetensors
+flags:
+  base:
+    node_title: Main image
+    param: image
+    type: image
+    required: true
+    help: Picture 1 -- an existing correct scene (empty location plate or an already-rendered
+      native-gen shot).
+    node: '2'
+  ref1:
+    node_title: Image 2
+    param: image
+    type: image
+    required: true
+    help: Picture 2 -- first reference/character image.
+    node: '1'
+  ref2:
+    node_title: Image 3
+    param: image
+    type: image
+    required: true
+    help: Picture 3 -- second reference/character image. This manifest only covers
+      the full 2-ref graph shape; omitting this flag via wfcli.py run will leave the
+      JSON's own placeholder filename on this branch, not a clean 1-ref graph.
+    node: '24'
+  prompt:
+    node_title: TextEncodeQwenImageEditPlusCustom lrzjason
+    param: prompt
+    type: str
+    required: true
+    node: '10'
+  negative:
+    node_title: CLIP Text Encode (Prompt)
+    param: text
+    type: str
+    required: true
+    node: '21'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    required: true
+    node: '17'
+  steps:
+    node_title: KSampler
+    param: steps
+    type: int
+    default: 8
+    node: '17'
+  gguf_name:
+    node_title: GGUF Loader
+    param: gguf_name
+    type: str
+    default: qwen-image-edit-2511-Q5_1.gguf
+    node: '3'
+  clip_name:
+    node_title: Load CLIP
+    param: clip_name
+    type: str
+    default: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    node: '6'
+  vae_name:
+    node_title: Load VAE
+    param: vae_name
+    type: str
+    default: qwen_image_vae.safetensors
+    node: '7'
+  lora_name:
+    node_title: Load LoRA
+    param: lora_name
+    type: str
+    default: Qwen-Image-Edit-2511-Lightning-8steps-V1.0-bf16.safetensors
+    node: '23'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: multiedit_composite/wfcli_run
+    node: '30'

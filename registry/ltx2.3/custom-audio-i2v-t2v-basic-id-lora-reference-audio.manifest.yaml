@@ -1,0 +1,110 @@
+description: 'LTX-2.3 basic image-to-video talking-head generation using the "TalkVid-3K"
+  ID-LoRA plus a reference audio clip for voice/identity consistency: the reference
+  audio is trimmed to its first 5s (fixed literal, not exposed), vocal-isolated via
+  Mel-Band RoFormer, and fed into LTXVReferenceAudio as an identity anchor so generated
+  speech keeps a consistent voice timbre across runs -- the model still synthesizes
+  its own new speech/audio content (per positive_prompt''s [SPEECH] line), the reference
+  clip is NOT muxed into the output as-is. A floating "ID-Lora Prompt Guide" note
+  (node 465, unused/unwired) documents the expected prompt template: "[VISUAL]: ...\n[SPEECH]:
+  ...\n[SOUNDS]: ...".
+
+  '
+workflow: custom-audio-i2v-t2v-basic-id-lora-reference-audio.json
+mode: [i2v, t2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  positive_prompt:
+    node_title: Prompt
+    param: value
+    type: str
+    default: "[VISUAL]: Opens with a medium shot, camera slowly pushes in toward the\
+      \ character. An old man with gray hair, wearing pale orange and black winter\
+      \ jacket, looks directly at the camera, his mouth opens and closes naturally\
+      \ as he speaks, tilts his head playfully. In the background penguins are walking\
+      \ around. In the sky aurora is moving. \n[SPEECH]: And when a new video is generated\
+      \ my voice stay consistent. So you can generate me at a tropical beach next...\
+      \ please do. \n[SOUNDS]: smooth calm British man voice. Low volume outdoors\
+      \ sound in the background and sound of penguins. \n\n\n"
+    help: Follow the [VISUAL]/[SPEECH]/[SOUNDS] template (see node 465's note) for
+      best ID-LoRA results.
+    node: '398'
+  negative_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #375'
+    param: text
+    type: str
+    default: "text, subtitles, logo, still image, still video, no motion, static,\
+      \ frozen, blurry, low quality, distorted, bad anatomy, oversaturated, pixelated,\
+      \ low resolution, grainy, compression artifacts, jpeg artifacts, glitches, watermark,\
+      \ signature, copyright, deformed facial features, asymmetrical face, missing\
+      \ facial features, extra limbs, disfigured hands, blurry teeth, disfigured teeth,\
+      \ \npc game, console game, video game, cartoon, childish, ugly"
+    node: '375'
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: First-frame reference image (the talking-head subject).
+    node: '269'
+  reference_audio_file:
+    node_title: Load Audio
+    param: audio
+    type: str
+    default: David_Attenborough CC3.wav
+    help: Must already exist in ComfyUI's input directory -- no upload path exists
+      for audio yet in this CLI. This is the voice/identity reference clip (see description),
+      not the literal output audio track.
+    node: '276'
+  seed_pass1:
+    node_title: 'RandomNoise #357'
+    param: noise_seed
+    type: int
+    default: 42
+    help: Seed for the base pass.
+    node: '357'
+  seed_pass2:
+    node_title: 'RandomNoise #356'
+    param: noise_seed
+    type: int
+    default: 43
+    help: Seed for the upscale/refine pass.
+    node: '356'
+  id_lora_strength:
+    node_title: ID-LoRA
+    param: strength_model
+    type: float
+    default: 1.01
+    help: Model-patch strength of the TalkVid-3K ID-LoRA; this workflow's whole technique
+      centers on this LoRA.
+    node: '400'
+  identity_guidance_scale:
+    node_title: LTXV Reference Audio (ID-LoRA)
+    param: identity_guidance_scale
+    type: float
+    default: 3
+    help: How strongly generation is steered toward the reference audio's voice identity.
+    node: '402'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    default: 960
+    node: '434'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    default: 544
+    node: '435'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    default: 10
+    node: '432'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 25
+    node: '433'

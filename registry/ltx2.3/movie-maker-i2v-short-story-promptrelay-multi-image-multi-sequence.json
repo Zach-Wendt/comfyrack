@@ -1,0 +1,1430 @@
+{
+  "164": {
+    "inputs": {
+      "frame_rate": [
+        "697",
+        0
+      ],
+      "positive": [
+        "927",
+        0
+      ],
+      "negative": [
+        "927",
+        1
+      ]
+    },
+    "class_type": "LTXVConditioning",
+    "_meta": {
+      "title": "LTXVConditioning"
+    }
+  },
+  "605": {
+    "inputs": {
+      "global_prompt": [
+        "709",
+        0
+      ],
+      "local_prompts": [
+        "894:893",
+        0
+      ],
+      "segment_lengths": [
+        "665:659",
+        0
+      ],
+      "epsilon": 0.001,
+      "model": [
+        "899",
+        0
+      ],
+      "clip": [
+        "681",
+        0
+      ],
+      "latent": [
+        "749",
+        0
+      ]
+    },
+    "class_type": "PromptRelayEncode",
+    "_meta": {
+      "title": "Prompt Relay Encode"
+    }
+  },
+  "625": {
+    "inputs": {
+      "value": 8
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Length Segment  (seconds) #625"
+    }
+  },
+  "629": {
+    "inputs": {
+      "expression": "((round((a * b -1) / 8)) * 8) + 1 ",
+      "variables.a": [
+        "697",
+        0
+      ],
+      "variables.b": [
+        "625",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #629"
+    }
+  },
+  "676": {
+    "inputs": {
+      "vae_name": "LTX23_audio_vae_bf16.safetensors",
+      "device": "main_device",
+      "weight_dtype": "bf16"
+    },
+    "class_type": "VAELoaderKJ",
+    "_meta": {
+      "title": "VAELoader KJ"
+    }
+  },
+  "678": {
+    "inputs": {
+      "vae_name": "taeltx2_3.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #678"
+    }
+  },
+  "679": {
+    "inputs": {
+      "vae_name": "LTX23_video_vae_bf16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE #679"
+    }
+  },
+  "681": {
+    "inputs": {
+      "clip_name1": "gemma_3_12B_it_fp8_scaled.safetensors",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "683": {
+    "inputs": {
+      "unet_name": "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "684": {
+    "inputs": {
+      "model_name": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+    },
+    "class_type": "LatentUpscaleModelLoader",
+    "_meta": {
+      "title": "Load Latent Upscale Model"
+    }
+  },
+  "691": {
+    "inputs": {
+      "unet_name": "LTXvideo\\LTX-2\\quantstack\\LTX-2.3-distilled-Q4_K_S.gguf"
+    },
+    "class_type": "UnetLoaderGGUF",
+    "_meta": {
+      "title": "Unet Loader (GGUF)"
+    }
+  },
+  "692": {
+    "inputs": {
+      "clip_name1": "gemma-3-12b-it-Q2_K.gguf",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "ltxv"
+    },
+    "class_type": "DualCLIPLoaderGGUF",
+    "_meta": {
+      "title": "DualCLIPLoader (GGUF)"
+    }
+  },
+  "697": {
+    "inputs": {
+      "value": 24
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "FPS"
+    }
+  },
+  "699": {
+    "inputs": {
+      "value": 1280
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "WIDTH"
+    }
+  },
+  "701": {
+    "inputs": {
+      "value": 720
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "HEIGHT"
+    }
+  },
+  "709": {
+    "inputs": {
+      "value": "mysterious  Jakarta at night, dramatic shadows and rim light,hyperrealistic, Asian cinematic noir style,inspired by Wong Kar-Wai and Blade Runner 2049, photographed with a Samyang AF 35mm f/1.4 RF lens, rich ambient mood,stylized color palette of crimson,cyan,and deep charcoal"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "MASTER PROMPT (for the whole video)"
+    }
+  },
+  "713": {
+    "inputs": {
+      "expression": "a",
+      "a": [
+        "697",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #713"
+    }
+  },
+  "724": {
+    "inputs": {
+      "video_latent": [
+        "928",
+        2
+      ],
+      "audio_latent": [
+        "734",
+        1
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #724"
+    }
+  },
+  "725": {
+    "inputs": {
+      "sampler_name": "euler_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect #725"
+    }
+  },
+  "734": {
+    "inputs": {
+      "av_latent": [
+        "776",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #734"
+    }
+  },
+  "735": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "772",
+        0
+      ],
+      "positive": [
+        "928",
+        0
+      ],
+      "negative": [
+        "928",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #735"
+    }
+  },
+  "736": {
+    "inputs": {
+      "noise": [
+        "773",
+        0
+      ],
+      "guider": [
+        "735",
+        0
+      ],
+      "sampler": [
+        "725",
+        0
+      ],
+      "sigmas": [
+        "745",
+        0
+      ],
+      "latent_image": [
+        "724",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced #736"
+    }
+  },
+  "737": {
+    "inputs": {
+      "samples": [
+        "939",
+        2
+      ],
+      "upscale_model": [
+        "684",
+        0
+      ],
+      "vae": [
+        "679",
+        0
+      ]
+    },
+    "class_type": "LTXVLatentUpsampler",
+    "_meta": {
+      "title": "spatial"
+    }
+  },
+  "742": {
+    "inputs": {
+      "sampler_name": "euler_ancestral_cfg_pp"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect #742"
+    }
+  },
+  "743": {
+    "inputs": {
+      "sigmas": "1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas #743"
+    }
+  },
+  "744": {
+    "inputs": {
+      "sigmas": "0.909375, 0.725, 0.421875, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas (LTX-2)"
+    }
+  },
+  "745": {
+    "inputs": {
+      "sigmas": "0.85, 0.7250, 0.4219, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "ManualSigmas #745"
+    }
+  },
+  "749": {
+    "inputs": {
+      "width": [
+        "785",
+        1
+      ],
+      "height": [
+        "786",
+        1
+      ],
+      "length": [
+        "665:664",
+        1
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo"
+    }
+  },
+  "750": {
+    "inputs": {
+      "video_latent": [
+        "927",
+        2
+      ],
+      "audio_latent": [
+        "751",
+        0
+      ]
+    },
+    "class_type": "LTXVConcatAVLatent",
+    "_meta": {
+      "title": "LTXVConcatAVLatent #750"
+    }
+  },
+  "751": {
+    "inputs": {
+      "frames_number": [
+        "665:664",
+        1
+      ],
+      "frame_rate": [
+        "713",
+        1
+      ],
+      "batch_size": 1,
+      "audio_vae": [
+        "676",
+        0
+      ]
+    },
+    "class_type": "LTXVEmptyLatentAudio",
+    "_meta": {
+      "title": "LTXV Empty Latent Audio"
+    }
+  },
+  "752": {
+    "inputs": {
+      "tile_size": 512,
+      "overlap": 64,
+      "temporal_size": 4096,
+      "temporal_overlap": 8,
+      "samples": [
+        "942",
+        2
+      ],
+      "vae": [
+        "679",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeTiled",
+    "_meta": {
+      "title": "VAE Decode (Tiled)"
+    }
+  },
+  "753": {
+    "inputs": {
+      "samples": [
+        "754",
+        1
+      ],
+      "audio_vae": [
+        "676",
+        0
+      ]
+    },
+    "class_type": "LTXVAudioVAEDecode",
+    "_meta": {
+      "title": "LTXV Audio VAE Decode"
+    }
+  },
+  "754": {
+    "inputs": {
+      "av_latent": [
+        "736",
+        0
+      ]
+    },
+    "class_type": "LTXVSeparateAVLatent",
+    "_meta": {
+      "title": "LTXVSeparateAVLatent #754"
+    }
+  },
+  "757": {
+    "inputs": {
+      "frame_rate": [
+        "697",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "LTX-2",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "752",
+        0
+      ],
+      "audio": [
+        "753",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "765": {
+    "inputs": {
+      "steps": 8,
+      "max_shift": 2.05,
+      "base_shift": 0.95,
+      "stretch": true,
+      "terminal": 0.1,
+      "latent": [
+        "750",
+        0
+      ]
+    },
+    "class_type": "LTXVScheduler",
+    "_meta": {
+      "title": "LTXVScheduler (for more steps)"
+    }
+  },
+  "772": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "605",
+        0
+      ],
+      "vae": [
+        "678",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override"
+    }
+  },
+  "773": {
+    "inputs": {
+      "noise_seed": 43
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #773"
+    }
+  },
+  "774": {
+    "inputs": {
+      "noise_seed": 42
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise #774"
+    }
+  },
+  "775": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "772",
+        0
+      ],
+      "positive": [
+        "164",
+        0
+      ],
+      "negative": [
+        "164",
+        1
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider #775"
+    }
+  },
+  "776": {
+    "inputs": {
+      "noise": [
+        "774",
+        0
+      ],
+      "guider": [
+        "775",
+        0
+      ],
+      "sampler": [
+        "742",
+        0
+      ],
+      "sigmas": [
+        "743",
+        0
+      ],
+      "latent_image": [
+        "750",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced #776"
+    }
+  },
+  "777": {
+    "inputs": {
+      "text": "blurry, oversaturated, pixelated, low resolution, grainy, distorted, noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo, signature, copyright, subtitles, distorted sound, saturated sound, loud",
+      "clip": [
+        "681",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Negative Prompt"
+    }
+  },
+  "785": {
+    "inputs": {
+      "expression": "a/2",
+      "values.a": [
+        "699",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #785"
+    }
+  },
+  "786": {
+    "inputs": {
+      "expression": "a/2",
+      "values.a": [
+        "701",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #786"
+    }
+  },
+  "806": {
+    "inputs": {
+      "conditioning": [
+        "605",
+        1
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "818": {
+    "inputs": {
+      "text": "blurry, oversaturated, pixelated, low resolution, grainy, distorted, noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo, signature, copyright, subtitles, distorted sound, saturated sound, loud",
+      "clip": [
+        "681",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "820": {
+    "inputs": {
+      "image": "ZimageGGUF_00394_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image #820"
+    }
+  },
+  "824": {
+    "inputs": {
+      "value": "The woman, called Elsa, is walking down the street. Tracking camera. She talks with an asian-american accents, and she says:  \"I hope I can find him. The prompter better change the scene\" \n\nIts raining.\n\nAt the end, scene cut to a new scene. "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Segment Prompt #824"
+    }
+  },
+  "829": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "834",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED) #829"
+    }
+  },
+  "830": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "829",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess #830"
+    }
+  },
+  "834": {
+    "inputs": {
+      "resize_type": "scale dimensions",
+      "resize_type.width": [
+        "699",
+        0
+      ],
+      "resize_type.height": [
+        "701",
+        0
+      ],
+      "resize_type.crop": "center",
+      "scale_method": "lanczos",
+      "input": [
+        "820",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask #834"
+    }
+  },
+  "840": {
+    "inputs": {
+      "expression": "((round((a * b -1) / 8)) * 8) + 1 ",
+      "variables.a": [
+        "697",
+        0
+      ],
+      "variables.b": [
+        "849",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #840"
+    }
+  },
+  "841": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "847",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED) #841"
+    }
+  },
+  "843": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "841",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess #843"
+    }
+  },
+  "846": {
+    "inputs": {
+      "image": "ZimageGGUF_00395_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image #846"
+    }
+  },
+  "847": {
+    "inputs": {
+      "resize_type": "scale dimensions",
+      "resize_type.width": [
+        "699",
+        0
+      ],
+      "resize_type.height": [
+        "701",
+        0
+      ],
+      "resize_type.crop": "center",
+      "scale_method": "lanczos",
+      "input": [
+        "846",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask #847"
+    }
+  },
+  "848": {
+    "inputs": {
+      "value": "A man called Tom, is waiting, leaning up against the wall. He talks with a rusty deep american accent, and he says:  \"wonder where she is.  She said she would be here after 16 seconds\". \n\nIts raining.\n\nAt the end, scene cut to a new scene. "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Segment Prompt #848"
+    }
+  },
+  "849": {
+    "inputs": {
+      "value": 8
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Length Segment  (seconds) #849"
+    }
+  },
+  "853": {
+    "inputs": {
+      "expression": "((round((a * b -1) / 8)) * 8) + 1 ",
+      "variables.a": [
+        "697",
+        0
+      ],
+      "variables.b": [
+        "862",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #853"
+    }
+  },
+  "854": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "860",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED) #854"
+    }
+  },
+  "856": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "854",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess #856"
+    }
+  },
+  "859": {
+    "inputs": {
+      "image": "image (13) (2).png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image #859"
+    }
+  },
+  "860": {
+    "inputs": {
+      "resize_type": "scale dimensions",
+      "resize_type.width": [
+        "699",
+        0
+      ],
+      "resize_type.height": [
+        "701",
+        0
+      ],
+      "resize_type.crop": "center",
+      "scale_method": "lanczos",
+      "input": [
+        "859",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask #860"
+    }
+  },
+  "861": {
+    "inputs": {
+      "value": "Tom and Elsa have met up. The man says : \"of all the towns in the world, you had to walk into mine\".  \n\nThe woman says: \" lets go find a bar\". \n\nIts raining.\n\nAt the end, scene cut to a new scene. "
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Segment Prompt #861"
+    }
+  },
+  "862": {
+    "inputs": {
+      "value": 8
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Length Segment (seconds) #862"
+    }
+  },
+  "866": {
+    "inputs": {
+      "expression": "((round((a * b -1) / 8)) * 8) + 1 ",
+      "variables.a": [
+        "697",
+        0
+      ],
+      "variables.b": [
+        "875",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ #866"
+    }
+  },
+  "867": {
+    "inputs": {
+      "longer_edge": 1536,
+      "images": [
+        "873",
+        0
+      ]
+    },
+    "class_type": "ResizeImagesByLongerEdge",
+    "_meta": {
+      "title": "Resize Images by Longer Edge (DEPRECATED) #867"
+    }
+  },
+  "869": {
+    "inputs": {
+      "img_compression": 18,
+      "image": [
+        "867",
+        0
+      ]
+    },
+    "class_type": "LTXVPreprocess",
+    "_meta": {
+      "title": "LTXV Preprocess #869"
+    }
+  },
+  "872": {
+    "inputs": {
+      "image": "image (12) (3).png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image #872"
+    }
+  },
+  "873": {
+    "inputs": {
+      "resize_type": "scale dimensions",
+      "resize_type.width": [
+        "699",
+        0
+      ],
+      "resize_type.height": [
+        "701",
+        0
+      ],
+      "resize_type.crop": "center",
+      "scale_method": "lanczos",
+      "input": [
+        "872",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask #873"
+    }
+  },
+  "874": {
+    "inputs": {
+      "value": "Tom and Elsa are seated at a window at a dim lit bar. Elsa talks, and she says : \"So what do you know about this Prompt Relay?\" \n\nThe man nods his head, and he says : \"I will share the secret another day...\" \n\nThe camrea pulls out, and shows more of the scene...   and at the very end text \"THE END\" shows in bold font across the screen"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Segment Prompt #874"
+    }
+  },
+  "875": {
+    "inputs": {
+      "value": 8
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Length Segment (seconds) #875"
+    }
+  },
+  "899": {
+    "inputs": {
+      "PowerLoraLoaderHeaderWidget": {
+        "type": "PowerLoraLoaderHeaderWidget"
+      },
+      "\u2795 Add Lora": "",
+      "model": [
+        "683",
+        0
+      ]
+    },
+    "class_type": "Power Lora Loader (rgthree)",
+    "_meta": {
+      "title": "Power Lora Loader (rgthree)"
+    }
+  },
+  "911": {
+    "inputs": {
+      "expression": "a + b",
+      "values.a": [
+        "629",
+        1
+      ],
+      "values.b": [
+        "840",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #911"
+    }
+  },
+  "912": {
+    "inputs": {
+      "expression": "a + b",
+      "values.a": [
+        "911",
+        1
+      ],
+      "values.b": [
+        "853",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #912"
+    }
+  },
+  "927": {
+    "inputs": {
+      "num_guides": "4",
+      "num_guides.frame_idx_1": 0,
+      "num_guides.strength_1": 1,
+      "num_guides.frame_idx_2": [
+        "629",
+        1
+      ],
+      "num_guides.strength_2": 1,
+      "num_guides.frame_idx_3": [
+        "911",
+        1
+      ],
+      "num_guides.strength_3": 1,
+      "num_guides.frame_idx_4": [
+        "912",
+        1
+      ],
+      "num_guides.strength_4": 1,
+      "positive": [
+        "605",
+        1
+      ],
+      "negative": [
+        "806",
+        0
+      ],
+      "vae": [
+        "679",
+        0
+      ],
+      "latent": [
+        "749",
+        0
+      ],
+      "num_guides.image_1": [
+        "830",
+        0
+      ],
+      "num_guides.image_2": [
+        "843",
+        0
+      ],
+      "num_guides.image_3": [
+        "856",
+        0
+      ],
+      "num_guides.image_4": [
+        "869",
+        0
+      ]
+    },
+    "class_type": "LTXVAddGuideMulti",
+    "_meta": {
+      "title": "LTXVAddGuideMulti #927"
+    }
+  },
+  "928": {
+    "inputs": {
+      "num_guides": "4",
+      "num_guides.frame_idx_1": 0,
+      "num_guides.strength_1": 1,
+      "num_guides.frame_idx_2": [
+        "629",
+        1
+      ],
+      "num_guides.strength_2": 1,
+      "num_guides.frame_idx_3": [
+        "934",
+        1
+      ],
+      "num_guides.strength_3": 1,
+      "num_guides.frame_idx_4": [
+        "935",
+        1
+      ],
+      "num_guides.strength_4": 1,
+      "positive": [
+        "939",
+        0
+      ],
+      "negative": [
+        "939",
+        1
+      ],
+      "vae": [
+        "679",
+        0
+      ],
+      "latent": [
+        "737",
+        0
+      ],
+      "num_guides.image_1": [
+        "830",
+        0
+      ],
+      "num_guides.image_2": [
+        "843",
+        0
+      ],
+      "num_guides.image_3": [
+        "856",
+        0
+      ],
+      "num_guides.image_4": [
+        "869",
+        0
+      ]
+    },
+    "class_type": "LTXVAddGuideMulti",
+    "_meta": {
+      "title": "LTXVAddGuideMulti #928"
+    }
+  },
+  "934": {
+    "inputs": {
+      "expression": "a + b",
+      "values.a": [
+        "629",
+        1
+      ],
+      "values.b": [
+        "840",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #934"
+    }
+  },
+  "935": {
+    "inputs": {
+      "expression": "a + b",
+      "values.a": [
+        "934",
+        1
+      ],
+      "values.b": [
+        "853",
+        1
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression #935"
+    }
+  },
+  "939": {
+    "inputs": {
+      "positive": [
+        "164",
+        0
+      ],
+      "negative": [
+        "164",
+        1
+      ],
+      "latent": [
+        "734",
+        0
+      ]
+    },
+    "class_type": "LTXVCropGuides",
+    "_meta": {
+      "title": "LTXVCropGuides #939"
+    }
+  },
+  "942": {
+    "inputs": {
+      "positive": [
+        "928",
+        0
+      ],
+      "negative": [
+        "928",
+        1
+      ],
+      "latent": [
+        "754",
+        0
+      ]
+    },
+    "class_type": "LTXVCropGuides",
+    "_meta": {
+      "title": "LTXVCropGuides #942"
+    }
+  },
+  "894:891": {
+    "inputs": {
+      "string_a": [
+        "824",
+        0
+      ],
+      "string_b": [
+        "848",
+        0
+      ],
+      "delimiter": " | "
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #894:891"
+    }
+  },
+  "894:892": {
+    "inputs": {
+      "string_a": [
+        "894:891",
+        0
+      ],
+      "string_b": [
+        "861",
+        0
+      ],
+      "delimiter": " | "
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #894:892"
+    }
+  },
+  "894:893": {
+    "inputs": {
+      "string_a": [
+        "894:892",
+        0
+      ],
+      "string_b": [
+        "874",
+        0
+      ],
+      "delimiter": " | "
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #894:893"
+    }
+  },
+  "665:631": {
+    "inputs": {
+      "string_a": [
+        "665:651",
+        0
+      ],
+      "string_b": [
+        "665:654",
+        0
+      ],
+      "delimiter": ","
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #665:631"
+    }
+  },
+  "665:655": {
+    "inputs": {
+      "string_a": [
+        "665:631",
+        0
+      ],
+      "string_b": [
+        "665:656",
+        0
+      ],
+      "delimiter": ","
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #665:655"
+    }
+  },
+  "665:657": {
+    "inputs": {
+      "string_a": [
+        "665:655",
+        0
+      ],
+      "string_b": [
+        "665:658",
+        0
+      ],
+      "delimiter": ","
+    },
+    "class_type": "StringConcatenate",
+    "_meta": {
+      "title": "Concatenate Text #665:657"
+    }
+  },
+  "665:659": {
+    "inputs": {
+      "text": "193,193,193,193",
+      "anything": [
+        "665:657",
+        0
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "Frames segment list"
+    }
+  },
+  "665:664": {
+    "inputs": {
+      "expression": "a + b + c + d ",
+      "variables.a": [
+        "629",
+        1
+      ],
+      "variables.b": [
+        "840",
+        1
+      ],
+      "variables.c": [
+        "853",
+        1
+      ],
+      "variables.d": [
+        "866",
+        1
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "TOTAL FRAMES"
+    }
+  },
+  "665:654": {
+    "inputs": {
+      "value": [
+        "840",
+        1
+      ],
+      "format_string": "{:02d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String #665:654"
+    }
+  },
+  "665:651": {
+    "inputs": {
+      "value": [
+        "629",
+        1
+      ],
+      "format_string": "{:02d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String #665:651"
+    }
+  },
+  "665:656": {
+    "inputs": {
+      "value": [
+        "853",
+        1
+      ],
+      "format_string": "{:02d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String #665:656"
+    }
+  },
+  "665:658": {
+    "inputs": {
+      "value": [
+        "866",
+        1
+      ],
+      "format_string": "{:02d}"
+    },
+    "class_type": "JWIntegerToString",
+    "_meta": {
+      "title": "Integer to String #665:658"
+    }
+  }
+}

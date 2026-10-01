@@ -1,0 +1,64 @@
+description: "Optional img2img second pass over a composited image. Restores a hard cel-shaded look at low denoise using Anima and a cel-shading style LoRA."
+workflow: harmonize.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CLIPLoader: core
+    CLIPTextEncode: core
+    KSampler: core
+    LoadImage: core
+    LoraLoader: core
+    SaveImage: core
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  models:
+  - directory: diffusion_models
+    name: anima_baseV10.safetensors
+    url: https://huggingface.co/LyliaEngine/anima_baseV10/resolve/main/anima_baseV10.safetensors
+  - directory: text_encoders
+    name: qwen_3_06b_base.safetensors
+    source: unknown
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: loras
+    name: your_style_lora.safetensors
+    source: unknown
+flags:
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: Server-side upload ref of the panel to harmonize -- caller uploads via cc.upload()
+      first, same as every other image flag.
+    node: '20'
+  positive_text:
+    node_title: Positive Prompt
+    param: text
+    type: str
+    required: true
+    node: '6'
+  negative_text:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    required: true
+    node: '7'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    required: true
+    node: '9'
+  denoise:
+    node_title: KSampler
+    param: denoise
+    type: float
+    required: true
+    help: 0.30 confirmed stable across 3 seeds; 0.35 caused an identity-drift regression
+      on one seed (see shot.py's _harmonize_panel docstring).
+    node: '9'

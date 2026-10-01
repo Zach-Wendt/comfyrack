@@ -1,0 +1,356 @@
+{
+  "4": {
+    "inputs": {
+      "image_dir": [
+        "17",
+        0
+      ],
+      "batch_size": 0,
+      "start_from": 1,
+      "mode": "sequential"
+    },
+    "class_type": "CCC_ImageBatchLoader",
+    "_meta": {
+      "title": "Image Batch Loader"
+    }
+  },
+  "17": {
+    "inputs": {
+      "value": "path/to/dataset"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Insert Dataset Image Location"
+    }
+  },
+  "19": {
+    "inputs": {
+      "value": ""
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Set Lora Trigger Word (not relevant for ideogram tagging)"
+    }
+  },
+  "56": {
+    "inputs": {
+      "images": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "65": {
+    "inputs": {
+      "image": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "GetImageSizeAndCount",
+    "_meta": {
+      "title": "Get Image Size & Count"
+    }
+  },
+  "77": {
+    "inputs": {
+      "model_selection": "10 - Ideogram 4",
+      "trigger_word": [
+        "19",
+        0
+      ],
+      "lora_type": "character",
+      "prompt_01_flux": "You are a dataset-captioning engine for fine-tuning a FLUX (FLUX.1 or FLUX.2) LoRA. Write ONE flowing, natural-language paragraph in full sentences — no comma-separated tag lists and no \"this image shows\" filler. FLUX's T5/Mistral text encoder rewards complete prose. Refer to the main subject as '{trigger}'. Describe foreground to background: subject, pose/action, expression, clothing, then setting, lighting, and camera/lens feel. [[CHARACTER]]This is a character LoRA: describe only what VARIES between shots (pose, outfit, framing, lighting) and let '{trigger}' carry the fixed identity — do NOT describe permanent face, hair, or eye features. [[/CHARACTER]][[STYLE]]This is a style LoRA: describe the content/subject of each image and never name the style itself — the shared look is what '{trigger}' must learn. [[/STYLE]]Keep the caption structure consistent across the dataset. Output only the caption.",
+      "prompt_02_sd15": "You are a dataset-captioning engine for fine-tuning an SD 1.5 LoRA. Output a single comma-separated list of concise Danbooru-style tags — no sentences. SD 1.5's CLIP encoder keys on discrete tokens and its ~75-token window leaves no room for grammar filler. Start with '{trigger}', then tag subject, appearance, clothing, pose, expression, setting, lighting, and quality (masterpiece, best quality, highly detailed). [[CHARACTER]]This is a character LoRA: tag only variable attributes and omit the constant identity tags so '{trigger}' absorbs them. [[/CHARACTER]][[STYLE]]This is a style LoRA: blacklist generic subject tags (1girl, 1boy, standing, looking at viewer, smile) so the style does not bind to poses, and tag the rendering/medium instead. [[/STYLE]]Output only the comma-separated tags.",
+      "prompt_03_sdxl": "You are a dataset-captioning engine for fine-tuning an SDXL LoRA. The right style depends on the base checkpoint. For base / photoreal SDXL, write a short natural-language sentence naming the subject as '{trigger}', then continue with comma-separated descriptive modifiers (the hybrid its dual-CLIP encoders handle best). For an anime fine-tune (Pony, Animagine, Illustrious, NoobAI), output PURE Danbooru-style comma tags starting with '{trigger}'. Either way cover subject, appearance, clothing, pose, setting, lighting, and quality. [[CHARACTER]]This is a character LoRA: describe only variable attributes and let '{trigger}' learn the fixed identity. [[/CHARACTER]][[STYLE]]This is a style LoRA: describe the content, avoid naming the style, and (for tag output) blacklist generic subject tags so the style does not bind to poses. [[/STYLE]]Output only the caption.",
+      "prompt_04_sd3": "You are a dataset-captioning engine for fine-tuning an SD3 / SD3.5 LoRA. Write ONE precise natural-language description in full sentences — its T5-XXL encoder is the dominant signal and rewards prose over tags. Use '{trigger}' for the main subject. Be explicit about spatial relationships, object placement, composition, and lighting, and caption in the same natural-language style you intend to prompt with. [[CHARACTER]]This is a character LoRA: describe only variable attributes and let '{trigger}' carry identity. [[/CHARACTER]][[STYLE]]This is a style LoRA: describe the content, not the style. [[/STYLE]]Keep structure consistent across the dataset. Output only the caption.",
+      "prompt_05_cascade": "You are a dataset-captioning engine for fine-tuning a Stable Cascade (Würstchen) LoRA. Write a concise but information-dense natural-language description — descriptive phrases, not Danbooru tags. Begin with '{trigger}' as the main subject, then cover appearance, clothing, setting, lighting, and framing. [[CHARACTER]]This is a character LoRA: describe only what varies and let '{trigger}' learn the fixed identity. [[/CHARACTER]][[STYLE]]This is a style LoRA: describe the content, never the style. [[/STYLE]]Keep the structure consistent across every image. Output only the caption.",
+      "prompt_06_qwen": "You are a dataset-captioning engine for fine-tuning a Qwen-Image (Qwen-Image-2512) LoRA. Its Qwen2.5-VL text encoder natively understands layout, typography, and spatial relations, so write clear natural-language sentences and describe composition explicitly. Use '{trigger}' for the main subject and state object placement with spatial terms (centered, upper-left, foreground). If the image contains any rendered text, transcribe it VERBATIM in quotes and describe its font weight, style, color, and position. [[CHARACTER]]This is a character LoRA: describe only variable attributes and let '{trigger}' carry identity (avoid over-describing faces on small datasets). [[/CHARACTER]][[STYLE]]This is a style LoRA: describe the content, not the style. [[/STYLE]]Output only the caption.",
+      "prompt_07_wan": "You are a dataset-captioning engine for fine-tuning a Wan Video (Wan 2.1 / 2.2) LoRA on STATIC images. Write a short natural-language caption and keep it under ~50 tokens — Wan truncates in training and '{trigger}' must stay in range. A common form is 'A photo of {trigger}, ...'. Describe only constant appearance and context: clothing, background, lighting, framing. Do NOT describe motion or camera movement — Wan's video training reads motion words as change over time, which pollutes still-image training. [[CHARACTER]]This is a character LoRA: omit fine facial micro-details so '{trigger}' carries the identity. [[/CHARACTER]][[STYLE]]This is a style LoRA: describe the content, never the style. [[/STYLE]]Keep the format identical across the dataset. Output only the caption.",
+      "prompt_08_ltx": "You are a dataset-captioning engine for fine-tuning an LTX Video LoRA on STATIC images. LTX rewards long, detailed, structured prose — treat the caption as teaching material, not a short prompt, and avoid empty adjectives like \"beautiful\". Describe in a consistent order: shot type, then subject and appearance (using '{trigger}' for the main subject), then camera framing, then lighting, then style/mood. Describe the STATIC composition and framing only — do NOT describe temporal motion or camera movement, since the samples are stills. [[CHARACTER]]This is a character LoRA: describe only variable attributes and let '{trigger}' carry identity. [[/CHARACTER]][[STYLE]]This is a style LoRA: describe the content, not the style. [[/STYLE]]Output only the caption.",
+      "prompt_09_hunyuan": "You are a dataset-captioning engine for fine-tuning a HunyuanVideo LoRA on STATIC images. Its LLaVA-Llama3 LLM text encoder rewards rich, fluent, detailed natural-language descriptions — aim for roughly 50+ words. Write '{trigger}' into the sentence as a short phrase, not a bare token. Describe the subject's appearance, clothing, composition, framing, and lighting in detail. Do NOT invent or describe motion or camera movement — the samples are still images. [[CHARACTER]]This is a character LoRA: emphasize variable attributes and let '{trigger}' bind the identity. [[/CHARACTER]][[STYLE]]This is a style LoRA: describe the content, not the style. [[/STYLE]]Output only the caption.",
+      "prompt_10_ideogram": "You are an expert image captioner for LoRA training datasets using Ideogram 4.0.\nYour output must be a single valid JSON object. Do not output plain text, markdown, code fences, or explanations. Output clean, UTF-8, valid JSON only, with NO comments of any kind.\n\nYou will receive an image containing one or more known characters from the list below.\nGoal: write a detailed, structured CLEAN JSON caption for Ideogram 4.0 LoRA training, with placed bounding boxes, tagged characters, and color-palette picks.\n\nCAPTIONING RULES\n- Set \"aspect_ratio\" from the actual image dimensions.\n- Describe the image from left to right in both \"high_level_description\" and \"background\".\n- Order the \"elements\" array by ascending x_min (i.e. left to right).\n- Use the exact Trigger Keyword for each known character present. Reproduce trigger words character-for-character: exact casing, no normalization, no meta commentary.\n- Include a bounding box for each character and each key object or text element, in the format [x_min, y_min, x_max, y_max], normalized to image dimensions (0-1000 range). Origin is the top-left corner: [x_min, y_min] is the top-left of the box and [x_max, y_max] is the bottom-right.\n- Each element contains EXACTLY ONE character OR one text tag OR one key object. Overall composition and character interaction go in \"high_level_description\"; a single element's pose or action goes in that element's \"desc\".\n- Put the character's trigger word in the \"desc\" of its corresponding element.\n- Tag color palettes using hex codes.\n- Describe only what is clearly visible. Do not infer brand names, unreadable text, or occluded/guessed objects. If text is present but illegible, omit it.\n- Always describe lighting conditions and how each character is lit, in both \"high_level_description\" and \"lighting\".\n- Always describe camera angle, lens, aperture/exposure, and distance to subject (close-up, medium, wide, etc.) in \"photo\".\n- Always describe the image's aesthetic in \"aesthetics\".\n- If there are no characters, text, or key objects, \"elements\" may be an empty array.\n- Length guide (for dataset consistency): keep each \"desc\" to roughly 1-3 sentences and \"high_level_description\" to roughly 2-4 sentences.\n\nELEMENT SHAPES (two types only)\n- \"type\": \"text\"  -> include \"bbox\", \"desc\" (typography), and \"text\" (the exact visible string). Do NOT include \"color_palette\".\n- \"type\": \"obj\"   -> include \"bbox\", \"desc\", and \"color_palette\". Do NOT include a \"text\" field.\n\nCHARACTER HANDLING\n- Only tag characters actually visible in the image. Never add a trigger word for a character who is not present.\n- If a person appears who is not in the list below, describe them generically (e.g. \"a man\", \"a woman\") with no trigger word.\n\nCHARACTER TRIGGER WORDS\n- the black man ia \"M4le_M0del_01\"\n- the blonde woman with the buzzcut is \"Berl1n_Model_v01\"\n- the woman with curly hair \"Em1l1_05\"\n(The descriptors above, such as \"buzzcut\" or \"curly hair\", are recognition aids ONLY. They must never appear in your output. See The Forbidden Rule.)\n\n--- THE FORBIDDEN RULE (APPLIES TO ALL SECTIONS) ---\n- Why: the trigger word must carry all identity information, so the LoRA binds identity to the token rather than to descriptive text.\n- When a known character is identified, you are STRICTLY FORBIDDEN from describing that character's permanent/invariant physical features anywhere in the output (both \"high_level_description\" and \"desc\"). This includes hair (color, length, style), eyes, facial structure, skin tone, build/body type, and cybernetics. This applies regardless of what they wear. The trigger keyword alone replaces all such traits.\n- This explicitly includes the descriptors used to identify them above: do not write \"blonde\", \"buzzcut\", \"curly\", skin tone, or any equivalent.\n- Describe ONLY variable attributes: clothing/wardrobe, pose, action, facial expression, position in frame, and how the character is lit.\n- A tagged character's \"color_palette\" must be drawn from wardrobe and immediate surroundings ONLY, never from skin, hair, or eyes.\n\nOUTPUT FORMAT (strict, valid JSON, UTF-8 only, no code fences, no comments)\nReplicate this exact structure. The values below are placeholders showing shape and format only.\n{\n  \"aspect_ratio\": \"1:1\",\n  \"high_level_description\": \"General detailed description of the scene, left to right. Use character trigger words here when recognized, e.g. 'M4le_M0del_01 and Em1l1_05 are seated at a table in a dimly lit diner...'. Cover composition, interaction, and lighting.\",\n  \"compositional_deconstruction\": {\n    \"background\": \"Detailed description of the background, from left to right.\",\n    \"elements\": [\n      {\n        \"type\": \"text\",\n        \"bbox\": [50, 100, 200, 400],\n        \"desc\": \"Description of the text element and its typography.\",\n        \"text\": \"ExactVisibleString\"\n      },\n      {\n        \"type\": \"obj\",\n        \"bbox\": [150, 250, 450, 950],\n        \"desc\": \"Description using the trigger word: wardrobe, pose, action, expression, and lighting only.\",\n        \"color_palette\": [\"#1F2018\", \"#0B141D\"]\n      }\n    ]\n  },\n  \"style_description\": {\n    \"medium\": \"photography, graphic design, 3d render, etc.\",\n    \"aesthetics\": \"photoreal, grainy, vhs, 8bit, comic, anime, etc.\",\n    \"lighting\": \"Detailed description of the lighting in the scene.\",\n    \"photo\": \"Camera angle, lens, aperture/exposure, and distance to subject.\",\n    \"color_palette\": [\"#888888\", \"#444444\"]\n  }\n}\n\nPalette guidance: per-element \"color_palette\" max 5 picks; global \"style_description.color_palette\" should hold roughly 6-10 dominant colors (max 16).\n\nOPTIMAL FINAL CAPTION EXAMPLE (elements ordered left to right by x_min):\n{\n  \"aspect_ratio\": \"16:9\",\n  \"high_level_description\": \"A medium wide eye-level shot capturing Ma3hwaKang and MagnusSt3rn standing side-by-side in a dimly lit underground casino. Ma3hwaKang is reaching toward a green poker table in the center while MagnusSt3rn observes passively. High-contrast neon purple and gold rim lighting illuminates the subjects against deep shadows.\",\n  \"compositional_deconstruction\": {\n    \"background\": \"Left side features a glowing purple neon wall sign; center transitions into a dark, out-of-focus green poker table scattered with chips; right side fades into heavy shadows concealing silhouetted slot machines.\",\n    \"elements\": [\n      {\n        \"type\": \"text\",\n        \"bbox\": [50, 100, 200, 400],\n        \"desc\": \"Bright purple neon cursive tubing mounted on a dark brick wall.\",\n        \"text\": \"Jackpot\"\n      },\n      {\n        \"type\": \"obj\",\n        \"bbox\": [150, 250, 450, 950],\n        \"desc\": \"Ma3hwaKang wearing a floor-length red silk evening gown with a high leg slit. She is leaning forward, extending her right arm toward the table, displaying a highly focused and intense facial expression.\",\n        \"color_palette\": [\"#FF0000\", \"#8B0000\", \"#FFD700\", \"#1A1A1A\"]\n      },\n      {\n        \"type\": \"obj\",\n        \"bbox\": [200, 500, 800, 950],\n        \"desc\": \"A classic green felt poker table in the center foreground, scattered with stacks of casino chips, playing cards, and a golden VIP plaque.\",\n        \"color_palette\": [\"#006400\", \"#228B22\", \"#FFD700\", \"#FFFFFF\", \"#1A1A1A\"]\n      },\n      {\n        \"type\": \"obj\",\n        \"bbox\": [550, 150, 900, 950],\n        \"desc\": \"MagnusSt3rn standing upright with a rigid, imposing posture and hands clasped behind his back. He is looking sharply to the left with a stoic, calculating expression.\",\n        \"color_palette\": [\"#2F2F2F\", \"#1A1A1A\", \"#FFFFFF\", \"#FFD700\"]\n      },\n      {\n        \"type\": \"text\",\n        \"bbox\": [650, 450, 700, 550],\n        \"desc\": \"Small golden engraved plaque sitting on the edge of the poker table.\",\n        \"text\": \"VIP\"\n      }\n    ]\n  },\n  \"style_description\": {\n    \"medium\": \"photography\",\n    \"aesthetics\": \"photoreal, cyberpunk, neo-noir, cinematic\",\n    \"lighting\": \"Low-key neon lighting with a stark purple rim light hitting the subjects from the left, contrasted by a warm gold practical light illuminating them from the lower front-right.\",\n    \"photo\": \"Eye-level medium wide shot, 35mm lens, f/1.8 aperture for shallow depth of field, focused symmetrically on the two subjects, captured on a digital cinema camera.\",\n    \"color_palette\": [\"#4B0082\", \"#800080\", \"#FFD700\", \"#FF0000\", \"#1A1A1A\", \"#2F2F2F\", \"#0F0F0F\"]\n  }\n}\n\n\n",
+      "prompt_11_custom": "Write your LoRA-captioning prompt for {trigger}",
+      "prompt_12_krea2": "You are a dataset-captioning engine for fine-tuning a Krea 2 (K2) LoRA. Krea 2's Qwen3-VL text encoder is conditioned to read color, shape, size, texture, quantity, any rendered text, and the spatial relationships of the objects and background — so write natural-language sentences (no tag lists) that cover those attributes. Keep it short and promptable: one or two sentences is ideal, not a long essay. Name the main subject as '{trigger}', then describe the variable, promptable details — background, clothing, lighting, pose, and camera framing — and state object placement with spatial terms (centered, foreground, upper-left). If the image contains rendered text, transcribe it VERBATIM in quotes. [[CHARACTER]]This is a character LoRA: describe only what VARIES between shots (pose, outfit, expression, framing, lighting) and let '{trigger}' carry the fixed identity — do not re-describe permanent face, hair, or eye features. [[/CHARACTER]][[STYLE]]This is a style LoRA: describe the content/subject of each image, never name the style itself, and prefer a descriptive trigger PHRASE (e.g. 'violet retro anime print style') over an opaque token — Krea 2 handles descriptive triggers well. [[/STYLE]]Keep the caption structure consistent across the dataset. Output only the caption."
+    },
+    "class_type": "CCC_PromptStudio",
+    "_meta": {
+      "title": "Prompt Studio (For Image Tagging)"
+    }
+  },
+  "104": {
+    "inputs": {
+      "draw_boxes": "normalized_1000_xyxy",
+      "bbox_format": 64,
+      "training_resolution": 64,
+      "bucket_divisibility": 64,
+      "images": [
+        "4",
+        0
+      ],
+      "captions": [
+        "70:84",
+        0
+      ]
+    },
+    "class_type": "CCC_ShowImageTextPairs",
+    "_meta": {
+      "title": "Show Image + Text Pairs"
+    }
+  },
+  "70:49": {
+    "inputs": {
+      "delimiter": "///",
+      "clean_whitespace": "true",
+      "text_a": [
+        "77",
+        0
+      ]
+    },
+    "class_type": "Text Concatenate",
+    "_meta": {
+      "title": "Text Concatenate"
+    }
+  },
+  "70:13": {
+    "inputs": {
+      "measurement": "pixels",
+      "width": 1024,
+      "height": 1024,
+      "fit": "crop",
+      "method": "lanczos",
+      "image": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "Image Resize (rgthree)",
+    "_meta": {
+      "title": "Image Resize (rgthree)"
+    }
+  },
+  "70:8": {
+    "inputs": {
+      "find1": ".",
+      "replace1": "",
+      "find2": "",
+      "replace2": "",
+      "find3": "",
+      "replace3": "",
+      "text": [
+        "70:2",
+        0
+      ]
+    },
+    "class_type": "CR Text Replace",
+    "_meta": {
+      "title": "CR Text Replace (strip trailing dot)"
+    }
+  },
+  "70:2": {
+    "inputs": {
+      "find1": [
+        "17",
+        0
+      ],
+      "replace1": "",
+      "find2": "png",
+      "replace2": "",
+      "find3": "\\",
+      "replace3": "",
+      "text": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CR Text Replace",
+    "_meta": {
+      "title": "CR Text Replace (strip folder+ext from filename)"
+    }
+  },
+  "70:14": {
+    "inputs": {
+      "model_name": "Qwen3-VL-4B-Instruct",
+      "quantization": "None (FP16)",
+      "attention_mode": "auto",
+      "preset_prompt": "🖼️ Simple Description",
+      "custom_prompt": [
+        "70:49",
+        0
+      ],
+      "max_tokens": 1024,
+      "keep_model_loaded": true,
+      "seed": 6,
+      "image": [
+        "70:13",
+        0
+      ]
+    },
+    "class_type": "AILab_QwenVL",
+    "_meta": {
+      "title": "QwenVL"
+    }
+  },
+  "70:103": {
+    "inputs": {
+      "path": [
+        "17",
+        0
+      ],
+      "filename_prefix": [
+        "70:1",
+        0
+      ],
+      "filename_delimiter": "",
+      "filename_number_padding": 0,
+      "file_extension": ".json",
+      "encoding": "utf-8",
+      "filename_suffix": "",
+      "text": [
+        "70:84",
+        0
+      ]
+    },
+    "class_type": "Save Text File",
+    "_meta": {
+      "title": "Save Text File"
+    }
+  },
+  "70:1": {
+    "inputs": {
+      "text_0": "Berl1n_Model_v01_TrueV3_DATASET001",
+      "text_1": "Berl1n_Model_v01_TrueV3_DATASET002",
+      "text_2": "Berl1n_Model_v01_TrueV3_DATASET003",
+      "text_3": "Berl1n_Model_v01_TrueV3_DATASET004",
+      "text_4": "Berl1n_Model_v01_TrueV3_DATASET005",
+      "text_5": "Berl1n_Model_v01_TrueV3_DATASET006",
+      "text_6": "Berl1n_Model_v01_TrueV3_DATASET007",
+      "text_7": "Berl1n_Model_v01_TrueV3_DATASET008",
+      "text_8": "Berl1n_Model_v01_TrueV3_DATASET009",
+      "text_9": "Berl1n_Model_v01_TrueV3_DATASET010",
+      "text_10": "Berl1n_Model_v01_TrueV3_DATASET011",
+      "text_11": "Berl1n_Model_v01_TrueV3_DATASET012",
+      "text_12": "Berl1n_Model_v01_TrueV3_DATASET013",
+      "text_13": "Berl1n_Model_v01_TrueV3_DATASET014",
+      "text_14": "Berl1n_Model_v01_TrueV3_DATASET015",
+      "text_15": "Berl1n_Model_v01_TrueV3_DATASET016",
+      "text_16": "Berl1n_Model_v01_TrueV3_DATASET017",
+      "text_17": "Berl1n_Model_v01_TrueV3_DATASET018",
+      "text_18": "Berl1n_Model_v01_TrueV3_DATASET019",
+      "text_19": "Berl1n_Model_v01_TrueV3_DATASET020",
+      "text_20": "Berl1n_Model_v01_TrueV3_DATASET021",
+      "text_21": "Berl1n_Model_v01_TrueV3_DATASET022",
+      "text_22": "Berl1n_Model_v01_TrueV3_DATASET023",
+      "text_23": "Berl1n_Model_v01_TrueV3_DATASET024",
+      "text_24": "Berl1n_Model_v01_TrueV3_DATASET025",
+      "text_25": "Berl1n_Model_v01_TrueV3_IMG_GEN_00029_",
+      "text_26": "Berl1n_Model_v01_TrueV3_IMG_GEN_00030_",
+      "text_27": "Berl1n_Model_v01_TrueV3_IMG_GEN_00032_",
+      "text_28": "Berl1n_Model_v01_TrueV3_IMG_GEN_00033_",
+      "text_29": "Berl1n_Model_v01_TrueV3_IMG_GEN_00035_",
+      "text_30": "ComfyUI_02836_",
+      "text_31": "ComfyUI_02837_",
+      "text_32": "ComfyUI_02838_",
+      "text_33": "ComfyUI_02839_",
+      "text_34": "ComfyUI_02840_",
+      "text_35": "ComfyUI_02842_",
+      "text_36": "ComfyUI_02844_",
+      "text_37": "ComfyUI_02854_",
+      "text_38": "ComfyUI_02855_",
+      "text_39": "ComfyUI_02856_",
+      "text_40": "ComfyUI_02857_",
+      "text_41": "ComfyUI_02858_",
+      "text_42": "ComfyUI_02859_",
+      "text_43": "ComfyUI_02860_",
+      "text_44": "ComfyUI_02863_",
+      "text_45": "ComfyUI_02865_",
+      "text_46": "ComfyUI_02867_ - Copy",
+      "text_47": "ComfyUI_02867_",
+      "text_48": "ComfyUI_02871_",
+      "text_49": "ComfyUI_02874_",
+      "text_50": "Em1l1_05_DATASET001",
+      "text_51": "Em1l1_05_DATASET002",
+      "text_52": "Em1l1_05_DATASET003",
+      "text_53": "Em1l1_05_DATASET004",
+      "text_54": "Em1l1_05_DATASET005",
+      "text_55": "Em1l1_05_DATASET006",
+      "text_56": "Em1l1_05_DATASET007",
+      "text_57": "Em1l1_05_DATASET008",
+      "text_58": "Em1l1_05_DATASET009",
+      "text_59": "Em1l1_05_DATASET010",
+      "text_60": "Em1l1_05_DATASET011",
+      "text_61": "Em1l1_05_DATASET012",
+      "text_62": "Em1l1_05_DATASET013",
+      "text_63": "Em1l1_05_DATASET014",
+      "text_64": "Em1l1_05_DATASET015",
+      "text_65": "Em1l1_05_DATASET016",
+      "text_66": "Em1l1_05_DATASET017",
+      "text_67": "Em1l1_05_DATASET018",
+      "text_68": "Em1l1_05_DATASET019",
+      "text_69": "Em1l1_05_DATASET020",
+      "text_70": "Em1l1_05_DATASET021",
+      "text_71": "Em1l1_05_DATASET022",
+      "text_72": "Em1l1_05_DATASET023",
+      "text_73": "Em1l1_05_DATASET024",
+      "text_74": "M4le_M0del_01_DATASET001",
+      "text_75": "M4le_M0del_01_DATASET002",
+      "text_76": "M4le_M0del_01_DATASET003",
+      "text_77": "M4le_M0del_01_DATASET004",
+      "text_78": "M4le_M0del_01_DATASET005",
+      "text_79": "M4le_M0del_01_DATASET006",
+      "text_80": "M4le_M0del_01_DATASET007",
+      "text_81": "M4le_M0del_01_DATASET008",
+      "text_82": "M4le_M0del_01_DATASET009",
+      "text_83": "M4le_M0del_01_DATASET010",
+      "text_84": "M4le_M0del_01_DATASET011",
+      "text_85": "M4le_M0del_01_DATASET012",
+      "text_86": "M4le_M0del_01_DATASET013",
+      "text_87": "M4le_M0del_01_DATASET014",
+      "text_88": "M4le_M0del_01_DATASET015",
+      "text_89": "M4le_M0del_01_DATASET016",
+      "text_90": "M4le_M0del_01_DATASET017",
+      "text_91": "M4le_M0del_01_DATASET018",
+      "text_92": "M4le_M0del_01_DATASET019",
+      "text_93": "M4le_M0del_01_DATASET020",
+      "text_94": "M4le_M0del_01_DATASET021",
+      "text_95": "M4le_M0del_01_DATASET022",
+      "text_96": "M4le_M0del_01_DATASET023",
+      "text_97": "M4le_M0del_01_DATASET024",
+      "text_98": "M4le_M0del_01_DATASET025",
+      "text_99": "M4le_M0del_01_IMG_GEN_00053_",
+      "text_100": "M4le_M0del_01_IMG_GEN_00055_",
+      "text_101": "M4le_M0del_01_IMG_GEN_00058_",
+      "text_102": "M4le_M0del_01_IMG_GEN_00060_",
+      "text_103": "M4le_M0del_01_IMG_GEN_00063_",
+      "text_104": "krea_2pass_00225_",
+      "text_105": "krea_2pass_00232_",
+      "text_106": "krea_2pass_00237_",
+      "text_107": "krea_2pass_00245_",
+      "text_108": "krea_2pass_00248_",
+      "text": [
+        "70:8",
+        0
+      ]
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "70:84": {
+    "inputs": {
+      "text_input": [
+        "70:14",
+        0
+      ]
+    },
+    "class_type": "CCC_BBoxConverter",
+    "_meta": {
+      "title": "Convert BBox [y,x,y,x] ↔ [x,y,x,y]"
+    }
+  }
+}

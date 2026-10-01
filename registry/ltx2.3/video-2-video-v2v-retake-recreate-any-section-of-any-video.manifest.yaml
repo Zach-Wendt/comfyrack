@@ -1,0 +1,77 @@
+description: 'Video-to-video section retake (LTX-2.3): regenerates just the [retake_start_seconds,
+  retake_end_seconds] window of the input clip from a new prompt (e.g. new dialogue/action)
+  while leaving the rest of the video conceptually untouched, then recombines with
+  generated audio. Single unambiguous VHS_VideoCombine output, titled ''RETAKE VIDEO''.'
+workflow: video-2-video-v2v-retake-recreate-any-section-of-any-video.json
+mode: [v2v]
+output_node_title: RETAKE VIDEO
+flags:
+  prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    default: "The Joker looks at the camera and talks, he says \"OH i take a little\
+      \ LTX break right now\". \n\nThen he laughs.\n"
+    help: Scene/dialogue description for the recreated section.
+    node: '487'
+  negative_audio_prompt:
+    node_title: Negative Audio Prompt
+    param: text
+    type: str
+    default: ' distorted sound, saturated sound, loud sound'
+    node: '626'
+  prompt_enhancer_instruction:
+    node_title: LTX-2 PROMPT INSTRUCT
+    param: value
+    type: str
+    default: ''
+    help: Extra free-form instruction appended before the prompt when the LTX-2 prompt
+      enhancer (ENABLE PROMPT ENHANCER, on by default) runs; empty by default.
+    node: 599:484
+  seed:
+    node_title: 'RandomNoise #115'
+    param: noise_seed
+    type: int
+    default: 44
+    node: '115'
+  seed_pass2:
+    node_title: 'RandomNoise #243'
+    param: noise_seed
+    type: int
+    default: 432
+    help: Seed for the second (upscale/refine) sampling pass.
+    node: '243'
+  source_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: video
+    type: str
+    default: joker_therapy.mp4
+    help: Filename of source video; must already exist in ComfyUI's input directory
+      (no upload path for video yet in this CLI).
+    node: '644'
+  retake_start_seconds:
+    node_title: RETAKE START (seconds)
+    param: value
+    type: float
+    default: 3.3
+    help: Start of the section (in seconds) to recreate.
+    node: '661'
+  retake_end_seconds:
+    node_title: RETAKE END (seconds)
+    param: value
+    type: float
+    default: 7.9
+    help: End of the section (in seconds) to recreate.
+    node: '662'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '214'
+  max_pixel_size:
+    node_title: MAX PIXEL SIZE (longest)
+    param: value
+    type: int
+    default: 1280
+    node: '497'

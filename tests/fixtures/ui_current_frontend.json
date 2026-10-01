@@ -1,0 +1,456 @@
+{
+ "nodes": [
+  {
+   "id": 2,
+   "type": "InfographicPlatformSize",
+   "inputs": [
+    {
+     "localized_name": "Platform",
+     "name": "platform",
+     "type": "COMBO",
+     "widget": {
+      "name": "platform"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "aspect_ratio",
+     "name": "aspect_ratio",
+     "type": "COMBO",
+     "links": [
+      31
+     ]
+    },
+    {
+     "localized_name": "gen_width",
+     "name": "gen_width",
+     "type": "INT",
+     "links": [
+      37
+     ]
+    },
+    {
+     "localized_name": "gen_height",
+     "name": "gen_height",
+     "type": "INT",
+     "links": [
+      38
+     ]
+    },
+    {
+     "localized_name": "width",
+     "name": "width",
+     "type": "INT",
+     "links": [
+      55
+     ]
+    },
+    {
+     "localized_name": "height",
+     "name": "height",
+     "type": "INT",
+     "links": [
+      56
+     ]
+    }
+   ],
+   "widgets_values": [
+    "LinkedIn portrait (1200x1500)"
+   ]
+  },
+  {
+   "id": 3,
+   "type": "InfographicPrompt",
+   "inputs": [
+    {
+     "localized_name": "Content",
+     "name": "content",
+     "type": "STRING",
+     "widget": {
+      "name": "content"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "Layout",
+     "name": "layout",
+     "type": "COMBO",
+     "widget": {
+      "name": "layout"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "Style",
+     "name": "style",
+     "type": "COMBO",
+     "widget": {
+      "name": "style"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "Aspect ratio",
+     "name": "aspect_ratio",
+     "type": "COMBO",
+     "widget": {
+      "name": "aspect_ratio"
+     },
+     "link": 31
+    },
+    {
+     "localized_name": "Language",
+     "name": "language",
+     "type": "STRING",
+     "widget": {
+      "name": "language"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "Imagery",
+     "name": "imagery",
+     "shape": 7,
+     "type": "STRING",
+     "widget": {
+      "name": "imagery"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "prompt",
+     "name": "prompt",
+     "type": "STRING",
+     "links": [
+      34
+     ]
+    },
+    {
+     "localized_name": "negative",
+     "name": "negative",
+     "type": "STRING",
+     "links": [
+      36
+     ]
+    },
+    {
+     "localized_name": "ocr_prompt",
+     "name": "ocr_prompt",
+     "type": "STRING",
+     "links": [
+      47
+     ]
+    },
+    {
+     "localized_name": "content",
+     "name": "content",
+     "type": "STRING",
+     "links": [
+      49
+     ]
+    }
+   ],
+   "widgets_values": [
+    "How Vaccines Train Your Immune System\n\n- Step 1: Vaccine delivers a harmless antigen\n- Step 2: B cells produce matching antibodies\n- Step 3: Memory cells store the pattern for years\n\n- Protection builds in about 2 weeks\n- 95% efficacy in clinical trials",
+    "auto",
+    "auto",
+    "3:4",
+    "English",
+    "syringe releasing a droplet\nround teal cell with Y-shaped antibodies\nglowing yellow cell\ncalendar with a checkmark\nupward bar chart"
+   ]
+  },
+  {
+   "id": 9,
+   "type": "KSampler",
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 39
+    },
+    {
+     "localized_name": "positive",
+     "name": "positive",
+     "type": "CONDITIONING",
+     "link": 40
+    },
+    {
+     "localized_name": "negative",
+     "name": "negative",
+     "type": "CONDITIONING",
+     "link": 41
+    },
+    {
+     "localized_name": "latent_image",
+     "name": "latent_image",
+     "type": "LATENT",
+     "link": 42
+    },
+    {
+     "localized_name": "seed",
+     "name": "seed",
+     "type": "INT",
+     "widget": {
+      "name": "seed"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "steps",
+     "name": "steps",
+     "type": "INT",
+     "widget": {
+      "name": "steps"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "cfg",
+     "name": "cfg",
+     "type": "FLOAT",
+     "widget": {
+      "name": "cfg"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "sampler_name",
+     "name": "sampler_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "sampler_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "scheduler",
+     "name": "scheduler",
+     "type": "COMBO",
+     "widget": {
+      "name": "scheduler"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "denoise",
+     "name": "denoise",
+     "type": "FLOAT",
+     "widget": {
+      "name": "denoise"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "LATENT",
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      43
+     ]
+    }
+   ],
+   "widgets_values": [
+    42,
+    "randomize",
+    50,
+    3,
+    "euler",
+    "normal",
+    1
+   ]
+  },
+  {
+   "id": 13,
+   "type": "TextGenerate",
+   "inputs": [
+    {
+     "localized_name": "clip",
+     "name": "clip",
+     "type": "CLIP",
+     "link": 46
+    },
+    {
+     "localized_name": "image",
+     "name": "image",
+     "shape": 7,
+     "type": "IMAGE",
+     "link": 48
+    },
+    {
+     "localized_name": "video",
+     "name": "video",
+     "shape": 7,
+     "type": "IMAGE",
+     "link": null
+    },
+    {
+     "localized_name": "audio",
+     "name": "audio",
+     "shape": 7,
+     "type": "AUDIO",
+     "link": null
+    },
+    {
+     "localized_name": "system_prompt",
+     "name": "system_prompt",
+     "shape": 7,
+     "type": "STRING",
+     "link": null
+    },
+    {
+     "localized_name": "prompt",
+     "name": "prompt",
+     "type": "STRING",
+     "widget": {
+      "name": "prompt"
+     },
+     "link": 47
+    },
+    {
+     "localized_name": "max_length",
+     "name": "max_length",
+     "type": "INT",
+     "widget": {
+      "name": "max_length"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "Sampling Mode",
+     "name": "sampling_mode",
+     "type": "COMFY_DYNAMICCOMBO_V3",
+     "widget": {
+      "name": "sampling_mode"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "thinking",
+     "name": "thinking",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "thinking"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "use_default_template",
+     "name": "use_default_template",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "use_default_template"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "mtp",
+     "name": "mtp",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "mtp"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "generated_text",
+     "name": "generated_text",
+     "type": "STRING",
+     "links": [
+      50
+     ]
+    },
+    {
+     "localized_name": "thinking",
+     "name": "thinking",
+     "type": "STRING"
+    }
+   ],
+   "widgets_values": [
+    "",
+    1024,
+    "off",
+    false,
+    true,
+    "auto"
+   ]
+  }
+ ],
+ "links": [
+  [
+   31,
+   2,
+   0,
+   3,
+   3,
+   "COMBO"
+  ],
+  [
+   39,
+   5,
+   0,
+   9,
+   0,
+   "MODEL"
+  ],
+  [
+   40,
+   6,
+   0,
+   9,
+   1,
+   "CONDITIONING"
+  ],
+  [
+   41,
+   7,
+   0,
+   9,
+   2,
+   "CONDITIONING"
+  ],
+  [
+   42,
+   8,
+   0,
+   9,
+   3,
+   "LATENT"
+  ],
+  [
+   46,
+   12,
+   0,
+   13,
+   0,
+   "CLIP"
+  ],
+  [
+   48,
+   11,
+   0,
+   13,
+   1,
+   "IMAGE"
+  ],
+  [
+   47,
+   3,
+   2,
+   13,
+   5,
+   "STRING"
+  ]
+ ]
+}

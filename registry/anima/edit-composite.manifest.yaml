@@ -1,0 +1,137 @@
+description: "Experimental proof-of-concept, not production. Composites a character reference image onto a scene image using Anima models: the two are concatenated left-right, then only the scene side is regenerated conditioned on the character, in one pass, and cropped back to the scene's resolution. At denoise 1.0 the scene image contributes no pixel information; use 0.5-0.7 for real compositing and expect to re-tune per shot."
+workflow: edit-composite.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    AILab_ICLoRAConcat: ComfyUI-RMBG
+    AnimaLLLiteApply: core
+    CLIPLoader: core
+    CLIPTextEncode: core
+    Crop Image TargetSize (JPS): ComfyUI_JPS-Nodes
+    ImageResize+: ComfyUI_essentials
+    InpaintModelConditioning: core
+    KSampler: core
+    LoadImage: core
+    LoraLoader: core
+    Power Lora Loader (rgthree): rgthree-comfy
+    PrimitiveStringMultiline: core
+    SaveImage: core
+    StringReplace: core
+    UNETLoader: core
+    VAEDecodeTiled: core
+    VAELoader: core
+  custom_node_packs:
+  - name: ComfyUI-RMBG
+    git: https://github.com/1038lab/ComfyUI-RMBG
+    registry_id: comfyui-rmbg
+  - name: ComfyUI_JPS-Nodes
+    git: https://github.com/JPS-GER/ComfyUI_JPS-Nodes
+  - name: ComfyUI_essentials
+    git: https://github.com/cubiq/ComfyUI_essentials
+    registry_id: comfyui_essentials
+  - name: rgthree-comfy
+    git: https://github.com/rgthree/rgthree-comfy
+    registry_id: rgthree-comfy
+  models:
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: diffusion_models
+    name: anima_baseV10.safetensors
+    url: https://huggingface.co/LyliaEngine/anima_baseV10/resolve/main/anima_baseV10.safetensors
+  - directory: text_encoders
+    name: qwen_3_06b_base.safetensors
+    source: unknown
+  - directory: model_patches
+    name: anima-lllite-inpainting-v2.safetensors
+    url: https://huggingface.co/Comfy-Org/Anima-LLLite/resolve/main/model_patches/anima-lllite-inpainting-v2.safetensors
+flags:
+  character_ref:
+    node_title: Load Character Reference Image
+    param: image
+    type: image
+    required: true
+    help: Server-side upload ref of the character identity image (the 'object' side
+      of the IC-LoRA concat) -- caller uploads via cc.upload() first.
+    node: '110'
+  scene_image:
+    node_title: Load Base Scene Image
+    param: image
+    type: image
+    required: true
+    help: Server-side upload ref of the target/base scene image (the 'base' side --
+      this is the side that gets regenerated with the character composited in).
+    node: '10'
+  prompt_text:
+    node_title: Edit Prompt Text
+    param: value
+    type: str
+    required: true
+    help: Describes what the character should be doing/wearing in the regenerated
+      scene half. Gets substituted into the internal split-screen prompt template
+      (node 'Prompt Template') at its [prompt] placeholder -- do not pass a full prompt
+      template here, just the descriptive clause.
+    node: '73'
+  negative_text:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    required: false
+    default: worst quality, low quality, nudity, nsfw, explicit, sexual content, exposed
+      skin, suggestive pose, revealing clothing, spread legs, partial nudity, underwear,
+      swimsuit, watermark, signature, artist signature, text overlay, logo, username
+    node: '9'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    required: true
+    node: '5'
+  denoise:
+    node_title: KSampler
+    param: denoise
+    type: float
+    required: false
+    default: 1.0
+    help: Source harness's own default is 1.0, but a test found
+      1.0 fully discards the base/scene image (full noise mask -> zero pixel info
+      survives) -- for actual scene compositing use something in the 0.5-0.7 range
+      instead, and expect to re-tune per shot; not proven stable yet.
+    node: '5'
+  id_lora_name:
+    node_title: ID LoRA
+    param: lora_name
+    type: str
+    required: true
+    help: Your own character LoRA, a file in models/loras. Name a real installed file
+      even at strength 0.0 -- ComfyUI validates the combo before the strength applies.
+    node: '112'
+  id_strength_model:
+    node_title: ID LoRA
+    param: strength_model
+    type: float
+    required: false
+    default: 0.0
+    node: '112'
+  id_strength_clip:
+    node_title: ID LoRA
+    param: strength_clip
+    type: float
+    required: false
+    default: 0.0
+    node: '112'
+  lllite_strength:
+    node_title: Apply Anima LLLite Inpaint
+    param: strength
+    type: float
+    required: false
+    default: 1.0
+    node: '24'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    required: false
+    default: anima_edit_composite/anima_edit_composite
+    node: '57'

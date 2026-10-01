@@ -1,0 +1,151 @@
+description: 'Four-stage single-image character transform: strip (prompt-only, no LoRA), pose transfer, product-outfit extraction, outfit attachment, and a high-resolution finishing pass, using the Klein 9B model with KleinBase9B PoseTransfer, ProductImage, TryOn, and HighResolution LoRAs. Inputs are two images: the person to transform and a pose-plus-outfit reference. The graph also contains a video-batch mode whose required nodes are missing from this export, so the multi-images flag defaults to false and cannot be enabled.'
+workflow: multi-person-changer.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGGuider: core
+    CLIPLoader: core
+    CLIPTextEncode: core
+    ConditioningZeroOut: core
+    EmptyFlux2LatentImage: core
+    Flux2Scheduler: core
+    GetImageSize: core
+    Image Comparer (rgthree): rgthree-comfy
+    ImageResizeKJv2: ComfyUI-KJNodes
+    ImageScaleToTotalPixels: core
+    KSamplerSelect: core
+    LoadImage: core
+    LoraLoaderModelOnly: core
+    PreviewImage: core
+    PrimitiveBoolean: core
+    PrimitiveFloat: core
+    RandomNoise: core
+    ReferenceLatent: core
+    SamplerCustomAdvanced: core
+    SaveImage: core
+    Seed (rgthree): rgthree-comfy
+    String: ComfyUI-Logic
+    Switch any [Crystools]: ComfyUI-Crystools
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+    VHS_LoadVideo: ComfyUI-VideoHelperSuite
+    VHS_VideoInfo: ComfyUI-VideoHelperSuite
+    easy imageRemBg: ComfyUI-Easy-Use
+  custom_node_packs:
+  - name: rgthree-comfy
+    git: https://github.com/rgthree/rgthree-comfy
+    registry_id: rgthree-comfy
+  - name: ComfyUI-KJNodes
+    git: https://github.com/kijai/ComfyUI-KJNodes
+    registry_id: comfyui-kjnodes
+  - name: ComfyUI-Logic
+    git: https://github.com/theUpsider/ComfyUI-Logic
+    registry_id: comfyui-logic
+  - name: ComfyUI-Crystools
+    git: https://github.com/crystian/ComfyUI-Crystools
+    registry_id: ComfyUI-Crystools
+  - name: ComfyUI-VideoHelperSuite
+    git: https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
+    registry_id: comfyui-videohelpersuite
+  - name: ComfyUI-Easy-Use
+    git: https://github.com/yolain/ComfyUI-Easy-Use
+    registry_id: comfyui-easy-use
+  models:
+  - directory: text_encoders
+    name: qwen_3_8b_fp8mixed.safetensors
+    url: https://huggingface.co/Comfy-Org/vae-text-encorder-for-flux-klein-9b/resolve/main/split_files/text_encoders/qwen_3_8b_fp8mixed.safetensors
+  - directory: vae
+    name: full_encoder_small_decoder.safetensors
+    source: unknown
+  - directory: diffusion_models
+    name: flux-2-klein-9b-fp8.safetensors
+    url: https://huggingface.co/black-forest-labs/FLUX.2-klein-9b-fp8/resolve/main/flux-2-klein-9b-fp8.safetensors
+  - directory: loras
+    name: klein/KleinBase9B_PoseTransfer.safetensors
+    source: unknown
+  - directory: loras
+    name: klein/KleinBase9B_ProductImage.safetensors
+    source: unknown
+  - directory: loras
+    name: klein/KleinBase9B_TryOn.safetensors
+    source: unknown
+  - directory: loras
+    name: klein/Klein_HighResolution9B.safetensors
+    source: unknown
+flags:
+  image_1:
+    node_title: Load Image [top]
+    param: image
+    type: image
+    required: true
+    help: 'The person being transformed -- gets stripped, re-posed to match image_2,
+      and re-dressed in image_2''s outfit.
+
+      '
+    node: '283'
+  image_2:
+    node_title: Load Image [top#2]
+    param: image
+    type: image
+    required: true
+    help: Pose + outfit reference. Best results with comparable framing/camera angle/subject
+      count to image_1.
+    node: '1029'
+  seed:
+    node_title: Seed (rgthree)
+    param: seed
+    type: int
+    required: false
+    default: 71644290921915
+    node: '949'
+  megapixels:
+    node_title: Megapixels
+    param: value
+    type: float
+    required: false
+    default: 1
+    help: Target output resolution in megapixels (drives ImageScaleToTotalPixels).
+    node: '941'
+  multi_images:
+    node_title: Multi images
+    param: value
+    type: bool
+    required: false
+    default: false
+    help: 'Video-batch mode toggle. Leave false -- see this manifest''s description
+      for why true is not currently runnable against this exported graph.
+
+      '
+    node: '1194'
+  pose_transfer_strength:
+    node_title: Load LoRA [pose-transfer]
+    param: strength_model
+    type: float
+    required: false
+    default: 2
+    node: 1020:1018
+  product_extract_strength:
+    node_title: Load LoRA [product-image]
+    param: strength_model
+    type: float
+    required: false
+    default: 2
+    node: 1164:1165
+  outfit_attach_strength:
+    node_title: Load LoRA [outfit-attach]
+    param: strength_model
+    type: float
+    required: false
+    default: 1.5
+    node: 1058:1054
+  highres_strength:
+    node_title: Load LoRA [outfit-attach#2]
+    param: strength_model
+    type: float
+    required: false
+    default: 1
+    help: Civitai's own suggested range for this LoRA is 0.6-1.0.
+    node: 1058:1062

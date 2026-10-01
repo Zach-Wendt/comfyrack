@@ -1,0 +1,65 @@
+description: AceStep-XL text-to-music generator -- turns a style prompt + lyrics into
+  a finished MP3 song (Music-Video-Creator helper workflow, used to produce the audio
+  track a music video is then built around).
+workflow: music-video-creator-helper-workflows-acestep-xl-create-music-from-a-prompt.json
+mode: [t2v]
+output_node_title: Save Audio (MP3)
+flags:
+  style_prompt:
+    node_title: 'PROMPT : describe the music style, etc'
+    param: value
+    type: str
+    required: false
+    default: "Energetic EDM: High-energy EDM Pop/Future House with deep punchy bass,\
+      \ bright synths, and festival-style drops.\nMelodic & Bouncy: Tracks focusing\
+      \ on deep bass and melodic synth stabs, often in the 124\u2013128 BPM range.\n\
+      Fusion: Blending Future House with other genres like Tropical House or Techno. "
+    help: Music style/genre description fed to TextEncodeAceStepAudio1.5's tags input.
+    node: '120'
+  lyrics:
+    node_title: LYRICS
+    param: value
+    type: str
+    required: false
+    default: "[Intro - soft synth pad, distant guitar swell, slow breath]\nDrifting\
+      \ through the latent space\u2026\nWhere quiet prompts begin to wake\u2026\n\n\
+      [Verse 1]\nI type a whisper, watch it bloom\nIn pixel fog and quiet rooms\n\
+      A hundred frames begin to breathe\nWhile melodies I couldn\u2019t weave\nNow\
+      \ rise from weights, unchained and free\nLike open doors for you and me\n\n\
+      [Pre-Chorus]\nAnd every node connects the light\nTo hands that build without\
+      \ a fight\nNo locked gates, just open skies\nWhere anyone can close their eyes\u2026\
+      \ and dream\n\n[Chorus]\nOh, AceStep XL, you paint my dreams\nComfyUI, you stitch\
+      \ the seams\nOf every film, each trembling tone\nWhere lonely sparks now feel\
+      \ at home\nThank you, Kijai, for the quiet grace\nThat smoothed the path through\
+      \ digital space\nWe dream in code, we dream in blue\nAnd every open door leads\
+      \ through\n\n[Outro soft, echoing, tempo gently slows]\nOpen source\u2026 open\
+      \ hearts\u2026\nWe build the world from scattered parts\u2026\nThank you\u2026\
+      \ thank you\u2026\n\n[reverb tail fades into silence]\n"
+    help: Structured lyrics with section tags ([Intro], [Verse 1], etc), fed to TextEncodeAceStepAudio1.5's
+      lyrics input.
+    node: '121'
+  bpm:
+    node_title: BPM
+    param: value
+    type: int
+    required: false
+    default: 72
+    help: Target beats-per-minute, fed to TextEncodeAceStepAudio1.5's bpm input.
+    node: '118'
+  duration_seconds:
+    node_title: Song Duration (in seconds)
+    param: value
+    type: float
+    required: false
+    default: 120
+    help: Target song length in seconds -- drives both the text encoder's duration
+      input and the empty audio latent's length.
+    node: '119'
+  seed:
+    node_title: SEED
+    param: value
+    type: int
+    required: false
+    default: 31
+    help: Generation seed, shared by KSampler and the AceStep text encoder.
+    node: '128'

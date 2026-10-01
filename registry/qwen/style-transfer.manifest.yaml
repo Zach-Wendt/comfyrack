@@ -1,0 +1,86 @@
+description: "Turns a real photo into a flat hard-cel identity anchor. Uses the QwenStyle content-preserving style-transfer LoRA and a real screencap as the style reference image."
+workflow: style-transfer.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    FluxKontextImageScale: core
+    KSampler: core
+    LoadImage: core
+    LoraLoaderModelOnly: core
+    ModelSamplingAuraFlow: core
+    SaveImage: core
+    TextEncodeQwenImageEditPlus: core
+    UnetLoaderGGUF: ComfyUI-GGUF
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  custom_node_packs:
+  - name: ComfyUI-GGUF
+    git: https://github.com/city96/ComfyUI-GGUF
+    registry_id: ComfyUI-GGUF
+  models:
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: diffusion_models
+    name: qwen-image-edit-2511-Q5_1.gguf
+    url: https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF/resolve/main/qwen-image-edit-2511-Q5_1.gguf
+  - directory: loras
+    name: Qwen-Image-Style-Transfer-V1.safetensors
+    source: unknown
+flags:
+  photo:
+    node_title: Photo Image
+    param: image
+    type: image
+    required: true
+    help: Local path to the real source photo -- run_workflow() uploads it.
+    node: '101'
+  style_ref:
+    node_title: Style Reference Image
+    param: image
+    type: image
+    default: refs/BAR/bar_C_face.jpg
+    help: Real screencap from the target show, not a text description -- see module docstring,
+      real image wins on both style fidelity and likeness.
+    node: '102'
+  prompt:
+    node_title: Positive Prompt
+    param: prompt
+    type: str
+    required: true
+    help: POS_TEMPLATE.format(subject=..., age_clause=...) from qwen_style_transfer.py.
+    node: '13'
+  negative:
+    node_title: Negative Prompt
+    param: prompt
+    type: str
+    default: photorealistic, 3d render, gradient shading, soft shading, different
+      person, hair ornaments, antlers, headband, blocky, pixelated, low quality
+    node: '9'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 200
+    node: '15'
+  denoise:
+    node_title: KSampler
+    param: denoise
+    type: float
+    default: 0.75
+    help: 0.75 confirmed sweet spot across a 3-seed robustness check -- see module
+      docstring.
+    node: '15'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: qwen_style_transfer/wfcli_run
+    node: '110'

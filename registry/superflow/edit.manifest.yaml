@@ -1,0 +1,58 @@
+description: Instruction image edit (Qwen-Image-Edit-2511 + Lightning 4-step LoRA, 4 steps, cfg 1).
+  Source is scaled to about 1 megapixel first, so the output is about 1 MP at the source aspect. Wraps
+  the model stack of registry/qwen/segment-inpaint; graph shape from registry/qwen/edit-scene at
+  full denoise.
+workflow: edit.json
+mode: [i2i]
+output: image
+output_node_title: Image
+outputs:
+  - {title: Image, kind: image}
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    ImageScaleToTotalPixels: core
+    KSampler: core
+    LoadImage: core
+    LoraLoaderModelOnly: core
+    ModelSamplingAuraFlow: core
+    SaveImage: core
+    TextEncodeQwenImageEditPlus: core
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  models:
+  - directory: diffusion_models
+    name: qwen_image_edit_2511_bf16.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2511_bf16.safetensors
+  - directory: loras
+    name: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+    url: https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+flags:
+  image:
+    node_title: Source Image
+    param: image
+    type: image
+    required: true
+    node: '1'
+  instruction:
+    node_title: Positive Prompt
+    param: prompt
+    type: str
+    required: true
+    help: What to change, e.g. 'make the jacket red'.
+    node: '12'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 42
+    node: '15'

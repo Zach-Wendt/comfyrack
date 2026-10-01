@@ -1,0 +1,126 @@
+description: 'LTX-2.3 first+middle+last-frame-guided image-to-video (FML2V): three
+  LoadImage inputs (first, middle, last frame), each with its own guide strength,
+  driving a 3-image LTXVAddGuideMulti conditioning graph via a dedicated CFG guider
+  path (hence "-guider" in the name). Interpolates 15s of motion at 1280x720/24fps
+  through all three checkpoints, then spatially upscales (2x latent upsampler) and
+  refines in a second sampling pass. Positive prompt runs through the internal LLM
+  prompt-enhancer (fixed on) before becoming the actual conditioning text.
+
+  '
+workflow: first-last-frame-fml2v-first-middle-last-frame-guider.json
+mode: [r2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  positive_prompt:
+    node_title: PROMPT
+    param: value
+    type: str
+    required: false
+    default: "Make this come alive with cinematic motion, smooth animation. \n\nThe\
+      \ scene starts with a close up of an LTX soda can with ic cubes around it. \n\
+      \nAll of a suddent an arm comes into frame and grabs the soda can, and lifts\
+      \ the soda can up. \n\nCamera pans up smoothly to show a woman holding the soda\
+      \ can. She talks with a soft British voice, and she says :\" An LTX a day, keeps\
+      \ the doctor away\". Then she laghts, and finally she drinks from the soda can. "
+    help: Raw creative prompt -- gets run through the internal LLM prompt-enhancer
+      (using the stitched first+middle frames as visual context) before becoming the
+      actual positive conditioning text.
+    node: '2103'
+  negative_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #11'
+    param: text
+    type: str
+    required: false
+    default: blurry, oversaturated, pixelated, low resolution, grainy, distorted,
+      noise, compression artifacts, jpeg artifacts, glitches, watermark, text, logo,
+      signature, copyright, subtitles, distorted sound, saturated sound, loud
+    node: '11'
+  first_frame:
+    node_title: FIRST FRAME
+    param: image
+    type: image
+    required: true
+    help: Server-side upload ref of the video's opening frame -- caller uploads via
+      cc.upload() first.
+    node: '45'
+  middle_frame:
+    node_title: MIDDLE FRAME
+    param: image
+    type: image
+    required: true
+    help: Server-side upload ref of the frame the video should pass through partway
+      -- caller uploads via cc.upload() first.
+    node: '47'
+  last_frame:
+    node_title: LAST FRAME
+    param: image
+    type: image
+    required: true
+    help: Server-side upload ref of the video's closing frame -- caller uploads via
+      cc.upload() first.
+    node: '2172'
+  first_frame_strength:
+    node_title: FIRST FRAME STRENGTH
+    param: value
+    type: float
+    required: false
+    default: 0.7
+    node: '2110'
+  middle_frame_strength:
+    node_title: MIDDLE FRAME STRENGTH
+    param: value
+    type: float
+    required: false
+    default: 0.3
+    node: '2278'
+  last_frame_strength:
+    node_title: LAST FRAME STRENGTH
+    param: value
+    type: float
+    required: false
+    default: 1
+    node: '2108'
+  seed:
+    node_title: 'RandomNoise #15'
+    param: noise_seed
+    type: int
+    required: false
+    default: 42
+    help: Seed for the base-resolution first pass.
+    node: '15'
+  seed_refine:
+    node_title: 'RandomNoise #14'
+    param: noise_seed
+    type: int
+    required: false
+    default: 43
+    help: Seed for the second (spatial-upscale + refine) pass.
+    node: '14'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    required: false
+    default: 1280
+    node: '2080'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    required: false
+    default: 720
+    node: '2079'
+  length_seconds:
+    node_title: LENGTH (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 15
+    node: '2078'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    node: '2076'

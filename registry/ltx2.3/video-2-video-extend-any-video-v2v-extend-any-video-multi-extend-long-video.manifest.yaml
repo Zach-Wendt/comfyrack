@@ -1,0 +1,230 @@
+description: Extends an existing video forward in time across a chain of up to 4 sequential
+  extend segments (base + 3 further groups, each two-pass), cumulatively concatenating
+  video and audio so the final save node holds the whole extended-and-concatenated
+  video; earlier per-group save nodes are intermediate/shorter cumulative cuts, not
+  separate deliverables.
+workflow: video-2-video-extend-any-video-v2v-extend-any-video-multi-extend-long-video.json
+mode: [v2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162 #4678"
+flags:
+  source_video:
+    node_title: Load Video
+    param: video
+    type: str
+    required: false
+    default: LTX-2_01716-audio.mp4
+    help: Source video to extend. Must already exist in ComfyUI's input directory
+      -- no upload path exists for video in this CLI yet.
+    node: '319'
+  negative_prompt:
+    node_title: CLIP Text Encode (Prompt)
+    param: text
+    type: str
+    required: false
+    default: text, subtitles, logo, low quality, distorted, bad anatomy, oversaturated,
+      pixelated, low resolution, grainy, compression artifacts, jpeg artifacts, glitches,
+      watermark, signature, copyright,  distortedsound, saturated sound, loud sound
+      , deformed facial features, asymmetrical face, missing facial features, extra
+      limbs, disfigured hands, blurry teeth, disfigured teeth
+    help: Negative prompt for the video/visual branch, shared by all extend groups.
+    node: '110'
+  negative_audio_prompt:
+    node_title: Negative Audio Prompt
+    param: text
+    type: str
+    required: false
+    default: ' distorted sound, saturated sound, loud sound'
+    help: Negative prompt for the generated audio branch, shared by all extend groups.
+    node: '626'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    help: Frame rate used for loading the source video and for every video-combine
+      node.
+    node: '214'
+  max_pixel_size:
+    node_title: MAX PIXEL SIZE (longest)
+    param: value
+    type: int
+    required: false
+    default: 832
+    help: Longest-edge pixel size the source video is resized to before generation.
+    node: '497'
+  ref_length_seconds:
+    node_title: REF. LENGTH (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 3
+    help: How many seconds of the prior segment's tail are used as reference/overlap
+      context for each extension.
+    node: '305'
+  single_pass:
+    node_title: SINGLE PASS
+    param: value
+    type: str
+    required: false
+    default: 'True'
+    help: 'Global toggle: if true, each extend group''s saved video uses the single-pass
+      (CUT) image path instead of the two-pass spatial-upsample blend path.'
+    node: '2214'
+  input_video_has_audio:
+    node_title: INPUT VIDEO HAS AUDIO
+    param: value
+    type: str
+    required: false
+    default: 'True'
+    help: Tells the graph whether the source video's audio track should be used/extended
+      (vs treated as silent).
+    node: '594'
+  enhance_prompt:
+    node_title: ENHANCE PROMPT
+    param: value
+    type: str
+    required: false
+    default: 'False'
+    help: If true, each group's prompt is rewritten/expanded by an LLM (Gemma via
+      TextGenerateLTX2Prompt) before use; if false, the raw prompt text is used as-is.
+    node: '4240'
+  base_prompt:
+    node_title: 'PROMPT #487'
+    param: value
+    type: str
+    required: false
+    default: "Cinematic video. High quality. \n\nThe main character is Gollum, g0llum\
+      \ big eyes pale skin. \n\nThe creature is inside a cave dripping with water.\n\
+      The creature moves over to the side, the creature grabs a torch with fire. \n\
+      He looks towards the viewer, and then Gollum creature talks, and says: \"So,\
+      \ if you have such a magical character lora, can you lead me out of this cave.\
+      \ I wamt my precious thing\".\n\nHe starts to move forwards, tracking camera\
+      \ follows the creature. \n\nWhile moving, he says: \"lets find a way of of this\
+      \ miserable cave. I want to find this consistent lora\" "
+    help: Prompt for the base extension segment (before any of the 3 further extend
+      groups).
+    node: '487'
+  base_extend_seconds:
+    node_title: 'EXTEND (in seconds) #211'
+    param: value
+    type: int
+    required: false
+    default: 5
+    help: Seconds of new footage generated for the base extension segment.
+    node: '211'
+  base_seed:
+    node_title: 'RandomNoise #115'
+    param: noise_seed
+    type: int
+    required: false
+    default: 43
+    help: Seed for the base segment's first (pre-upsample) sampling pass.
+    node: '115'
+  base_seed_upsample:
+    node_title: 'RandomNoise #243'
+    param: noise_seed
+    type: int
+    required: false
+    default: 44
+    help: Seed for the base segment's second (spatial-upsample refine) sampling pass.
+    node: '243'
+  group1_prompt:
+    node_title: 'PROMPT #4227'
+    param: value
+    type: str
+    required: false
+    default: "Cinematic video. High quality. \n\nThe main character is Gollum, g0llum\
+      \ big eyes pale skin.  Camera stays close to the creature, always having him\
+      \ in face close up.\n\nThe creature is moving inside the cave, and reaches the\
+      \ entrance of the cave. He then stands outside the cave, and the camera captures\
+      \ the cave being at top of a rocking mountain. \n\nIts raining outside, night\
+      \ time dim lit scene, moonlight cast harsh shadows. \n\nThe creature looks towards\
+      \ the viewer, and Gollum creature talks, and says: \"So we are at extended group\
+      \ number 1. Lets find the way out of here. I want my precious lora\". \n\nThe\
+      \ Gollum creature starts climbing down the mountian. "
+    help: Prompt for extend group 1 (the first of the 3 chained extensions after the
+      base segment).
+    node: '4227'
+  group1_extend_seconds:
+    node_title: 'EXTEND (in seconds) #4233'
+    param: value
+    type: int
+    required: false
+    default: 15
+    help: Seconds of new footage generated for extend group 1.
+    node: '4233'
+  group1_seed:
+    node_title: 'SEED #4207'
+    param: value
+    type: int
+    required: false
+    default: 100
+    help: Seed for extend group 1's first (pre-upsample) sampling pass.
+    node: '4207'
+  group2_prompt:
+    node_title: 'PROMPT #4575'
+    param: value
+    type: str
+    required: false
+    default: "Cinematic video. High quality. \n\nThe main character is Gollum, g0llum\
+      \ big eyes pale skin.  Camera stays close to the creature, always having him\
+      \ in face close up.\n\nThe creature is moving inside the cave, and reaches the\
+      \ entrance of the cave. He then stands outside the cave, and the camera captures\
+      \ the cave being at top of a rocking mountain. \n\nIts raining outside, night\
+      \ time dim lit scene, moonlight cast harsh shadows. \n\nThe creature looks towards\
+      \ the viewer, and Gollum creature talks, and says: \"Extended group number 2.\
+      \ And you are still around. \". \n\nThe Gollum creature starts climbing down\
+      \ the mountian. "
+    help: Prompt for extend group 2 (the second chained extension, applied after group
+      1).
+    node: '4575'
+  group2_extend_seconds:
+    node_title: 'EXTEND (in seconds) #4574'
+    param: value
+    type: int
+    required: false
+    default: 15
+    help: Seconds of new footage generated for extend group 2.
+    node: '4574'
+  group2_seed:
+    node_title: 'SEED #4568'
+    param: value
+    type: int
+    required: false
+    default: 200
+    help: Seed for extend group 2's first (pre-upsample) sampling pass.
+    node: '4568'
+  group3_prompt:
+    node_title: 'PROMPT #4681'
+    param: value
+    type: str
+    required: false
+    default: "Cinematic video. High quality. \n\nThe main character is Gollum, g0llum\
+      \ big eyes pale skin. Camera stays close to the creature, always having him\
+      \ in face close up.\n\nThe creature is climbing down the mountain, and reaches\
+      \ the foot of the mountain. The scene is a dark forest, its raining heavily.\
+      \ The moon cast harsh shadows. \n\nThe creature looks towards the viewer, and\
+      \ Gollum creature talks, and says: \"We made it to group number 3. Extended\
+      \ long time, and I want my precious. Where is my precious lora\". \n\n\nThe\
+      \ creature gets angry and screams : \"My precious\".  \n\nThe camera pulls away,\
+      \ for a panoramic scene. The end\n "
+    help: Prompt for extend group 3 (the third and final chained extension -- its
+      save node is the workflow's overall output).
+    node: '4681'
+  group3_extend_seconds:
+    node_title: 'EXTEND (in seconds) #4680'
+    param: value
+    type: int
+    required: false
+    default: 15
+    help: Seconds of new footage generated for extend group 3.
+    node: '4680'
+  group3_seed:
+    node_title: 'SEED #4674'
+    param: value
+    type: int
+    required: false
+    default: 300
+    help: Seed for extend group 3's first (pre-upsample) sampling pass.
+    node: '4674'

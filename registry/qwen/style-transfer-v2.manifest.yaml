@@ -1,0 +1,125 @@
+description: "Stylizes line art: feeds a source image and a style-reference image as equal-weight edit-conditioning latents through Qwen-Image-Edit-2511 with a style-transfer LoRA and a 4-step Lightning speed-distill LoRA, at full denoise. It colorizes and styles line art, not photos: a fully-rendered photo, color or grayscale, comes back photorealistic with only a weak mood or lighting shift. Keep denoise at 1.0; lowering it does not give a gentler transfer."
+workflow: style-transfer-v2.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CFGNorm: core
+    CLIPLoader: core
+    CR Seed: ComfyUI_Comfyroll_CustomNodes
+    FluxKontextMultiReferenceLatentMethod: core
+    ImageScaleToTotalPixels: core
+    KSampler: core
+    LoadImage: core
+    LoraLoaderModelOnly: core
+    ModelSamplingAuraFlow: core
+    SaveImage: core
+    TextEncodeQwenImageEditPlus: core
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  custom_node_packs:
+  - name: ComfyUI_Comfyroll_CustomNodes
+    git: https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes
+  models:
+  - directory: text_encoders
+    name: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: diffusion_models
+    name: qwen_image_edit_2511_fp8mixed.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2511_fp8mixed.safetensors
+  - directory: loras
+    name: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+    url: https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+  - directory: loras
+    name: style-transfer-1_20.safetensors
+    source: unknown
+flags:
+  photo:
+    node_title: Photo Image
+    param: image
+    type: image
+    required: true
+    help: Despite the name, this needs to be LINE ART (flat outlines, no shading/color)
+      to work -- see manifest description's 'GROUND TRUTH' section. A real photo (color
+      or grayscale) here will come back photorealistic, not stylized. run_workflow()
+      uploads it.
+    node: '100'
+  style_ref:
+    node_title: Style Reference Image
+    param: image
+    type: image
+    required: true
+    help: Real reference image in the target style (e.g. a screencap from the target show),
+      not a text description.
+    node: '112'
+  prompt:
+    node_title: Positive Prompt
+    param: prompt
+    type: str
+    default: style transfer, change the style of image 1 to the style of image 2
+    help: "dx8152's own default is Chinese ('style transfer,\u5C06\u56FE1\u7684\u753B\
+      \u98CE\u6539\u4E3A\u56FE2\u7684\u98CE\u683C') -- translated here, not re-tested\
+      \ for whether the Chinese phrasing performs differently on this LoRA."
+    node: '11'
+  negative:
+    node_title: Negative Prompt
+    param: prompt
+    type: str
+    default: ''
+    help: Blank in the source graph -- cfg=1 makes the negative prompt largely inert
+      anyway.
+    node: '3'
+  seed:
+    node_title: Seed
+    param: seed
+    type: int
+    default: 497473618625030
+    node: '87'
+  steps:
+    node_title: KSampler
+    param: steps
+    type: int
+    default: 8
+    node: '14'
+  cfg:
+    node_title: KSampler
+    param: cfg
+    type: float
+    default: 1
+    node: '14'
+  style_lora_strength:
+    node_title: Load LoRA (Style Transfer)
+    param: strength_model
+    type: float
+    default: 0.8
+    node: '76'
+  lightning_lora_name:
+    node_title: Load LoRA (Lightning Steps)
+    param: lora_name
+    type: str
+    default: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+    help: dx8152's source graph names this 'Qwen-Image-Edit-2512-Lightning-4steps-V1.0-bf16.safetensors'
+      -- confirmed 2026-07-20 that exact filename doesn't exist publicly anywhere
+      (checked HF, Civitai). Using lightx2v's real dedicated Qwen-Image-Edit-2511-Lightning
+      release instead (487 likes/315K downloads) -- matches this graph's actual 2511-Edit
+      backbone; his '2512' was almost certainly his own local rename/typo. A distinct
+      lightx2v Qwen-Image-2512-Lightning (base, non-Edit) release also exists and
+      is NOT byte-identical to this one, in case that's what he actually meant.
+    node: '93'
+  unet_name:
+    node_title: Load Diffusion Model
+    param: unet_name
+    type: str
+    default: qwen_image_edit_2511_fp8mixed.safetensors
+    node: '114'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: qwen_style_transfer_dx8152/wfcli_run
+    node: '116'

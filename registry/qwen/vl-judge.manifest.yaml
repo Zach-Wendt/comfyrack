@@ -1,0 +1,44 @@
+description: "Structured judge: scores a render, optionally against a reference image tiled side-by-side, on artifact, likeness, and style axes, and returns JSON. Output is text, not an image."
+workflow: vl-judge.json
+mode: [i2i]
+output_node_title: Save Text File
+requires:
+  nodes:
+    AILab_QwenVL_Advanced: ComfyUI-QwenVL
+    LoadImage: core
+    Save Text File: was-node-suite-comfyui
+  custom_node_packs:
+  - name: ComfyUI-QwenVL
+    git: https://github.com/1038lab/ComfyUI-QwenVL
+    registry_id: ComfyUI-QwenVL
+  - name: was-node-suite-comfyui
+    git: https://github.com/ltdrdata/was-node-suite-comfyui
+    registry_id: was-ns
+flags:
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: The image to judge -- either a bare render or vl_judge.py's REFERENCE|RENDER
+      tiled pair.
+    node: '1'
+  model_name:
+    node_title: Qwen-VL Judge
+    param: model_name
+    type: str
+    default: Qwen3-VL-2B-Instruct
+    node: '2'
+  custom_prompt:
+    node_title: Qwen-VL Judge
+    param: custom_prompt
+    type: str
+    required: true
+    help: JUDGE_PROMPT_WITH_REF or JUDGE_PROMPT_NO_REF from vl_judge.py.
+    node: '2'
+  seed:
+    node_title: Qwen-VL Judge
+    param: seed
+    type: int
+    required: true
+    node: '2'

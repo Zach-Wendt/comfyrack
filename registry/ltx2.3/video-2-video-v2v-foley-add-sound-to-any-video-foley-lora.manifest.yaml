@@ -1,0 +1,57 @@
+description: 'Video-to-audio foley generation (LTX-2.3 Foley V2A IC-LoRA, current
+  version): watches the (muted) input video and generates a matching sound design
+  track, output as the original video muxed with the newly generated audio. Single
+  unambiguous VHS_VideoCombine output.'
+workflow: video-2-video-v2v-foley-add-sound-to-any-video-foley-lora.json
+mode: [v2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  sound_prompt:
+    node_title: Foley prompt (positive)
+    param: text
+    type: str
+    default: 'A mysterious horse with a night in red cape on top riding through a
+      rough landscape '
+    help: Description of the sound/foley to generate for this video.
+    node: '4'
+  negative_prompt:
+    node_title: Negative (music/speech/static)
+    param: text
+    type: str
+    default: music, melody, song, singing, vocals, score, soundtrack, beat, instrumental
+      backing, speech, dialogue, talking, narration, tinny, thin, harsh, clipped,
+      distorted, low bitrate, static, noise, room tone
+    node: '5'
+  seed:
+    node_title: Noise (seed)
+    param: noise_seed
+    type: int
+    default: 42
+    node: '19'
+  source_video:
+    node_title: Load (muted) video
+    param: video
+    type: str
+    default: 450x_auto__ (7) (2).mp4
+    help: Filename of source (muted) video; must already exist in ComfyUI's input
+      directory (no upload path for video yet in this CLI).
+    node: '6'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '57'
+  max_length_seconds:
+    node_title: MAX LENGTH (in seconds)
+    param: value
+    type: int
+    default: 10
+    node: '90'
+  foley_lora_strength:
+    node_title: Foley LoRA (V2A)
+    param: strength_model
+    type: float
+    default: 1
+    help: Strength of the Foley (V2A) IC-LoRA driving sound generation.
+    node: '2'

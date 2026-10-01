@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# Fail if tracked files hold personal data. Run before every public push.
+# Generic checks run everywhere: home-folder paths, tailnet (100.64.0.0/10) addresses, and spec/phase notes.
+# Maintainers add their own names in .dev/release-patterns.txt (one extended regex, never committed here).
+set -u
+cd "$(dirname "$0")/.." || exit 2
+git rev-parse --git-dir >/dev/null 2>&1 || { echo "release-grep: not a git checkout" >&2; exit 2; }
+pattern='C:[\]Users[\][A-Za-z]|/Users/[a-z]|/home/[a-z]+/|\b(spec|phase) [0-9]|100\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\.[0-9]+\.[0-9]+'
+if [ -f .dev/release-patterns.txt ]; then
+  pattern="$pattern|$(tr -d '\r\n' < .dev/release-patterns.txt)"
+fi
+hits=$(git grep -n -I -i -E "$pattern" -- . ':!scripts/release-grep' ':!uv.lock')
+if [ -n "$hits" ]; then
+  printf '%s\n' "$hits"
+  echo "release-grep: personal data found" >&2
+  exit 1
+fi
+echo "release-grep: clean"

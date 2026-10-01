@@ -1,0 +1,136 @@
+description: Inpaints a masked region of a reference video with new generated content
+  (via the ltx23_inpaint_masked_t2v LoRA), where the mask region is defined by a SAM3
+  text-prompt detection (e.g. 'man in black uniform') instead of manual point clicks;
+  the graph also emits a debug mask-visualization video and an IC-LoRA control-composite
+  video alongside the real inpainted result.
+workflow: video-2-video-inpaint-v2v-inpainting-inpaint-t2v-lora-sam3-masking.json
+mode: [t2v, v2v]
+output_node_title: Video Combine
+flags:
+  source_video:
+    node_title: Reference Video
+    param: video
+    type: str
+    required: false
+    default: black_ironman2.mp4
+    help: Reference video to inpaint. Must already exist in ComfyUI's input directory
+      -- no upload path exists for video in this CLI yet.
+    node: '1032'
+  segment_prompt:
+    node_title: Segment prompt
+    param: String
+    type: str
+    required: false
+    default: man in black uniform
+    help: Text description of the subject/region SAM3 should detect and mask for
+      inpainting. Node 1221 is a `String` node whose single input key is also named
+      `String`.
+    node: '1221'
+  sam3_threshold:
+    node_title: SAM3 Detect
+    param: threshold
+    type: float
+    required: false
+    default: 0.5
+    help: SAM3 detection confidence threshold for the mask region -- the central knob
+      of this workflow's masking technique.
+    node: '1220'
+  inpaint_lora_strength:
+    node_title: InPaint Lora
+    param: strength_model
+    type: float
+    required: false
+    default: 1
+    help: Strength of the ltx23_inpaint_masked_t2v LoRA that drives the inpainting
+      effect -- the central technique of this workflow.
+    node: '419'
+  prompt:
+    node_title: Manual Prompt
+    param: text
+    type: str
+    required: false
+    default: "The scene start with Batman rising up to the right side of Iron Man.\
+      \ \nIron Man wearing red armour suit,  Batman is wearing black leather suit.\
+      \ \n\nBatman stands up, he is wearing a dark leather suit, with a dark cape.\
+      \ And a leather mask over his head.  Live-action movie Batman. "
+    help: Positive prompt describing what should be generated inside the masked region.
+    node: '389'
+  negative_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #395'
+    param: text
+    type: str
+    required: false
+    default: text, subtitles, logo, low quality, distorted, bad anatomy, oversaturated,
+      pixelated, low resolution, grainy, compression artifacts, jpeg artifacts, glitches,
+      watermark, signature, copyright,  distortedsound, saturated sound, loud sound
+      , deformed facial features, asymmetrical face, missing facial features, extra
+      limbs, disfigured hands, blurry teeth, disfigured teeth
+    help: Negative prompt for the video/visual branch.
+    node: '395'
+  seed:
+    node_title: 'RandomNoise #377'
+    param: noise_seed
+    type: int
+    required: false
+    default: 42
+    help: Seed for the first (base inpaint) sampling pass.
+    node: '377'
+  seed_upsample:
+    node_title: 'RandomNoise #810'
+    param: noise_seed
+    type: int
+    required: false
+    default: 43
+    help: Seed for the second (spatial-upsample refine) sampling pass.
+    node: '810'
+  max_size_longer_side:
+    node_title: MAX SIZE (longer side)
+    param: value
+    type: int
+    required: false
+    default: 960
+    help: Longest-edge pixel size the reference video is resized to before generation.
+    node: '1024'
+  max_length_seconds:
+    node_title: MAX LENGTH (in seconds)
+    param: value
+    type: int
+    required: false
+    default: 15
+    help: Maximum duration (seconds) of reference video processed/generated.
+    node: '1152'
+  single_pass:
+    node_title: Single Pass
+    param: value
+    type: str
+    required: false
+    default: 'False'
+    help: If true, skips the second spatial-upsample refine pass.
+    node: '1069'
+  use_audio_input:
+    node_title: Use Audio Input
+    param: value
+    type: str
+    required: false
+    default: 'True'
+    help: If true, the output keeps/uses an audio track (from the source video or
+      custom_audio, see custom_audio_input).
+    node: '1160'
+  custom_audio_input:
+    node_title: Custom Audio Input
+    param: value
+    type: str
+    required: false
+    default: 'False'
+    help: If true, uses the custom_audio file instead of the reference video's own
+      audio track.
+    node: '1169'
+  custom_audio:
+    node_title: Load Audio
+    param: audio
+    type: str
+    required: false
+    default: tony soprano.wav
+    help: Custom audio file used when custom_audio_input is true. Must already exist
+      in ComfyUI's input directory.
+    node: '1171'

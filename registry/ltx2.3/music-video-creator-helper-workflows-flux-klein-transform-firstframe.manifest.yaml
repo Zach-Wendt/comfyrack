@@ -1,0 +1,46 @@
+description: Flux-2-Klein-9B image-edit transform -- takes one loaded first-frame
+  image and rewrites it per a text instruction (e.g. change location/pose while keeping
+  identity), saving the transformed frame (Music-Video-Creator helper workflow for
+  building the next scene's starting image).
+workflow: music-video-creator-helper-workflows-flux-klein-transform-firstframe.json
+mode: [i2i]
+output_node_title: Save Image
+flags:
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: The source frame to transform.
+    node: '76'
+  prompt:
+    node_title: CLIP Text Encode (Positive Prompt)
+    param: text
+    type: str
+    required: false
+    default: 'Tranform the scene. Put the woman at the beach.
+
+      Maintain her identity and persona, maintain her face and looks. '
+    help: Edit instruction describing the desired transformation of the loaded image.
+    node: '135'
+  seed:
+    node_title: RandomNoise
+    param: noise_seed
+    type: int
+    required: false
+    default: 187757383478216
+    node: '125'
+  steps:
+    node_title: Flux2Scheduler
+    param: steps
+    type: int
+    required: false
+    default: 4
+    node: '137'
+  cfg:
+    node_title: CFG Guider
+    param: cfg
+    type: float
+    required: false
+    default: 1
+    node: '138'

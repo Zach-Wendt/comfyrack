@@ -1,0 +1,257 @@
+description: 'LTX-2.3 chained 5-scene music video generator (save-per-segment variant)
+  -- same 5-scene chained-latent pipeline as multi-scene-full-render (per-scene ownership
+  of prompt/seed/image/length primitives traced and confirmed the same way), but each
+  scene ALSO gets its own individually-saved SaveVideo node (4 ''Video Part N'' VHS_VideoCombine
+  previews plus per-scene ''Save Video #<id>'' SaveVideo nodes inside each scene subgraph
+  -- these write the intermediate per-segment clips to disk). The workflow still ends
+  by combining all 5 scenes into one FINAL VIDEO, which is chosen as the output node
+  here (per registration guidance: pick the final merged video when one exists). A
+  second untitled-suffix ''Video Combine'' node (save_output=True) appears to duplicate
+  FINAL VIDEO''s image stream and was not chosen.'
+workflow: music-video-creator-i2v-t2v-music-video-multi-scene-save-per-segment.json
+mode: [i2v, t2v]
+output_node_title: FINAL VIDEO
+flags:
+  negative_prompt:
+    node_title: 'CLIP Text Encode (Prompt) #1626'
+    param: text
+    type: str
+    required: false
+    default: text, subtitles, logo, still image, still video, no motion, static, frozen,
+      blurry, low quality, distorted, bad anatomy, oversaturated, pixelated, low resolution,
+      grainy, compression artifacts, jpeg artifacts, glitches, watermark, signature,
+      copyright,  distortedsound, saturated sound, loud sound , deformed facial features,
+      asymmetrical face, missing facial features, extra limbs, disfigured hands, blurry
+      teeth, disfigured teeth
+    help: Single negative prompt shared by all 5 scenes.
+    node: '1626'
+  audio_file:
+    node_title: Load Audio
+    param: audio
+    type: str
+    required: false
+    default: ComfyUI_00152_.mp3
+    help: Backing track filename -- must already exist in ComfyUI's input dir.
+    node: '1594'
+  audio_start_seconds:
+    node_title: START AUDIO FROM
+    param: start_index
+    type: int
+    required: false
+    default: 11
+    help: Offset (seconds) into the audio file where playback/sync starts.
+    node: '1598'
+  width:
+    node_title: WIDTH
+    param: value
+    type: int
+    required: false
+    default: 832
+    node: '1606'
+  height:
+    node_title: HEIGHT
+    param: value
+    type: int
+    required: false
+    default: 480
+    node: '1591'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    required: false
+    default: 24
+    node: '1586'
+  scene1_image:
+    node_title: 'Load Image #444'
+    param: image
+    type: image
+    required: true
+    help: Scene 1 first frame.
+    node: '444'
+  scene1_prompt:
+    node_title: 'PROMPT #1624'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a red haired woman. \n\nShe sings with expressive motion and gesticulation.\
+      \ \nShe sings the words : \"Where quiet prompts begin to wake\u2026\".\n\nThe\
+      \ song she is singing is a sweet slow melancolic melody. Her lips moves in perfect\
+      \ lip-sync to the attached audio.  \n\nShe is walking through a mystical dreamy\
+      \ forrest, tracking camera as she walks towards the viewer. \nThe camera pulls\
+      \ away slowly keeping same distance to the woman. \n\nCinematic, volumetric\
+      \ lights, shadow play. \n\nIMPORTANT: The woman is singing, and her lips are\
+      \ moving with lip-sync to the lyrics of the song."
+    help: Scene 1 motion/action prompt.
+    node: '1624'
+  scene1_seed:
+    node_title: Start Seed
+    param: value
+    type: int
+    required: false
+    default: 1001
+    node: '1527'
+  scene1_length_seconds:
+    node_title: 'LENGTH (in seconds) #2012'
+    param: value
+    type: float
+    required: false
+    default: 11
+    node: '2012'
+  scene2_image:
+    node_title: 'Load Image #4750'
+    param: image
+    type: image
+    required: true
+    help: Scene 2 first frame.
+    node: '4750'
+  scene2_prompt:
+    node_title: 'PROMPT #1805'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a red haired woman. \n\nShe sings with expressive motion and gesticulation.\
+      \ \n\nThe song she is singing is a sweet slow melancolic melody. Her lips moves\
+      \ in perfect lip-sync to the attached audio.  \n\nShe sings the words: \"I type\
+      \ a whisper, watch it bloom. In pixel fog and quiet rooms. A hundred frames\
+      \ begin to breathe. While melodies I couldn\u2019t weave\" \n\nShe is walking\
+      \ through a romantic greenhouse with flowers and warm light, tracking camera\
+      \ as she walks towards the viewer.\n\nCinematic, volumetric lights, shadow play.\n\
+      \nIMPORTANT: The woman is singing, and her lips are moving with lip-sync to\
+      \ the lyrics of the song."
+    help: Scene 2 motion/action prompt.
+    node: '1805'
+  scene2_seed:
+    node_title: 'SEED #2284'
+    param: value
+    type: int
+    required: false
+    default: 1023
+    node: '2284'
+  scene2_length_seconds:
+    node_title: 'LENGTH (in seconds) #1997'
+    param: value
+    type: float
+    required: false
+    default: 15
+    node: '1997'
+  scene3_image:
+    node_title: 'Load Image #6510'
+    param: image
+    type: image
+    required: true
+    help: Scene 3 first frame.
+    node: '6510'
+  scene3_prompt:
+    node_title: 'PROMPT #6513'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a red haired woman. \n\nShe sings with expressive motion and gesticulation.\
+      \ \n\nShe sings the words: \"Now rise from weights, unchained and free. Like\
+      \ open doors for you and me. And every node connects the light. To hands that\
+      \ build without a fight.  No locked gates, just open skies. Where anyone can\
+      \ close their eyes ....\".\n\nThe song she is singing is a sweet slow melancolic\
+      \ melody. Her lips moves in perfect lip-sync to the attached audio.  \n\nShe\
+      \ is sitting down at the stage at an abandoned teather.  The camera slowly orbits\
+      \ around the woman, the woman is always looking at the viewer.\n\nCinematic,\
+      \ volumetric lights, shadow play.\n\nIMPORTANT: The woman is singing, and her\
+      \ lips are moving with lip-sync to the lyrics of the song."
+    help: Scene 3 motion/action prompt.
+    node: '6513'
+  scene3_seed:
+    node_title: 'SEED #6511'
+    param: value
+    type: int
+    required: false
+    default: 1030
+    node: '6511'
+  scene3_length_seconds:
+    node_title: 'LENGTH (in seconds) #6509'
+    param: value
+    type: float
+    required: false
+    default: 24
+    node: '6509'
+  scene4_image:
+    node_title: 'Load Image #6598'
+    param: image
+    type: image
+    required: true
+    help: Scene 4 first frame.
+    node: '6598'
+  scene4_prompt:
+    node_title: 'PROMPT #6601'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a red haired woman. \n\nShe sings with expressive motion and gesticulation.\
+      \ \n\nShe sings the words: \"\u2026 and dream.... Oh, AceStep XL, you paint\
+      \ my dreams. ComfyUI, you stitch the seams. Of every film, each trembling tone\"\
+      \ \n\nThe song she is singing is a sweet slow melancolic melody. Her lips moves\
+      \ in perfect lip-sync to the attached audio.  \n\nShe is sitting down at a piece\
+      \ of drift-wood at the beach, at dusk. Soft light from a cloudy sky. \n\n\n\
+      She sings for a bit before she stands up and walks towards the viewer. \n\n\
+      The camera slowly pulls in closer to the woman singing. \n\n\nCinematic, volumetric\
+      \ lights, shadow play.\n\nIMPORTANT: The woman is singing, and her lips are\
+      \ moving with lip-sync to the lyrics of the song."
+    help: Scene 4 motion/action prompt.
+    node: '6601'
+  scene4_seed:
+    node_title: 'SEED #6599'
+    param: value
+    type: int
+    required: false
+    default: 1040
+    node: '6599'
+  scene4_length_seconds:
+    node_title: 'LENGTH (in seconds) #6597'
+    param: value
+    type: float
+    required: false
+    default: 15
+    node: '6597'
+  scene5_image:
+    node_title: 'Load Image #6686'
+    param: image
+    type: image
+    required: true
+    help: Scene 5 first frame.
+    node: '6686'
+  scene5_prompt:
+    node_title: 'PROMPT #6689'
+    param: value
+    type: str
+    required: false
+    default: "Make this image come alive with fluid motion. Cinematic music video\
+      \ shot of a red haired woman. \n\nShe sings with expressive motion and gesticulation.\
+      \ \n\nShe sings the words: \"Where lonely sparks now feel at home. \nThank you,\
+      \ Kijai, for the quiet grace. That smoothed the path through digital space.\
+      \ We dream in code, we dream in blue\nAnd every open door leads through\". \n\
+      \nThe song she is singing is a sweet slow melancolic melody. Her lips moves\
+      \ in perfect lip-sync to the attached audio.  \n\nShe is standing on a rooftop\
+      \ balcony with the city behind her, at night. Camera slowly orbits around her,\
+      \ with her always looking towards the viewer as she sings. \n\nThe camera slowly\
+      \ pulls in closer to the woman singing. \n\n\nCinematic, volumetric lights,\
+      \ shadow play.\n\nIMPORTANT: The woman is singing, and her lips are moving with\
+      \ lip-sync to the lyrics of the song."
+    help: Scene 5 motion/action prompt.
+    node: '6689'
+  scene5_seed:
+    node_title: 'SEED #6687'
+    param: value
+    type: int
+    required: false
+    default: 1050
+    node: '6687'
+  scene5_length_seconds:
+    node_title: 'LENGTH (in seconds) #6685'
+    param: value
+    type: float
+    required: false
+    default: 20
+    node: '6685'

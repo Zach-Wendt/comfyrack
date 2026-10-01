@@ -1,0 +1,172 @@
+description: 'Instruction-based, identity-preserving single-image edit: give a reference photo and a plain-language instruction, and the LoRA edits the image while preserving identity and everything not asked to change. Requires the ComfyUI-Krea2Edit node pack and the krea2_identity_edit LoRA (v1.1 is the default; v1.2 is not on disk). This graph wires a single reference image only; two-person edits are not connected.'
+workflow: identity-edit.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CLIPLoader: core
+    EmptySD3LatentImage: core
+    KSampler: core
+    Krea2EditGroundedEncode: comfyui-krea2edit
+    Krea2EditModelPatch: comfyui-krea2edit
+    LoadImage: core
+    LoraLoaderModelOnly: core
+    ResolutionSelector: core
+    SaveImage: core
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  custom_node_packs:
+  - name: comfyui-krea2edit
+    git: https://github.com/lbouaraba/comfyui-krea2edit
+  models:
+  - directory: diffusion_models
+    name: krea2_turbo_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Krea-2/resolve/main/diffusion_models/krea2_turbo_fp8_scaled.safetensors
+  - directory: text_encoders
+    name: qwen3vl_4b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Krea-2/resolve/main/text_encoders/qwen3vl_4b_fp8_scaled.safetensors
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: loras
+    name: Krea2/krea2_identity_edit_v1_2.safetensors
+    url: https://huggingface.co/conradlocke/krea2-identity-edit/resolve/main/krea2_identity_edit_v1_2.safetensors
+flags:
+  image:
+    node_title: Load Image
+    param: image
+    type: image
+    required: true
+    help: Reference photo to edit (person to restage/edit).
+    node: '72'
+  prompt:
+    node_title: Krea2 Edit (grounded encode)
+    param: prompt
+    type: str
+    required: true
+    help: Plain-language edit instruction, e.g. 'change her outfit to a red raincoat'.
+    node: '84'
+  negative_prompt:
+    node_title: negative (leave empty)
+    param: prompt
+    type: str
+    default: ''
+    node: '85'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    required: true
+    node: '53'
+  steps:
+    node_title: KSampler
+    param: steps
+    type: int
+    default: 10
+    help: 8-12 for most edits (Turbo). Fewer favors composition adherence, more favors
+      face detail.
+    node: '53'
+  cfg:
+    node_title: KSampler
+    param: cfg
+    type: float
+    default: 1
+    help: 1.0 for Turbo/most edits. Removals need Raw model + cfg 3 (not wired in
+      this graph).
+    node: '53'
+  sampler_name:
+    node_title: KSampler
+    param: sampler_name
+    type: str
+    default: euler
+    node: '53'
+  scheduler:
+    node_title: KSampler
+    param: scheduler
+    type: str
+    default: simple
+    node: '53'
+  denoise:
+    node_title: KSampler
+    param: denoise
+    type: float
+    default: 1
+    node: '53'
+  unet_name:
+    node_title: Load Diffusion Model
+    param: unet_name
+    type: str
+    default: krea2_turbo_fp8_scaled.safetensors
+    node: '55'
+  clip_name:
+    node_title: Load CLIP
+    param: clip_name
+    type: str
+    default: qwen3vl_4b_fp8_scaled.safetensors
+    node: '56'
+  vae_name:
+    node_title: Load VAE
+    param: vae_name
+    type: str
+    default: qwen_image_vae.safetensors
+    node: '57'
+  lora_name:
+    node_title: Load LoRA
+    param: lora_name
+    type: str
+    default: krea2_identity_edit_v1_1.safetensors
+    help: conradlocke/krea2-identity-edit v1.1 (confirmed on disk 2026-07-21). v1.2
+      not downloaded yet -- see description.
+    node: '71'
+  lora_strength:
+    node_title: Load LoRA
+    param: strength_model
+    type: float
+    default: 1
+    node: '71'
+  aspect_ratio:
+    node_title: Resolution Selector
+    param: aspect_ratio
+    type: str
+    default: 1:1 (Square)
+    help: v1.1 weights need this to match the source image's AR -- no FIT auto-geometry
+      until v1.2 (see description).
+    node: '83'
+  megapixels:
+    node_title: Resolution Selector
+    param: megapixels
+    type: float
+    default: 1
+    help: Generate at <=2MP -- higher risks source bleed/duplication per the model
+      card.
+    node: '83'
+  multiple:
+    node_title: Resolution Selector
+    param: multiple
+    type: int
+    default: 8
+    node: '83'
+  grounding_px:
+    node_title: Krea2 Edit (grounded encode)
+    param: grounding_px
+    type: int
+    default: 768
+    help: Lower = stronger edit adherence; higher = stronger likeness. Trained range
+      384-768 (v1.1); 1024 often fine. Double-image ('split') results mean lower this.
+    node: '84'
+  negative_grounding_px:
+    node_title: negative (leave empty)
+    param: grounding_px
+    type: int
+    default: 768
+    help: 'Keep in sync with grounding_px -- model card: ground the negative too at
+      CFG > 1.'
+    node: '85'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: krea2_identity_edit
+    node: '29'

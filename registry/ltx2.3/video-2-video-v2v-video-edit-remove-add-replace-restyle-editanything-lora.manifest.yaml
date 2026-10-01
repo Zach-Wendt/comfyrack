@@ -1,0 +1,62 @@
+description: 'Video-to-video general instruction edit (LTX-2.3 EditAnything IC-LoRA):
+  applies an arbitrary remove/add/replace/restyle text instruction to the input clip
+  (e.g. removing an object, changing an outfit, restyling a scene). Single unambiguous
+  VHS_VideoCombine output (save_output=True). The EditAnything IC-LoRA''s strength
+  lives inside a Power Lora Loader (rgthree) per-slot dict (''lora_1'') and is not
+  exposed as a flag, consistent with existing registry convention for that node type.
+  A long boilerplate ''INPAINT INSTRUCT'' node (#5315:484) is the internal caption-normalizer
+  system prompt, not a user-facing knob, so it is not exposed either.'
+workflow: video-2-video-v2v-video-edit-remove-add-replace-restyle-editanything-lora.json
+mode: [v2v]
+output_node_title: "Video Combine \U0001F3A5\U0001F165\U0001F157\U0001F162"
+flags:
+  edit_instruction:
+    node_title: Prompt
+    param: value
+    type: str
+    default: 'Remove the make-up in his face. Make his face clean without any make-up '
+    help: Free-form remove/add/replace/restyle instruction, e.g. 'Remove the make-up
+      in his face...'.
+    node: '5322'
+  negative_prompt:
+    node_title: CLIP Text Encode (Negative Prompt)
+    param: text
+    type: str
+    default: text, subtitles, logo, low quality, distorted, bad anatomy, oversaturated,
+      pixelated, low resolution, grainy, compression artifacts, jpeg artifacts, glitches,
+      watermark, signature, copyright,  distortedsound, saturated sound, loud sound
+      , deformed facial features, asymmetrical face, missing facial features, extra
+      limbs, disfigured hands, blurry teeth, disfigured teeth
+    node: '5318'
+  seed:
+    node_title: RandomNoise
+    param: noise_seed
+    type: int
+    default: 35
+    node: '77'
+  source_video:
+    node_title: "Load Video FFmpeg (Upload) \U0001F3A5\U0001F165\U0001F157\U0001F162"
+    param: video
+    type: str
+    default: joker_therapy (2).mp4
+    help: Filename of source video; must already exist in ComfyUI's input directory
+      (no upload path for video yet in this CLI).
+    node: '840'
+  fps:
+    node_title: FPS
+    param: value
+    type: float
+    default: 24
+    node: '830'
+  max_size:
+    node_title: MAX SIZE (longest)
+    param: value
+    type: int
+    default: 960
+    node: '846'
+  max_length_seconds:
+    node_title: MAX LENGTH (seconds)
+    param: value
+    type: int
+    default: 12
+    node: '5334'

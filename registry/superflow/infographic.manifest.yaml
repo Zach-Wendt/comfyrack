@@ -1,0 +1,314 @@
+description: 'Infographic generator (SenseNova U1.5 8B MoT): content text + layout + style -> a batch
+  of candidate infographics, OCR-checked against the content and ranked. Outputs on ComfyUI: a contact
+  sheet (primary result, ranked candidates with scores), every candidate at full size, and the best one
+  center-cropped to the platform size. This is the workflow Superflow''s Graphics tab runs. Needs the
+  ComfyUI-Superflow node pack and two model files: checkpoint
+  SenseNova-U1.5-8B-MoT-int8_convrot.safetensors and text encoder qwen3vl_8b_fp8_scaled.safetensors (download
+  links: models.json in the pack). About 9 minutes for 6 candidates on one GPU. Source: the pack''s example_workflows/infographic.json
+  (UI format), converted by hand to API format because comfyrack''s converter does not handle linked widgets
+  that keep their slot in widgets_values or dynamic-combo widgets.'
+workflow: infographic.json
+mode:
+- t2i
+output_node_title: Contact sheet (pick here)
+output: image
+outputs:
+- title: Contact sheet (pick here)
+  kind: image
+- title: All candidates (full size)
+  kind: image
+- title: Best (platform size)
+  kind: image
+- title: Text check report
+  kind: text
+requires:
+  nodes:
+    CLIPLoader: core
+    CLIPTextEncode: core
+    CheckpointLoaderSimple: core
+    EmptyHiDreamO1LatentImage: core
+    ImageScale: core
+    InfographicPlatformSize: ComfyUI-Superflow
+    InfographicPrompt: ComfyUI-Superflow
+    InfographicRank: ComfyUI-Superflow
+    InfographicTextCheck: ComfyUI-Superflow
+    KSampler: core
+    PreviewAny: core
+    RebatchImages: core
+    SaveImage: core
+    SenseNovaSamplingOptions: core
+    TextGenerate: core
+    VAEDecode: core
+  custom_node_packs:
+  - name: ComfyUI-Superflow
+    git: https://github.com/Zach-Wendt/ComfyUI-Superflow
+  models:
+  - directory: checkpoints
+    name: SenseNova-U1.5-8B-MoT-int8_convrot.safetensors
+    url: https://huggingface.co/jtreminio/SenseNova-U1.5-8B-MoT-int8_convrot/resolve/main/SenseNova-U1.5-8B-MoT-int8_convrot.safetensors
+  - directory: text_encoders
+    name: qwen3vl_8b_fp8_scaled.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen3-VL/resolve/main/text_encoders/qwen3vl_8b_fp8_scaled.safetensors
+flags:
+  content:
+    node_title: InfographicPrompt
+    param: content
+    type: str
+    default: |-
+      How Vaccines Train Your Immune System
+
+      - Step 1: Vaccine delivers a harmless antigen
+      - Step 2: B cells produce matching antibodies
+      - Step 3: Memory cells store the pattern for years
+
+      - Protection builds in about 2 weeks
+      - 95% efficacy in clinical trials
+    help: Exact text to render (1-4000 chars). First line = title; '- ' lines = items; a blank line or
+      '# Heading' starts a new section. Section 1 is the main flow; later sections become callout cards.
+    node: '3'
+    min_length: 1
+    max_length: 4000
+    required: false
+  imagery:
+    node_title: InfographicPrompt
+    param: imagery
+    type: str
+    default: |-
+      syringe releasing a droplet
+      round teal cell with Y-shaped antibodies
+      glowing yellow cell
+      calendar with a checkmark
+      upward bar chart
+    help: 'Optional (0-2000 chars): one picture per item, in content order (steps, then cards). Blank
+      line = generic pictogram. Describe pictures only, no words to print. Filled-in imagery gives cleaner
+      results.'
+    node: '3'
+    min_length: 0
+    max_length: 2000
+  platform:
+    node_title: InfographicPlatformSize
+    param: platform
+    type: str
+    default: LinkedIn portrait (1200x1500)
+    help: 'Target post size. Generation runs at the nearest SenseNova size, then the best image is center-cropped
+      to this size. Options: LinkedIn portrait (1200x1500); Instagram portrait (1080x1350); Instagram
+      square (1080x1080); X / Twitter (1600x900); Slide 16:9 (1920x1080); Poster A-series portrait (1754x2480);
+      Paper figure wide (2400x1200).'
+    node: '2'
+    # Static copy of the node's options, so the form keeps its dropdowns when the machine is offline.
+    choices:
+    - "LinkedIn portrait (1200x1500)"
+    - "Instagram portrait (1080x1350)"
+    - "Instagram square (1080x1080)"
+    - "X / Twitter (1600x900)"
+    - "Slide 16:9 (1920x1080)"
+    - "Poster A-series portrait (1754x2480)"
+    - "Paper figure wide (2400x1200)"
+  layout:
+    node_title: InfographicPrompt
+    param: layout
+    type: str
+    default: auto
+    help: 'Arrangement. auto: comparison for ''vs'', step flow for ''Step N'' or year-led items, dashboard
+      for mostly-numeric items, else bento grid. Options: see the node''s layout list in /object_info.'
+    node: '3'
+    # Static copy of the node's options, so the form keeps its dropdowns when the machine is offline.
+    choices:
+    - "auto"
+    - "asymmetry"
+    - "axial-expansion"
+    - "bento-grid"
+    - "big-typography"
+    - "binary-comparison"
+    - "breaking-the-grid"
+    - "bridge"
+    - "center-focus"
+    - "chapter-layout"
+    - "character-guide"
+    - "circular-flow"
+    - "collage-glitch"
+    - "comic-strip"
+    - "comparison-matrix"
+    - "conflict-contrast"
+    - "containerization"
+    - "dashboard"
+    - "data-landscape"
+    - "deconstruction"
+    - "diagonal-composition"
+    - "disrupted-flow"
+    - "edge-tension"
+    - "editorial-vogue"
+    - "emotional-gradient"
+    - "f-pattern"
+    - "flashback"
+    - "four-quadrant-grid"
+    - "frame-composition"
+    - "full-bleed-image"
+    - "full-illustration"
+    - "funnel"
+    - "gallery-style"
+    - "generous-margins"
+    - "golden-ratio-split"
+    - "hard-alignment"
+    - "header-body"
+    - "heading-subheading"
+    - "hidden-details"
+    - "hierarchical-layers"
+    - "hub-spoke"
+    - "iceberg"
+    - "isometric-map"
+    - "isometric-tech-stack"
+    - "jigsaw"
+    - "left-image-right-text"
+    - "left-text-right-image"
+    - "linear-progression"
+    - "luxury-layout"
+    - "macro-closeup"
+    - "maximalism"
+    - "modular-repetition"
+    - "multi-directional"
+    - "multi-focal"
+    - "multi-scale"
+    - "nine-grid"
+    - "nonlinear-path"
+    - "one-way-flow"
+    - "overlapping"
+    - "panorama"
+    - "periodic-table"
+    - "random-scatter"
+    - "s-curve"
+    - "scene-unfolding"
+    - "single-focal-point"
+    - "single-object-art"
+    - "skewed-grid"
+    - "speech-bubbles"
+    - "spiral-vortex"
+    - "step-staircase"
+    - "story-mountain"
+    - "storyboard"
+    - "strong-perspective"
+    - "structural-breakdown"
+    - "swimlane"
+    - "swiss-grid"
+    - "text-wrap"
+    - "three-tier"
+    - "tile-layout"
+    - "top-image-bottom-text"
+    - "tree-branching"
+    - "ultra-minimalist"
+    - "venn-diagram"
+    - "visual-first"
+    - "visual-tension"
+    - "wave-path"
+    - "winding-roadmap"
+    - "z-pattern"
+  style:
+    node_title: InfographicPrompt
+    param: style
+    type: str
+    default: auto
+    help: 'Visual style. auto = flat-design (the most tested). Options: see the node''s style list in
+      /object_info.'
+    node: '3'
+    # Static copy of the node's options, so the form keeps its dropdowns when the machine is offline.
+    choices:
+    - "auto"
+    - "aged-academia"
+    - "art-deco"
+    - "art-nouveau"
+    - "baroque"
+    - "bauhaus"
+    - "cartoon-flat"
+    - "chalkboard"
+    - "chinese-guochao"
+    - "claymation"
+    - "corporate-memphis"
+    - "crayon-hand-drawn"
+    - "cubism"
+    - "cyberpunk"
+    - "data-visualization"
+    - "deconstructivism"
+    - "double-exposure"
+    - "expressionism"
+    - "fashion-editorial"
+    - "film-photography"
+    - "flat-design"
+    - "fractal-art"
+    - "geometric-burst"
+    - "glitch-art"
+    - "high-contrast-ad"
+    - "holographic"
+    - "ikea-manual"
+    - "impressionism"
+    - "instructional-visual"
+    - "kawaii"
+    - "knolling"
+    - "lego-brick"
+    - "line-drawing"
+    - "liquid-metal"
+    - "luxury-minimal"
+    - "marker-style"
+    - "material-design"
+    - "minimalism"
+    - "mixed-media"
+    - "modern-ink-wash"
+    - "monochrome-illustration"
+    - "neon-futurism"
+    - "newspaper-collage"
+    - "op-art"
+    - "origami"
+    - "paper-collage"
+    - "parametric-design"
+    - "pen-sketch"
+    - "pixel-art"
+    - "scandinavian"
+    - "sci-fi-ui"
+    - "screen-print"
+    - "storybook-watercolor"
+    - "subway-map"
+    - "surreal-collage"
+    - "surrealism"
+    - "swiss-style"
+    - "synthwave"
+    - "tech-brand"
+    - "technical-diagram"
+    - "technical-schematic"
+    - "thick-paint"
+    - "ui-wireframe"
+    - "ukiyo-e"
+    - "vaporwave"
+    - "vintage-poster"
+    - "woodcut"
+  language:
+    node_title: InfographicPrompt
+    param: language
+    type: str
+    default: English
+    help: Language of the rendered text (1-40 chars), e.g. English.
+    node: '3'
+    min_length: 1
+    max_length: 40
+  candidates:
+    node_title: Candidates
+    param: batch_size
+    type: int
+    default: 6
+    help: Number of candidate images to render (1-64). The text check ranks them and the contact sheet
+      shows them. Render time grows with this number.
+    node: '8'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 42
+    help: Random seed for the sampler (0-18446744073709551615). Candidates in one batch differ by design.
+    node: '9'
+  model:
+    node_title: CheckpointLoaderSimple
+    param: ckpt_name
+    type: str
+    default: SenseNova-U1.5-8B-MoT-int8_convrot.safetensors
+    help: SenseNova U1.5 checkpoint file. The ComfyUI-Infographic pack lists the known variants (label, size, download)
+      at GET /infographic/models; any SenseNova U1.5 single-file checkpoint in models/checkpoints works.
+    node: '4'
+    required: false

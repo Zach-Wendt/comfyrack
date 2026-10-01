@@ -1,0 +1,72 @@
+description: "Full-frame img2img pass that cel-renders a grey-proxy flat composite or a plain crop. Uses Anima and a cel-shading style LoRA."
+workflow: unify.json
+mode: [i2i]
+output_node_title: Save Image
+requires:
+  nodes:
+    CLIPLoader: core
+    CLIPTextEncode: core
+    KSampler: core
+    LoadImage: core
+    LoraLoader: core
+    SaveImage: core
+    UNETLoader: core
+    VAEDecode: core
+    VAEEncode: core
+    VAELoader: core
+  models:
+  - directory: diffusion_models
+    name: anima_baseV10.safetensors
+    url: https://huggingface.co/LyliaEngine/anima_baseV10/resolve/main/anima_baseV10.safetensors
+  - directory: text_encoders
+    name: qwen_3_06b_base.safetensors
+    source: unknown
+  - directory: vae
+    name: qwen_image_vae.safetensors
+    url: https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+  - directory: loras
+    name: your_style_lora.safetensors
+    source: unknown
+flags:
+  image:
+    node_title: Source Image
+    param: image
+    type: image
+    required: true
+    help: Local path -- run_workflow()'s image-typed flags upload it themselves, don't
+      pre-upload.
+    node: '20'
+  positive_text:
+    node_title: Positive Prompt
+    param: text
+    type: str
+    required: true
+    help: unify.py joins its TRIGGER constant + the caller's scene prompt before passing
+      this in -- already-composed text, not a raw scene description.
+    node: '6'
+  negative_text:
+    node_title: Negative Prompt
+    param: text
+    type: str
+    default: (blurry),(lowres:1.2),(worst quality:1.4),(low quality:1.4),(bad anatomy:1.4),bad
+      hands,multiple views,jpeg artifacts,signature,watermark,text,logo,artist name,grey
+      background
+    node: '7'
+  seed:
+    node_title: KSampler
+    param: seed
+    type: int
+    default: 7
+    node: '9'
+  denoise:
+    node_title: KSampler
+    param: denoise
+    type: float
+    default: 0.45
+    node: '9'
+  filename_prefix:
+    node_title: Save Image
+    param: filename_prefix
+    type: str
+    default: unify
+    node: '11'

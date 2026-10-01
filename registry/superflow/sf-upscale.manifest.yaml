@@ -1,0 +1,38 @@
+description: Model upscale (4x_foolhardy_Remacri, general purpose) then a lanczos resize to the requested
+  factor. A 4x model output is scaled by scale/4, so any factor 0.25-32 works (ImageScaleBy allows
+  up to 8x of the 4x result). Only 4x-AnimeSharp, UltraSharpV2, Remacri, NMKD, RealESRGAN and OmniSR
+  are on disk; Remacri was picked as the general one.
+workflow: sf-upscale.json
+mode: [i2i]
+output: image
+output_node_title: Image
+outputs:
+  - {title: Image, kind: image}
+requires:
+  nodes:
+    ComfyMathExpression: core
+    ImageScaleBy: core
+    ImageUpscaleWithModel: core
+    LoadImage: core
+    SaveImage: core
+    UpscaleModelLoader: core
+  models:
+  - directory: upscale_models
+    name: 4x_foolhardy_Remacri.pth
+    url: https://huggingface.co/FacehugmanIII/4x_foolhardy_Remacri/resolve/main/4x_foolhardy_Remacri.pth
+flags:
+  image:
+    node_title: Source Image
+    param: image
+    type: image
+    required: true
+    node: '1'
+  scale:
+    node_title: Scale / 4
+    param: values.a
+    type: float
+    default: 2
+    min: 1
+    max: 4
+    help: Output size multiple of the input (1-4).
+    node: '4'
